@@ -1,0 +1,17 @@
+{
+  "name": "projectcs546",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "seed": "node ./tasks/seed.js"
+  },
+  "author": "Priyanka Popeta 10466298",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.7.3"
+  }
+}
