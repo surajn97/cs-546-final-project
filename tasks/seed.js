@@ -1,45 +1,36 @@
 const dbConnection = require("../config/mongoConnection");
-const data = require("../data/");
-const restaurants = data.restaurants;
-const reviews = data.reviews;
+// const data = require("../data/");
+const testData = require("../data/").test;
+const mongoCollections = require("../config/mongoCollections");
+const users = mongoCollections.users;
+const ingredients = mongoCollections.ingredients;
+const recipes = mongoCollections.recipes;
+const reviews = mongoCollections.reviews;
+const comments = mongoCollections.comments;
 
-async function main() {
-  const db = await dbConnection();
-  await db.dropDatabase();
 
-  const saffronlounge = await restaurants.create(
-    "The Saffron Lounge",
-    "New York City, New York",
-    "123-456-7890",
-    "http://www.saffronlounge.com",
-    "$$$$",
-    ["Cuban", "Italian"],
-    { dineIn: true, takeOut: true, delivery: false }
-  );
+const main = async () => {
+  if (dbConnection.env != 'production') {
+    const db = await dbConnection.connectToDb();
+    await db.dropDatabase();
+    try {
+      const usersCollection = await users();
+      const ingredientsCollection = await ingredients();
+      const recipesCollection = await recipes();
+      const reviewsCollection = await reviews();
+      const commentsCollection = await comments();
 
-  const id = saffronlounge._id;
-  await reviews.create(
-    id,
-    "This place was great!",
-    "scaredycat",
-    5,
-    "10/13/2021",
-    "This place was great! the staff is top notch and the food was delicious!  They really know how to treat their customers"
-  );
-  await reviews.create(
-    id,
-    "Average Restaurant",
-    "chillyflake",
-    4,
-    "10/13/2021",
-    "This place was okay!"
-  );
+      await usersCollection.insertOne(testData.userobj);
+      await ingredientsCollection.insertOne(testData.ingredientObj);
+      await recipesCollection.insertOne(testData.recipeobj);
+      await reviewsCollection.insertOne(testData.reviewObj);
+      await commentsCollection.insertOne(testData.commentObj);
+    } catch (err) {
+      throw err
+    }
+    console.log('Done seeding ' + dbConnection.env + ' database');
+    dbConnection.closeConnection();
+  }
+};
 
-  console.log("Done seeding database");
-
-  await db.serverConfig.close();
-}
-
-main().catch(error => {
-  console.log(error);
-});
+main().catch(console.log);
