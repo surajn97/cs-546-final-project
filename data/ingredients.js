@@ -1,7 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const ingredients = mongoCollections.ingredients;
 let { ObjectId } = require("mongodb");
-const { users } = require(".");
+// const { users } = require(".");
 
 module.exports = {
   async create(name) {
