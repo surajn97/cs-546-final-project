@@ -2,37 +2,39 @@ const mongoCollections = require("../config/mongoCollections");
 const recipeFunctions = require("./recipes.js");
 const recipes = mongoCollections.recipes;
 const reviews = mongoCollections.reviews;
+const util = require("./util");
 let { ObjectId } = require("mongodb");
 
 module.exports = {
-  async create(recipeId, title, reviewer, rating, dateOfReview, review) {
-    checkProperString(recipeId, "Recipe ID");
-    checkProperString(title, "Title");
-    checkProperString(reviewer, "Reviewer");
-    checkProperString(dateOfReview, "Date of Review");
-    checkProperString(review, "review");
+  async create(recipeId, rating, reviewText, userId) {
+    util.checkProperString(recipeId, "Recipe ID");
+    util.checkProperString(reviewText, "Review Text");
+    util.checkProperString(userId, "User Id");
 
     if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";
-    let ID = ObjectId(recipeId);
+    // let ID = ObjectId(recipeId);
 
     const recipe = await recipeFunctions.get(recipeId);
     if (!recipe) {
       throw "Error: No recipe with that id";
     }
 
-    checkProperNumber(rating, "Rating");
+    util.checkProperNumber(rating, "Rating");
     if (rating < 1 || rating > 5)
       throw "Error: Rating value must be between 1 to 5";
 
-    checkProperDate(dateOfReview);
+    // util.checkProperDate(dateOfReview);
 
     const reviewCollection = await reviews();
     let newReview = {
-      title: title,
-      reviewer: reviewer,
+      recipeId: ObjectId(recipeId),
       rating: rating,
-      dateOfReview: dateOfReview,
-      review: review,
+      reviewText: reviewText,
+      likes: [],
+      dislikes: [],
+      comments: [],
+      userId: userId,
+      dateOfReview: new Date()
     };
 
     const insertInfo = await reviewCollection.insertOne(newReview);
@@ -47,18 +49,20 @@ module.exports = {
   },
 
   async getAll(recipeId) {
-    checkProperString(recipeId, "Recipe ID");
+    util.checkProperString(recipeId, "Recipe ID");
     if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";
-    let ID = ObjectId(recipeId);
+    // let ID = ObjectId(recipeId);
 
     const recipe = await recipeFunctions.get(recipeId);
+    if (!recipe) {
+      throw "Error: No recipe with that id";
+    }
     const reviews = recipe.reviews;
-
     return reviews;
   },
 
   async get(id) {
-    checkProperString(id, "Review ID");
+    util.checkProperString(id, "Review ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
     const reviewCollection = await reviews();
@@ -72,73 +76,86 @@ module.exports = {
   },
 
   async remove(id) {
-    checkProperString(id, "Review ID");
+    util.checkProperString(id, "Review ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
 
-    const review = await this.get(id);
+    const review = await get(id);
+    if (!review) {
+      throw "Error: No review with that id";
+    }
 
     const reviewCollection = await reviews();
     const recipeCollection = await recipes();
-    const rest = await recipeCollection.findOne({
+    const recipe = await recipeCollection.findOne({
       reviews: { $elemMatch: { _id: ID } },
     });
-    const restID = rest._id.toString();
+    const recipeID = recipe._id.toString();
     const deletionInfo = await reviewCollection.deleteOne({ _id: ID });
 
     if (deletionInfo.deletedCount === 0) {
       throw `Error: Could not delete review with id of ${ID}`;
     }
 
-    await recipeFunctions.removeReviewFromRecipe(restID, ID);
-    await recipeFunctions.modifyingRatings(restID);
+    await recipeFunctions.removeReviewFromRecipe(recipeID, ID);
+    await recipeFunctions.modifyingRatings(recipeID);
 
     return { reviewId: id, deleted: true };
   },
-};
 
-//Helper Functions
-const checkProperString = (string, parameter) => {
-  if (string == null || typeof string == undefined)
-    throw `Error: Please pass a ${parameter}`;
-  if (typeof string != "string") {
-    throw `Error: ${parameter} Not a string`;
-  }
-  string = string.trim();
-  if (string.length == 0) {
-    throw `Error: ${parameter} Empty string`;
-  }
-};
+  async addCommentToReview(reviewId, commentId, commentobj) {
+    if (!ObjectId.isValid(reviewId)) throw "Error: Not a valid ObjectId";
+    let reviewID = ObjectId(reviewId);
 
-const checkProperNumber = (num, parameter) => {
-  if (num == null || typeof num == undefined)
-    throw `Error: No ${parameter} Passed. Please pass a number`;
-  if (typeof num !== "number")
-    throw `Error: Please pass a number for ${parameter}`;
-  if (isNaN(num)) throw `Error: ${parameter} is not a number`;
-};
+    if (!ObjectId.isValid(commentId)) throw "Error: Not a valid ObjectId";
+    let commentID = ObjectId(commentId);
 
-const checkProperDate = dor => {
-  let checkdate = new Date(dor);
-  let dorArray = dor.split("/");
-  let month = parseInt(dorArray[0], 10);
-  let date = parseInt(dorArray[1], 10);
-  let year = checkdate.getFullYear();
-  if (month <= 0) throw "Error: Month cant be negetive";
-  if (month > 12) throw "Error: Month > 12";
+    let currentReview = await get(reviewId);
+    if (!currentReview) {
+      throw "Error: No review with that id";
+    }
 
-  if (!/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(dor)) {
-    throw "Error: Date of Review should be in this format: MM/DD/YYYY";
-  }
-  if (year < 1000 || year > 3000) {
-    throw "Error: Enter Valid year in Date of Review ";
-  }
-  var monthDaysArray = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const reviewCollection = await reviews();
+    const updateInfo = await reviewCollection.updateOne(
+      { _id: reviewID },
+      {
+        $push: {
+          comments: {
+            _id: commentID,
+            userId: commentobj.userId,
+            comment: commentobj.comment,
+            dateOfComment: commentobj.dateOfComment
+          },
+        },
+      }
+    );
 
-  if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)) {
-    monthDaysArray[1] = 29;
-  }
-  if (date < 0 || date > monthDaysArray[month - 1]) {
-    throw "Date of Review should be in this format: MM/DD/YYYY";
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Update failed at adding comment to review";
+
+    return await this.get(reviewId);
+  },
+
+  async removeCommentFromReview(reviewId, commentId) {
+    if (!ObjectId.isValid(reviewId)) throw "Error: Not a valid ObjectId";
+    let ID = ObjectId(reviewId);
+
+    if (!ObjectId.isValid(commentId)) throw "Error: Not a valid ObjectId";
+    let commentID = ObjectId(commentId);
+
+    let currentReview = await get(reviewId);
+    if (!currentReview) {
+      throw "Error: No review with that id";
+    }
+
+    const reviewCollection = await reviews();
+    const updateInfo = await reviewCollection.updateOne(
+      { _id: ID },
+      { $pull: { comments: { _id: commentID } } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Error: Update failed while removing comment from review";
+
+    return await get(reviewId);
   }
 };
