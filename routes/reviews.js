@@ -113,6 +113,7 @@ router.delete("/:id", async (req, res) => {
     res.status(400).json({ error: e });
     return;
   }
+
   // if (!req.params.id) {
   //   res.status(400).json({ error: "You must Supply and ID to delete" });
   //   // res.status(400);
@@ -122,7 +123,6 @@ router.delete("/:id", async (req, res) => {
     await reviewData.get(req.params.id);
   } catch (e) {
     res.status(404).json({ error: e });
-    // res.status(404);
     return;
   }
   try {
