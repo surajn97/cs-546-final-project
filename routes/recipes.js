@@ -2,8 +2,15 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const recipeData = data.recipes;
+const helper = data.helper;
 
 router.get("/:id", async (req, res) => {
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
   try {
     let recipe = await recipeData.get(req.params.id);
     res.json(recipe);
@@ -106,12 +113,17 @@ router.post("/", async (req, res) => {
     return;
   } catch (e) {
     res.status(500).json({ error: e });
-
     return;
   }
 });
 
 router.put("/:id", async (req, res) => {
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
   const updatedData = req.body;
   if (!updatedData) {
     res.status(400).json({ error: "You must provide data to update a recipe" });
@@ -157,7 +169,6 @@ router.put("/:id", async (req, res) => {
     await recipeData.get(req.params.id);
   } catch (e) {
     res.status(404).json({ error: e });
-
     return;
   }
 
@@ -181,13 +192,11 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    await recipeData.get(req.params.id);
+    helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(404).json({ error: e });
-
+    res.status(400).json({ error: e });
     return;
   }
-
   try {
     let review = await recipeData.remove(req.params.id);
     res.json(review);
