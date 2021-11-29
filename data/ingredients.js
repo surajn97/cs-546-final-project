@@ -1,11 +1,12 @@
 const mongoCollections = require("../config/mongoCollections");
 const ingredients = mongoCollections.ingredients;
 let { ObjectId } = require("mongodb");
-// const { users } = require(".");
+const { users } = require(".");
+const helper = require("helper");
 
 module.exports = {
   async create(name) {
-    checkProperString(name, "Name");
+    helper.checkProperString(name, "Name");
     const ingredientCollection = await ingredients();
     let newIngredient = {
       name: name,
@@ -18,7 +19,7 @@ module.exports = {
   },
 
   async get(id) {
-    checkProperString(id, "Ingredient ID");
+    helper.checkProperString(id, "Ingredient ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
     const ingredientCollection = await ingredients();
@@ -34,13 +35,14 @@ module.exports = {
   async getAll(search_term) {
     const ingredientCollection = await ingredients();
     let ingredientList = [];
-    if(search_term)
-      ingredientList = await ingredientCollection.find({"name": new RegExp('^' + search_term, 'i')}).toArray();
-    else
-      ingredientList = await ingredientCollection.find({}).toArray();
+    if (search_term)
+      ingredientList = await ingredientCollection
+        .find({ name: new RegExp("^" + search_term, "i") })
+        .toArray();
+    else ingredientList = await ingredientCollection.find({}).toArray();
 
     const ingList = [];
-    ingredientList.forEach(item => {
+    ingredientList.forEach((item) => {
       let obj = {};
       obj._id = item._id.toString();
       obj.name = item.name;
@@ -50,7 +52,7 @@ module.exports = {
   },
 
   async remove(id) {
-    checkProperString(id, "Ingredient ID");
+    helper.checkProperString(id, "Ingredient ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
 
@@ -65,7 +67,7 @@ module.exports = {
   },
 
   async update(id, name) {
-    checkProperString(name, "Name");
+    helper.checkProperString(name, "Name");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
 
     const ingredient = await this.get(id);
@@ -98,44 +100,4 @@ module.exports = {
   async removeNuValue(ingredientId, reviewId) {
     //remove nuValue
   },
-};
-
-//Helper Functions
-const checkProperString = (string, parameter) => {
-  if (string == null || typeof string == undefined)
-    throw `Error: Please pass a ${parameter}`;
-  if (typeof string != "string") {
-    throw `Error: ${parameter} Not a string`;
-  }
-  string = string.trim();
-  if (string.length == 0) {
-    throw `Error: ${parameter} Empty string`;
-  }
-};
-
-const isValidURL = string => {
-  if (string.startsWith("http://www.") || string.startsWith("https://www.")) {
-    if (/.([./])com$/.test(string)) {
-      if (string.length < 20)
-        throw "Error:  At least 5 characters in-between the http://www. and .com required ";
-    }
-  } else {
-    throw "Error: Not valid Website";
-  }
-};
-
-const checkProperArray = array => {
-  if (!array) throw "Error: No parameter supplied. Please pass an array";
-  if (!Array.isArray(array))
-    throw `Error: Parameter passed, "${array}" is not an array.It is "${typeof array}". Please pass an array instead`;
-  if (array.length == 0) throw "Cannot pass an empty array";
-};
-
-const checkProperObject = (object, checklength) => {
-  if (!object) throw "Error: Please pass the object";
-  if (!(object.constructor === Object)) {
-    throw "Error: Parameter passed should be an object";
-  }
-  if (checklength && Object.keys(object).length === 0)
-    throw "Error: Pass atleast 1 value in the object";
 };
