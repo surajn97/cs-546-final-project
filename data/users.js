@@ -5,6 +5,7 @@ let { ObjectId } = require("mongodb");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const helper = require("./helper");
 
 module.exports = {
   async getAllUsers() {

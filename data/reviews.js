@@ -4,7 +4,7 @@ const restaurants = mongoCollections.restaurants;
 const reviews = mongoCollections.reviews;
 const util = require("./util");
 let { ObjectId } = require("mongodb");
-const helper = require("helper");
+const helper = require("./helper");
 
 module.exports = {
   async create(recipeId, rating, reviewText, userId) {

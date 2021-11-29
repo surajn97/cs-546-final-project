@@ -1,4 +1,5 @@
 const express = require("express");
+
 const app = express();
 const static = express.static(__dirname + "/public");
 const path = require("path");
@@ -6,7 +7,11 @@ const configRoutes = require("./routes");
 const exphandlebars = require("express-handlebars");
 const session = require("express-session");
 const port = process.env.PORT || 3000;
+const { engine } = require("express-handlebars");
+const configRoutes = require("./routes");
+const static = express.static(__dirname + "/public");
 
+app.use("/public", static);
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -40,10 +45,13 @@ app.use(logger);
 
 app.set("views", path.join(__dirname, "views"));
 
+app.use(express.urlencoded({ extended: true }));
 app.engine(
   "handlebars",
-  exphandlebars({
+  engine({
     defaultLayout: "main",
+    layoutsDir: __dirname + "/views/layouts/",
+    partialsDir: __dirname + "/views/partials/",
   })
 );
 app.set("view engine", "handlebars");

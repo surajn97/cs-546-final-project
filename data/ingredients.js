@@ -1,18 +1,22 @@
 const mongoCollections = require("../config/mongoCollections");
 const ingredients = mongoCollections.ingredients;
 let { ObjectId } = require("mongodb");
-const { users } = require(".");
-const helper = require("helper");
+const helper = require("./helper");
 
 module.exports = {
-  async create(name) {
-    helper.checkProperString(name, "Name");
+  async create(name, categories) {
+    helper.checkProperString(name, "Ingredient Name");
+    helper.checkProperArray(categories, "Ingredient Categories");
+    if (!categories.every((i) => typeof i === "string"))
+      throw "Categories can only contain Strings";
     const ingredientCollection = await ingredients();
     let newIngredient = {
       name: name,
+      categories: categories,
     };
     const insertInfo = await ingredientCollection.insertOne(newIngredient);
-    if (insertInfo.insertedCount === 0) throw "Could not create a Ingredient";
+    if (insertInfo.insertedCount === 0)
+      throw `Could not create the Ingredient ${name}`;
     const newId = insertInfo.insertedId.toString();
     const ingredient = await this.get(newId);
     return ingredient;
