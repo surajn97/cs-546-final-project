@@ -5,12 +5,18 @@ const data = require("../data");
 const reviewData = data.reviews;
 
 router.get("/review/:id", async (req, res) => {
-  if (!req.params.id) {
-    res.status(400).json({
-      error: "You must Supply an recipe id to get review of that recipe",
-    });
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({ error: e });
     return;
   }
+  // if (!req.params.id) {
+  //   res.status(400).json({
+  //     error: "You must Supply an recipe id to get review of that recipe",
+  //   });
+  //   return;
+  // }
   try {
     const review = await reviewData.get(req.params.id);
     res.json(review);
@@ -21,6 +27,12 @@ router.get("/review/:id", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
   try {
     const reviewList = await reviewData.getAll(req.params.id);
     res.json(reviewList);
@@ -33,6 +45,12 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/:id", async (req, res) => {
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
   const ReviewData = req.body;
   if (!ReviewData) {
     res.status(400).json({ error: "You must Supply data to post" });
@@ -89,16 +107,22 @@ router.post("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  if (!req.params.id) {
-    res.status(400).json({ error: "You must Supply and ID to delete" });
-    // res.status(400);
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({ error: e });
     return;
   }
+
+  // if (!req.params.id) {
+  //   res.status(400).json({ error: "You must Supply and ID to delete" });
+  //   // res.status(400);
+  //   return;
+  // }
   try {
     await reviewData.get(req.params.id);
   } catch (e) {
     res.status(404).json({ error: e });
-    // res.status(404);
     return;
   }
   try {

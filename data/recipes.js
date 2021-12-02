@@ -2,6 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const recipes = mongoCollections.recipes;
 let { ObjectId } = require("mongodb");
 // const { users } = require(".");
+const helper = require("helper");
 
 module.exports = {
   async create(
@@ -13,19 +14,19 @@ module.exports = {
     cuisine,
     instructions
   ) {
-    checkProperString(name, "Name");
-    checkProperString(postedBy, "User");
-    checkProperArray(ingredients, "Ingredients");
+    helper.checkProperString(name, "Name");
+    helper.checkProperString(postedBy, "User");
+    helper.checkProperArray(ingredients, "Ingredients");
     ingredients.forEach(element => {
-      checkProperString(element, "Individual ingredient");
+      helper.checkProperString(element, "Individual ingredient");
     });
 
-    checkProperString(mealType, "Meal Type");
-    checkProperString(cuisine, "Cuisine");
+    helper.checkProperString(mealType, "Meal Type");
+    helper.checkProperString(cuisine, "Cuisine");
 
-    checkProperString(instructions);
+    helper.checkProperString(instructions);
 
-    checkProperObject(postedBy);
+    helper.checkProperObject(postedBy);
 
     const recipeCollection = await recipes();
     let newRecipe = {
@@ -49,7 +50,7 @@ module.exports = {
   },
 
   async get(id) {
-    checkProperString(id, "Recipe ID");
+    helper.checkProperString(id, "Recipe ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
     const recipeCollection = await recipes();
@@ -78,7 +79,7 @@ module.exports = {
   },
 
   async remove(id) {
-    checkProperString(id, "Recipe ID");
+    helper.checkProperString(id, "Recipe ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
 
@@ -102,22 +103,22 @@ module.exports = {
     cuisine,
     instructions
   ) {
-    checkProperString(name, "Name");
-    checkProperString(postedBy, "User");
-    checkProperArray(ingredients, "Ingredients");
+    helper.checkProperString(name, "Name");
+    helper.checkProperString(postedBy, "User");
+    helper.checkProperArray(ingredients, "Ingredients");
     ingredients.forEach(element => {
-      checkProperString(element, "Individual ingredient");
+      helper.checkProperString(element, "Individual ingredient");
     });
 
-    checkProperString(mealType, "Meal Type");
-    checkProperString(cuisine, "Cuisine");
+    helper.checkProperString(mealType, "Meal Type");
+    helper.checkProperString(cuisine, "Cuisine");
 
-    checkProperArray(instructions);
+    helper.checkProperArray(instructions);
     instructions.forEach(element => {
-      checkProperString(element, "Individual Step");
+      helper.checkProperString(element, "Individual Step");
     });
 
-    checkProperObject(postedBy);
+    helper.checkProperObject(postedBy);
 
     const recipe = await this.get(id);
     let ID = ObjectId(id);
@@ -223,44 +224,4 @@ module.exports = {
 
     return await this.get(recipeId);
   },
-};
-
-//Helper Functions
-const checkProperString = (string, parameter) => {
-  if (string == null || typeof string == undefined)
-    throw `Error: Please pass a ${parameter}`;
-  if (typeof string != "string") {
-    throw `Error: ${parameter} Not a string`;
-  }
-  string = string.trim();
-  if (string.length == 0) {
-    throw `Error: ${parameter} Empty string`;
-  }
-};
-
-const isValidURL = string => {
-  if (string.startsWith("http://www.") || string.startsWith("https://www.")) {
-    if (/.([./])com$/.test(string)) {
-      if (string.length < 20)
-        throw "Error:  At least 5 characters in-between the http://www. and .com required ";
-    }
-  } else {
-    throw "Error: Not valid Website";
-  }
-};
-
-const checkProperArray = array => {
-  if (!array) throw "Error: No parameter supplied. Please pass an array";
-  if (!Array.isArray(array))
-    throw `Error: Parameter passed, "${array}" is not an array.It is "${typeof array}". Please pass an array instead`;
-  if (array.length == 0) throw "Cannot pass an empty array";
-};
-
-const checkProperObject = (object, checklength) => {
-  if (!object) throw "Error: Please pass the object";
-  if (!(object.constructor === Object)) {
-    throw "Error: Parameter passed should be an object";
-  }
-  if (checklength && Object.keys(object).length === 0)
-    throw "Error: Pass atleast 1 value in the object";
 };
