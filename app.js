@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
-const configRoutes = require("./routes");
 const static = express.static(__dirname + '/public');
 const path = require('path');
+const configRoutes = require("./routes");
 const exphandlebars = require('express-handlebars');
 const session = require('express-session');
 const port = process.env.PORT || 3000;
