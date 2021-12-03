@@ -31,10 +31,14 @@ module.exports = {
     return ingredient;
   },
 
-  async getAll() {
+  async getAll(search_term) {
     const ingredientCollection = await ingredients();
+    let ingredientList = [];
+    if(search_term)
+      ingredientList = await ingredientCollection.find({"name": new RegExp('^' + search_term, 'i')}).toArray();
+    else
+      ingredientList = await ingredientCollection.find({}).toArray();
 
-    const ingredientList = await ingredientCollection.find({}).toArray();
     const ingList = [];
     ingredientList.forEach(item => {
       let obj = {};
@@ -42,7 +46,6 @@ module.exports = {
       obj.name = item.name;
       ingList.push(obj);
     });
-
     return ingList;
   },
 

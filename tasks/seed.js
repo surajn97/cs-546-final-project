@@ -21,7 +21,7 @@ const main = async () => {
       const commentsCollection = await comments();
 
       await usersCollection.insertOne(testData.userobj);
-      await ingredientsCollection.insertOne(testData.ingredientObj);
+      await ingredientsCollection.insertMany(testData.ingredientObjs);
       await recipesCollection.insertOne(testData.recipeobj);
       await reviewsCollection.insertOne(testData.reviewObj);
       await commentsCollection.insertOne(testData.commentObj);

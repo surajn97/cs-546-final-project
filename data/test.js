@@ -59,15 +59,28 @@ const commentObj = {
   comment: "Nice try."
 };
 
-const ingredientObj = {
-  // _id: "871982708es312sesde3414",
-  name: "Sugar"
-};
+const ingredientObjs = [
+  {name: "Sugar"},
+  {name: "Onion"},
+  {name: "Garlic"},
+  {name: "Olive Oil"},
+  {name: "Tomato"},
+  {name: "Salt"},
+  {name: "Milk"},
+  {name: "Potato"},
+  {name: "Chilli"},
+  {name: "Cheese"},
+  {name: "Turnip"},
+  {name: "Cabbage"},
+  {name: "Zucchini"},
+  {name: "Bell Pepper"},
+  {name: "Red Pepper"},
+];
 
 module.exports = {
   userobj: userobj,
   recipeobj: recipeobj,
   reviewObj: reviewObj,
   commentObj: commentObj,
-  ingredientObj: ingredientObj
+  ingredientObjs: ingredientObjs
 }
