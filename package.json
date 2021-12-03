@@ -11,10 +11,11 @@
   "author": "Project CS546 Group 4",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
-    "mongodb": "^4.2.0",
-    "bcryptjs": "^2.4.3",
     "express-handlebars": "^5.3.4",
-    "express-session": "^1.17.2"
+    "express-session": "^1.17.2",
+    "mongodb": "^4.2.0",
+    "xss": "^1.0.10"
   }
 }
