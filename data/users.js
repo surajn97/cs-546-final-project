@@ -2,115 +2,211 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 let { ObjectId } = require("mongodb");
 // const { users } = require(".");
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-
 
 module.exports = {
-  async getAllUsers() {
-    const usersCollection = await users();
-    const allUsers = await usersCollection.find({}, { projection: { "Password": 0 } }).toArray();
-    for (let x of allUsers) {
-      x._id = x._id.toString();
-    }
-    return allUsers;
-  },
+  async create(firstName, lastName, email, username, age, hashPassword) {
+    checkProperString(firstName, "First Name");
+    checkProperString(lastName, "Last Name");
+    checkProperString(username, "username");
+    checkProperString(email, "email");
+    checkProperNumber(age, "Age");
+    checkProperNumber(hashPassword, "hashPassword");
 
-
-  async createUser(username, password, firstname, lastname, email, age) {
-    // console.log("abc")
-    // input check: 
-    if (!username) throw 'You must provide a username for your account';
-    if (!password) throw 'You must provide a password for your account';
-    if (!firstname || !lastname) throw 'You must provide a first name and last name for your account';
-    if (!email) throw 'You must provide a email for your account';
-    if (!age) throw 'You must provide a age for your account';
-
-    if (typeof username !== 'string' || username == undefined || username.trim().length == 0) throw 'You must provide a non-blank string username.';
-    // if (!/^[a-z0-9]+$/i.test(username)) throw 'You must provide a  username only alphanumeric characters.'
-    if (typeof password !== 'string' || password == undefined || password.length < 6) throw 'You must provide a string password with at least 6 characters.';
-    if (password.indexOf(' ') != -1) throw 'No space in password.'
-    if (typeof firstname !== 'string' || firstname == undefined || firstname.trim().length == 0) throw 'You must provide a non-blank string firstname.';
-    if (typeof lastname !== 'string' || lastname == undefined || lastname.trim().length == 0) throw 'You must provide a non-blank string lastname.';
-    if (typeof email !== 'string' || email == undefined || email.trim().length == 0) throw 'You must provide a valid email.';
-    const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    if (!re.test(String(email).toLowerCase())) throw 'You must provide a valid email.';
-    if (typeof age !== 'number' || age <= 0) throw 'You must provide a positive number in age.';
-
-    //repetition
-    let low_username = username.toLowerCase();
-    let low_email = email.toLowerCase();
-    const allUsers = await this.getAllUsers();
-    allUsers.forEach(user => {
-      if (user.username == low_username) throw 'This username is already used.';
-      if (user.email == low_email) throw 'This email is already used.';
-    })
-
-    // create
-    const usersCollection = await users();
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    // Add new user to DB 
+    const userCollection = await users();
     let newUser = {
-      username: low_username,
-      Password: hashedPassword,
-      firstname: firstname,
-      lastname: lastname,
-      email: low_email,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      username: username,
       age: age,
+      hashPassword: hashPassword,
       myFavoriteRecipe: [],
       myRecipes: [],
-      myReviews: []
-      //username, password, firstname, lastname, email, age
+      myReviews: [],
     };
-    const insertInfo = await usersCollection.insertOne(newUser);
-    if (insertInfo.insertedCount === 0) throw 'Could not add newUser';
+
+    const insertInfo = await userCollection.insertOne(newUser);
+    if (insertInfo.insertedCount === 0) throw "Could not create a User";
 
     const newId = insertInfo.insertedId.toString();
     const user = await this.get(newId);
-    // user._id = user._id.toString();
     return user;
-    // return { userInserted: true };
   },
 
-  async checkUser(username, password) {
-    // console.log("a")
-    // input check: 
-    if (!username) throw 'You must provide a username for your account';
-    if (!password) throw 'You must provide a password for your account';
-    if (typeof username !== 'string' || username == undefined || username.trim().length == 0) throw 'You must provide a string username with at least 4 characters.';
-    // if (!/^[a-z0-9]+$/i.test(username)) throw 'You must provide a  username only alphanumeric characters.'
-    if (typeof password !== 'string' || password == undefined || password.length < 6) throw 'You must provide a string password with at least 6 characters.';
-    if (password.indexOf(' ') != -1) throw 'No space in password.'
-    let low_username = username.toLowerCase();
-    let match = false;
-    const usersCollection = await users();
-    // console.log("b")
-    const user = await usersCollection.find({ username: low_username }).toArray();
-    // console.log(user[0])
-    if (user.length == 0) throw 'Either the username or password is invalid'    //'No user with that username';
-    match = await bcrypt.compare(password, user[0].Password);
-    // console.log("cc")
-    if (!match) throw 'Either the username or password is invalid' //'Your password is wrong!';
-    // return { authenticated: true };
-    return user[0];
+  async get(id) {
+    checkProperString(id, "User ID");
+    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
+    let ID = ObjectId(id);
+    const userCollection = await users();
+
+    const user = await userCollection.findOne({ _id: ID });
+    if (user === null) {
+      throw "Error: No user with that id";
+    }
+    user._id = user._id.toString();
+    return user;
   },
 
-  // async get(id) {
-  //   checkProperString(id, "User ID");
-  //   if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
-  //   let ID = ObjectId(id);
-  //   const userCollection = await users();
+  async getAll() {
+    const userCollection = await users();
 
-  //   const user = await userCollection.findOne({ _id: ID });
-  //   if (user === null) {
-  //     throw "Error: No user with that id";
-  //   }
-  //   user._id = user._id.toString();
-  //   return user;
-  // },
+    const userList = await userCollection.find({}).toArray();
+    const rstList = [];
+    userList.forEach(item => {
+      let obj = {};
+      obj._id = item._id.toString();
+      obj.name = item.name;
+      rstList.push(obj);
+    });
+
+    return rstList;
+  },
+
+  async remove(id) {
+    checkProperString(id, "User ID");
+    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
+    let ID = ObjectId(id);
+
+    const userCollection = await users();
+
+    const deletionInfo = await userCollection.deleteOne({ _id: ID });
+
+    if (deletionInfo.deletedCount === 0) {
+      throw `Error: Could not delete user with id of ${ID}`;
+    }
+    return { userId: id, deleted: true };
+  },
 
   async update(
+    id,
+    name,
+    postedBy,
+    time,
+    ingredients,
+    mealType,
+    cuisine,
+    method
   ) {
+    checkProperString(name, "Name");
+    checkProperString(postedBy, "User");
+    checkProperArray(ingredients, "Ingredients");
+    ingredients.forEach(element => {
+      checkProperString(element, "Individual ingredient");
+    });
+
+    checkProperString(mealType, "Meal Type");
+    checkProperString(cuisine, "Cuisine");
+
+    checkProperArray(method);
+    method.forEach(element => {
+      checkProperString(element, "Individual Step");
+    });
+
+    checkProperObject(postedBy);
+
+    const user = await this.get(id);
+    let ID = ObjectId(id);
+
+    let updatedUser = {
+      name: name,
+      postedBy: postedBy,
+      time: time,
+      ingredients: ingredients,
+      mealType: mealType,
+      cuisine: cuisine,
+      overallRating: user.overallRating,
+      method: method,
+      reviews: user.reviews,
+    };
+
+    const userCollection = await users();
+    const updateInfo = await userCollection.updateOne(
+      { _id: ID },
+      { $set: updatedUser }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Update failed";
+    const usern = await this.get(id);
+
+    return usern;
+  },
+
+  async modifyingRatings(userId) {
+    if (!ObjectId.isValid(userId)) throw "Error: Not a valid ObjectId";
+    let ID = ObjectId(userId);
+    let currentUser = await this.get(userId);
+    let newRating = currentUser.overallRating;
+    const len = currentUser.reviews.length;
+    if (len == 0) {
+      newRating = 0;
+    } else {
+      let currentUser = await this.get(userId);
+      const reviewsarray = currentUser.reviews;
+      let sumRating = reviewsarray
+        .map(s => s.rating)
+        .reduce((a, b) => a + b, 0);
+      newRating = sumRating / len;
+    }
+    const userCollection = await users();
+    const updateInfo = await userCollection.updateOne(
+      { _id: ID },
+      { $set: { overallRating: newRating } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Update failed at modifying rating of the user";
+
+    return await this.get(userId);
+  },
+
+  async addReviewToUser(userId, reviewId, reviewobj) {
+    if (!ObjectId.isValid(userId)) throw "Error: Not a valid ObjectId";
+    let ID = ObjectId(userId);
+
+    if (!ObjectId.isValid(reviewId)) throw "Error: Not a valid ObjectId";
+    let reviewID = ObjectId(reviewId);
+
+    let currentUser = await this.get(userId);
+    const userCollection = await users();
+    const updateInfo = await userCollection.updateOne(
+      { _id: ID },
+      {
+        $push: {
+          reviews: {
+            _id: reviewID,
+            title: reviewobj.title,
+            reviewer: reviewobj.reviewer,
+            rating: reviewobj.rating,
+            dateOfReview: reviewobj.dateOfReview,
+            review: reviewobj.review,
+          },
+        },
+      }
+    );
+
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Update failed at adding review to user";
+
+    return await this.get(userId);
+  },
+
+  async removeReviewFromUser(userId, reviewId) {
+    if (!ObjectId.isValid(userId)) throw "Error: Not a valid ObjectId";
+    let ID = ObjectId(userId);
+
+    if (!ObjectId.isValid(reviewId)) throw "Error: Not a valid ObjectId";
+    let reviewID = ObjectId(reviewId);
+
+    let currentUser = await this.get(userId);
+
+    const userCollection = await users();
+    const updateInfo = await userCollection.updateOne(
+      { _id: ID },
+      { $pull: { reviews: { _id: reviewID } } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Error: Update failed while removing review from user";
+
+    return await this.get(userId);
   },
 };
 
