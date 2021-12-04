@@ -7,6 +7,9 @@ const ingredients = mongoCollections.ingredients;
 const recipes = mongoCollections.recipes;
 const reviews = mongoCollections.reviews;
 const comments = mongoCollections.comments;
+const data = require("../data");
+const restaurants = data.restaurants;
+const reviews = data.reviews;
 
 
 const main = async () => {
@@ -30,7 +33,16 @@ const main = async () => {
     }
     console.log('Done seeding ' + dbConnection.env + ' database');
     dbConnection.closeConnection();
+    await db.serverConfig.close();
   }
-};
+// };
 
-main().catch(console.log);
+  // main().catch(console.log);
+  // console.log("Done seeding database");
+
+  
+}
+
+main().catch((error) => {
+  console.log(error);
+});

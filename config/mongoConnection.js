@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 const MongoClient = require("mongodb").MongoClient;
-var env = process.env.NODE_ENV || 'development';
-const config = require('./config')[env];
+var env = process.env.NODE_ENV || "development";
+const config = require("./config")[env];
 const mongoConfig = config;
 
 // const settings = {
@@ -31,5 +31,5 @@ module.exports = {
   closeConnection: () => {
     _connection.close();
   },
-  env
+  env,
 };

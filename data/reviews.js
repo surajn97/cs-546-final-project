@@ -1,9 +1,10 @@
 const mongoCollections = require("../config/mongoCollections");
-const recipeFunctions = require("./recipes.js");
-const recipes = mongoCollections.recipes;
+const restaurantFunctions = require("./recipes.js");
+const restaurants = mongoCollections.restaurants;
 const reviews = mongoCollections.reviews;
 const util = require("./util");
 let { ObjectId } = require("mongodb");
+const helper = require("./helper");
 
 module.exports = {
   async create(recipeId, rating, reviewText, userId) {
@@ -34,7 +35,7 @@ module.exports = {
       dislikes: [],
       comments: [],
       userId: userId,
-      dateOfReview: new Date()
+      dateOfReview: new Date(),
     };
 
     const insertInfo = await reviewCollection.insertOne(newReview);
@@ -43,8 +44,12 @@ module.exports = {
     const newId = insertInfo.insertedId.toString();
 
     const reviewobj = await this.get(newId);
-    await recipeFunctions.addReviewToRecipe(recipeId, newId, reviewobj);
-    const modRest = await recipeFunctions.modifyingRatings(recipeId);
+    await restaurantFunctions.addReviewToRestaurant(
+      restaurantId,
+      newId,
+      reviewobj
+    );
+    const modRest = await restaurantFunctions.modifyingRatings(restaurantId);
     return modRest;
   },
 
@@ -124,7 +129,7 @@ module.exports = {
             _id: commentID,
             userId: commentobj.userId,
             comment: commentobj.comment,
-            dateOfComment: commentobj.dateOfComment
+            dateOfComment: commentobj.dateOfComment,
           },
         },
       }
@@ -157,5 +162,5 @@ module.exports = {
       throw "Error: Update failed while removing comment from review";
 
     return await get(reviewId);
-  }
+  },
 };

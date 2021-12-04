@@ -1,24 +1,94 @@
 const mongoCollections = require("../config/mongoCollections");
 const ingredients = mongoCollections.ingredients;
 let { ObjectId } = require("mongodb");
-// const { users } = require(".");
+const helper = require("./helper");
+
+function convertIngredientsToCategories(ingredientList) {
+  const categories = [...new Set(ingredientList.map((item) => item.category))];
+  let categorizedIngredients = {};
+  for (const category of categories) {
+    categorizedIngredients[category] = ingredientList
+      .filter((x) => x.category === category)
+      .map((y) => ({ name: y.name, id: y._id.toString() }));
+  }
+  return categorizedIngredients;
+}
 
 module.exports = {
-  async create(name) {
-    checkProperString(name, "Name");
+  async create(name, category, protien, carb, fat) {
+    helper.checkProperString(name, "Ingredient Name");
+    helper.checkProperString(category, "Ingredient Category");
+    helper.checkProperNumber(protien, "Protien");
+    helper.checkProperNumber(carb, "Carbs");
+    helper.checkProperNumber(fat, "Fats");
+    if (protien < 0 || carb < 0 || fat < 0)
+      throw "Nutritional info cannot be negative";
     const ingredientCollection = await ingredients();
     let newIngredient = {
       name: name,
+      category: category,
+      protien: protien,
+      carb: carb,
+      fat: fat,
+      userGenerated: false,
     };
     const insertInfo = await ingredientCollection.insertOne(newIngredient);
-    if (insertInfo.insertedCount === 0) throw "Could not create a Ingredient";
+    if (insertInfo.insertedCount === 0)
+      throw `Could not create the Ingredient ${name}`;
     const newId = insertInfo.insertedId.toString();
     const ingredient = await this.get(newId);
     return ingredient;
   },
 
+  async createByUser(name, category) {
+    helper.checkProperString(name, "Ingredient Name");
+    helper.checkProperString(category, "Ingredient Category");
+    const ingredientCollection = await ingredients();
+    let newIngredient = {
+      name: name,
+      category: category,
+      protien: 0,
+      carb: 0,
+      fat: 0,
+      userGenerated: true,
+    };
+    const insertInfo = await ingredientCollection.insertOne(newIngredient);
+    if (insertInfo.insertedCount === 0)
+      throw `Could not create the Ingredient ${name}`;
+    const newId = insertInfo.insertedId.toString();
+    const ingredient = await this.get(newId);
+    return ingredient;
+  },
+
+  async checkIfIngredientExists(name, category) {
+    helper.checkProperString(name, "Ingredient Name");
+    helper.checkProperString(category, "Ingredient Category");
+    const ingredientCollection = await ingredients();
+    const result = await ingredientCollection
+      .find({
+        name: { $regex: name, $options: "i" },
+        category: category,
+      })
+      .toArray();
+    return {
+      exists: result.length == 0,
+      matches: result,
+    };
+  },
+
+  async searchIngredient(name) {
+    helper.checkProperString(name, "Ingredient Name");
+    const ingredientCollection = await ingredients();
+    const result = await ingredientCollection
+      .find({
+        name: { $regex: name, $options: "i" },
+      })
+      .toArray();
+    return convertIngredientsToCategories(result);
+  },
+
   async get(id) {
-    checkProperString(id, "Ingredient ID");
+    helper.checkProperString(id, "Ingredient ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
     const ingredientCollection = await ingredients();
@@ -33,24 +103,12 @@ module.exports = {
 
   async getAll(search_term) {
     const ingredientCollection = await ingredients();
-    let ingredientList = [];
-    if(search_term)
-      ingredientList = await ingredientCollection.find({"name": new RegExp('^' + search_term, 'i')}).toArray();
-    else
-      ingredientList = await ingredientCollection.find({}).toArray();
-
-    const ingList = [];
-    ingredientList.forEach(item => {
-      let obj = {};
-      obj._id = item._id.toString();
-      obj.name = item.name;
-      ingList.push(obj);
-    });
-    return ingList;
+    const ingredientList = await ingredientCollection.find({}).toArray();
+    return convertIngredientsToCategories(ingredientList);
   },
 
   async remove(id) {
-    checkProperString(id, "Ingredient ID");
+    helper.checkProperString(id, "Ingredient ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
 
@@ -65,7 +123,7 @@ module.exports = {
   },
 
   async update(id, name) {
-    checkProperString(name, "Name");
+    helper.checkProperString(name, "Name");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
 
     const ingredient = await this.get(id);
@@ -98,44 +156,4 @@ module.exports = {
   async removeNuValue(ingredientId, reviewId) {
     //remove nuValue
   },
-};
-
-//Helper Functions
-const checkProperString = (string, parameter) => {
-  if (string == null || typeof string == undefined)
-    throw `Error: Please pass a ${parameter}`;
-  if (typeof string != "string") {
-    throw `Error: ${parameter} Not a string`;
-  }
-  string = string.trim();
-  if (string.length == 0) {
-    throw `Error: ${parameter} Empty string`;
-  }
-};
-
-const isValidURL = string => {
-  if (string.startsWith("http://www.") || string.startsWith("https://www.")) {
-    if (/.([./])com$/.test(string)) {
-      if (string.length < 20)
-        throw "Error:  At least 5 characters in-between the http://www. and .com required ";
-    }
-  } else {
-    throw "Error: Not valid Website";
-  }
-};
-
-const checkProperArray = array => {
-  if (!array) throw "Error: No parameter supplied. Please pass an array";
-  if (!Array.isArray(array))
-    throw `Error: Parameter passed, "${array}" is not an array.It is "${typeof array}". Please pass an array instead`;
-  if (array.length == 0) throw "Cannot pass an empty array";
-};
-
-const checkProperObject = (object, checklength) => {
-  if (!object) throw "Error: Please pass the object";
-  if (!(object.constructor === Object)) {
-    throw "Error: Parameter passed should be an object";
-  }
-  if (checklength && Object.keys(object).length === 0)
-    throw "Error: Pass atleast 1 value in the object";
 };
