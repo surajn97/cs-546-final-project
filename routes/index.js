@@ -5,10 +5,14 @@ const ingredientRoutes = require("./ingredients");
 const restaurantRoutes = require("./recipes");
 const reviewRoutes = require("./reviews");
 const commentRoutes = require("./comments");
+const privateRoutes = require('./private');
+
 
 const constructorMethod = (app) => {
   app.use("/reviews", reviewRoutes);
-  // app.use("/users", userRoutes);
+  app.use("/users", userRoutes);
+  app.use('/private', privateRoutes);
+
   // app.use("/comments", commentRoutes);
   app.use("/ingredients", ingredientRoutes);
   app.use("/", (req, res) => {
