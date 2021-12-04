@@ -7,37 +7,36 @@ module.exports = {
   async create(
     name,
     postedBy,
-    time,
+    cookingTime,
     ingredients,
     mealType,
     cuisine,
-    instructions
+    instructions,
+    servings
   ) {
     helper.checkProperString(name, "Name");
     helper.checkProperString(postedBy, "User");
+    helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach((element) => {
+    ingredients.forEach(element => {
       helper.checkProperString(element, "Individual ingredient");
-    });
-
+    }); //************* Store Ing ID or Name??? */
     helper.checkProperString(mealType, "Meal Type");
     helper.checkProperString(cuisine, "Cuisine");
-
     helper.checkProperString(instructions);
-
-    helper.checkProperObject(postedBy);
-
+    helper.checkProperNumber(servings, "Servings");
     const recipeCollection = await recipes();
     let newRecipe = {
       name: name,
       postedBy: postedBy,
-      time: time,
+      cookingTime: cookingTime,
       ingredients: ingredients,
       mealType: mealType,
       cuisine: cuisine,
       overallRating: 0,
       instructions: instructions,
       reviews: [],
+      servings: servings,
     };
 
     const insertInfo = await recipeCollection.insertOne(newRecipe);
@@ -67,7 +66,7 @@ module.exports = {
 
     const recipeList = await recipeCollection.find({}).toArray();
     const rstList = [];
-    recipeList.forEach((item) => {
+    recipeList.forEach(item => {
       let obj = {};
       obj._id = item._id.toString();
       obj.name = item.name;
@@ -95,43 +94,40 @@ module.exports = {
   async update(
     id,
     name,
-    postedBy,
-    time,
+    cookingTime,
     ingredients,
     mealType,
     cuisine,
-    instructions
+    instructions,
+    servings
   ) {
     helper.checkProperString(name, "Name");
-    helper.checkProperString(postedBy, "User");
+    helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach((element) => {
+    ingredients.forEach(element => {
       helper.checkProperString(element, "Individual ingredient");
-    });
-
+    }); //************* Store Ing ID or Name??? */
     helper.checkProperString(mealType, "Meal Type");
     helper.checkProperString(cuisine, "Cuisine");
+    helper.checkProperString(instructions);
+    helper.checkProperNumber(servings, "Servings");
+    helper.checkProperString(id, "Recipe ID");
+    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
 
-    helper.checkProperArray(instructions);
-    instructions.forEach((element) => {
-      helper.checkProperString(element, "Individual Step");
-    });
-
-    helper.checkProperObject(postedBy);
-
-    const recipe = await this.get(id);
     let ID = ObjectId(id);
+    const recipe = await this.get(id);
 
     let updatedRecipe = {
       name: name,
-      postedBy: postedBy,
-      time: time,
+      postedBy: recipe.postedBy,
+      cookingTime: cookingTime,
       ingredients: ingredients,
       mealType: mealType,
       cuisine: cuisine,
       overallRating: recipe.overallRating,
       instructions: instructions,
       reviews: recipe.reviews,
+      servings: servings,
     };
 
     const recipeCollection = await recipes();
@@ -147,6 +143,7 @@ module.exports = {
   },
 
   async modifyingRatings(recipeId) {
+    helper.checkProperString(recipeId);
     if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(recipeId);
     let currentRecipe = await this.get(recipeId);
@@ -158,7 +155,7 @@ module.exports = {
       let currentRecipe = await this.get(recipeId);
       const reviewsarray = currentRecipe.reviews;
       let sumRating = reviewsarray
-        .map((s) => s.rating)
+        .map(s => s.rating)
         .reduce((a, b) => a + b, 0);
       newRating = sumRating / len;
     }
