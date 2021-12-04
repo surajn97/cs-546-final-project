@@ -65,6 +65,8 @@ router.post('/signup', async (req, res) => {
         if (!re.test(String(email).toLowerCase())) throw 'error 400, You must provide a valid email.';
         if (typeof age !== 'number' || age <= 0) throw 'error 400, You must provide a positive number in age.';
         //
+        console.log('create in routes');
+
         var result = await users.createUser(username, password, firstname, lastname, email, age);
         req.session.user = result;
         res.redirect("/private");
@@ -74,7 +76,7 @@ router.post('/signup', async (req, res) => {
     // console.log(typeof result);
     // console.log(result);
 
-    // // if (result) {
+    // if (result) {
     // res.redirect('/');
     // } else {
     //   res.status(500).json({ error: 'Internal Server Error' });
