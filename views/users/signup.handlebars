@@ -11,7 +11,7 @@
     {{#if error}}
     <p class="error">{{error}}</p>
     {{/if}}
-    <form action="/signup" method="POST" id="signup-form" >
+    <form action="/users/signup" method="POST" id="signup-form" >
       <label for="username" >username: </label>
       <input type="text" id="username" name="username" value="{{username}}">
       <br>
@@ -36,5 +36,5 @@
   </main>
   <br>
   <p>Already have an account? Click here to log-in</p>
-   <a href="/login">Log In</a>
+   <a href="/users/login">Log In</a>
 </body>
