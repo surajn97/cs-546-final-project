@@ -2,12 +2,16 @@ const express = require("express");
 const router = express.Router();
 // const restaurantRoutes = require("./recipes");
 // const reviewRoutes = require("./reviews");
-const userRoutes = require("./users");
 const ingredientRoutes = require("./ingredients");
+const userRoutes = require("./users");
+const privateRoutes = require('./private');
+
 
 const constructorMethod = (app) => {
   app.use("/", userRoutes);
   app.use("/ingredients", ingredientRoutes);
+  app.use('/private', privateRoutes);
+
   // router.get("/", async (req, res) => {
   //   try {
   //     res.render("layouts/main", {

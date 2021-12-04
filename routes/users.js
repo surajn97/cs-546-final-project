@@ -36,7 +36,7 @@ router.get('/signup', async (req, res) => {
     if (req.session.user) {
         res.redirect('/private');
     } else {
-        res.render('posts/signup');
+        res.render('users/signup');
     }
 });
 
@@ -67,20 +67,32 @@ router.post('/signup', async (req, res) => {
         //
         var result = await users.createUser(username, password, firstname, lastname, email, age);
         req.session.user = result;
-        res.redirect("/");
+        res.redirect("/private");
     } catch (e) {
-        res.status(400).render('posts/signup', { error: e });
+        res.status(400).render('users/signup', { error: e });
     }
-    console.log(typeof result);
-    console.log(result);
+    // console.log(typeof result);
+    // console.log(result);
 
-    // if (result) {
-    res.redirect('/');
+    // // if (result) {
+    // res.redirect('/');
     // } else {
     //   res.status(500).json({ error: 'Internal Server Error' });
     // }
 });
 
+// Get login page
+router.get('/login', async (req, res) => {
+    if (req.session.user) {
+        res.redirect('/private');
+    } else {
+        res.render('users/login', {
+            // title: 'Log In',
+            // authenticated: false,
+            // partial: 'login-script'
+        });
+    }
+});
 
 router.post('/login', async (req, res) => {
     const username = xss(req.body.username.toLowerCase());
@@ -95,7 +107,7 @@ router.post('/login', async (req, res) => {
 
         var result = await users.checkUser(username, password);
     } catch (e) {
-        res.status(400).render('posts/login', { error: e });
+        res.status(400).render('users/login', { error: e });
     }
 
     if (typeof result != 'undefined') {
@@ -105,14 +117,14 @@ router.post('/login', async (req, res) => {
         res.redirect('/private');
 
     } else {
-        res.status(400).render('posts/login', { error: "You did not provide a valid username or password" });
+        res.status(400).render('users/login', { error: "You did not provide a valid username or password" });
     }
 
 });
 
 router.get('/logout', async (req, res) => {
     req.session.destroy();
-    res.render('posts/logout');
+    res.render('users/logout');
 });
 
 module.exports = router;

@@ -4,20 +4,29 @@ const router = express.Router();
 
 
 router.get('/', async (req, res) => {
-  const userData = req.session.user;
-  console.log(userData)
+  if (req.session.user) {
+    const userData = req.session.user;
+    console.log("userData")
+    console.log(userData)
+    console.log("userData")
 
 
-  res.render('posts/private', {
-    username: req.session.user.username,
-    firstname: userData.firstname,
-    lastname: userData.lastname,
-    email: userData.email,
-    age: userData.age
+    res.render('users/private', {
+      username: req.session.user.username,
+      firstname: userData.firstname,
+      lastname: userData.lastname,
+      email: userData.email,
+      age: userData.age
 
 
 
-  });
+    });
+  } else {
+    res.redirect('/login');
+
+  }
+
+
 });
 
 module.exports = router;
