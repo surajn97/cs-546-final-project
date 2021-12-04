@@ -3,16 +3,34 @@ const ingredients = mongoCollections.ingredients;
 let { ObjectId } = require("mongodb");
 const helper = require("./helper");
 
+function convertIngredientsToCategories(ingredientList) {
+  const categories = [...new Set(ingredientList.map((item) => item.category))];
+  let categorizedIngredients = {};
+  for (const category of categories) {
+    categorizedIngredients[category] = ingredientList
+      .filter((x) => x.category === category)
+      .map((y) => ({ name: y.name, id: y._id.toString() }));
+  }
+  return categorizedIngredients;
+}
+
 module.exports = {
-  async create(name, categories) {
+  async create(name, category, protien, carb, fat) {
     helper.checkProperString(name, "Ingredient Name");
-    helper.checkProperArray(categories, "Ingredient Categories");
-    if (!categories.every((i) => typeof i === "string"))
-      throw "Categories can only contain Strings";
+    helper.checkProperString(category, "Ingredient Category");
+    helper.checkProperNumber(protien, "Protien");
+    helper.checkProperNumber(carb, "Carbs");
+    helper.checkProperNumber(fat, "Fats");
+    if (protien < 0 || carb < 0 || fat < 0)
+      throw "Nutritional info cannot be negative";
     const ingredientCollection = await ingredients();
     let newIngredient = {
       name: name,
-      categories: categories,
+      category: category,
+      protien: protien,
+      carb: carb,
+      fat: fat,
+      userGenerated: false,
     };
     const insertInfo = await ingredientCollection.insertOne(newIngredient);
     if (insertInfo.insertedCount === 0)
@@ -20,6 +38,53 @@ module.exports = {
     const newId = insertInfo.insertedId.toString();
     const ingredient = await this.get(newId);
     return ingredient;
+  },
+
+  async createByUser(name, category) {
+    helper.checkProperString(name, "Ingredient Name");
+    helper.checkProperString(category, "Ingredient Category");
+    const ingredientCollection = await ingredients();
+    let newIngredient = {
+      name: name,
+      category: category,
+      protien: 0,
+      carb: 0,
+      fat: 0,
+      userGenerated: true,
+    };
+    const insertInfo = await ingredientCollection.insertOne(newIngredient);
+    if (insertInfo.insertedCount === 0)
+      throw `Could not create the Ingredient ${name}`;
+    const newId = insertInfo.insertedId.toString();
+    const ingredient = await this.get(newId);
+    return ingredient;
+  },
+
+  async checkIfIngredientExists(name, category) {
+    helper.checkProperString(name, "Ingredient Name");
+    helper.checkProperString(category, "Ingredient Category");
+    const ingredientCollection = await ingredients();
+    const result = await ingredientCollection
+      .find({
+        name: { $regex: name, $options: "i" },
+        category: category,
+      })
+      .toArray();
+    return {
+      exists: result.length == 0,
+      matches: result,
+    };
+  },
+
+  async searchIngredient(name) {
+    helper.checkProperString(name, "Ingredient Name");
+    const ingredientCollection = await ingredients();
+    const result = await ingredientCollection
+      .find({
+        name: { $regex: name, $options: "i" },
+      })
+      .toArray();
+    return convertIngredientsToCategories(result);
   },
 
   async get(id) {
@@ -38,21 +103,8 @@ module.exports = {
 
   async getAll(search_term) {
     const ingredientCollection = await ingredients();
-    let ingredientList = [];
-    if (search_term)
-      ingredientList = await ingredientCollection
-        .find({ name: new RegExp("^" + search_term, "i") })
-        .toArray();
-    else ingredientList = await ingredientCollection.find({}).toArray();
-
-    const ingList = [];
-    ingredientList.forEach((item) => {
-      let obj = {};
-      obj._id = item._id.toString();
-      obj.name = item.name;
-      ingList.push(obj);
-    });
-    return ingList;
+    const ingredientList = await ingredientCollection.find({}).toArray();
+    return convertIngredientsToCategories(ingredientList);
   },
 
   async remove(id) {

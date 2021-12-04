@@ -21,98 +21,34 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.post("/ingredient-search", async (req, res) => {
+  const searchText = req.body.ingredientSearchText;
   try {
-    let recipeList = await ingredientsData.getAll();
-    res.json(recipeList);
-
-    return;
+    helper.checkProperString(searchText, "Ingredient Search");
+    const result = await ingredientsData.searchIngredient(searchText);
+    res.render("ingredients", {
+      categorizedIngredients: result,
+    });
   } catch (e) {
-    res.status(500).json({ error: e });
-
-    return;
+    res.status(400).json({ error: e });
   }
 });
 
-router.post("/", async (req, res) => {
-  let recipeInfo = req.body;
+router.post("/selected", async (req, res) => {
+  console.log(req.body);
+});
 
-  if (!recipeInfo) {
-    res.status(400).json({ error: "You must provide data to create a recipe" });
-
-    return;
-  }
-  if (!recipeInfo.name) {
-    res.status(400).json({ error: "You must provide a name" });
-
-    return;
-  }
-  if (!recipeInfo.location) {
-    res.status(400).json({ error: "You must provide a location" });
-
-    return;
-  }
-  if (!recipeInfo.phoneNumber) {
-    res.status(400).json({ error: "You must provide a phone Number" });
-
-    return;
-  }
-  if (!recipeInfo.website) {
-    res.status(400).json({ error: "You must provide a website" });
-
-    return;
-  }
-  if (!recipeInfo.priceRange) {
-    res.status(400).json({ error: "You must provide a price Range" });
-
-    return;
-  }
-  if (!recipeInfo.cuisines) {
-    res.status(400).json({ error: "You must provide a Cuisines" });
-
-    return;
-  }
-  if (!recipeInfo.serviceOptions) {
-    res.status(400).json({ error: "You must provide a service options" });
-
-    return;
-  }
-  if (recipeInfo.serviceOptions.dineIn == null) {
-    res
-      .status(400)
-      .json({ error: "You must provide a service options dineIn" });
-
-    return;
-  }
-  if (recipeInfo.serviceOptions.takeOut == null) {
-    res
-      .status(400)
-      .json({ error: "You must provide a service options takeOut" });
-
-    return;
-  }
-  if (recipeInfo.serviceOptions.delivery == null) {
-    res
-      .status(400)
-      .json({ error: "You must provide a service options delivery" });
-    return;
-  }
-
+router.get("/", async (req, res) => {
   try {
-    const newRecipe = await ingredientsData.create(
-      recipeInfo.name,
-      recipeInfo.location,
-      recipeInfo.phoneNumber,
-      recipeInfo.website,
-      recipeInfo.priceRange,
-      recipeInfo.cuisines,
-      recipeInfo.serviceOptions
-    );
-    res.json(newRecipe);
+    const categorizedIngredients = await ingredientsData.getAll();
+    res.render("ingredients", {
+      categorizedIngredients: categorizedIngredients,
+    });
 
     return;
   } catch (e) {
     res.status(500).json({ error: e });
+
     return;
   }
 });
