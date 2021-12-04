@@ -1,0 +1,40 @@
+<head>
+  <meta charset="utf-8">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="/public/css/main.css">
+</head>
+
+<body>
+  <h1>Sign Up</h1>
+  <main >
+    <p>enter the username and password to sign up:</p>
+    {{#if error}}
+    <p class="error">{{error}}</p>
+    {{/if}}
+    <form action="/users/signup" method="POST" id="signup-form" >
+      <label for="username" >username: </label>
+      <input type="text" id="username" name="username" value="{{username}}">
+      <br>
+      <label for="password" >password: </label>
+      <input type="password" id="password" name="password" value="{{password}}">
+      <br>
+      <label for="firstname" >firstname: </label>
+      <input type="text" id="firstname" name="firstname" value="{{firstname}}">
+      <br>
+      <label for="lastname" >lastname: </label>
+      <input type="text" id="lastname" name="lastname" value="{{lastname}}">
+      <br>
+      <label for="email" >email: </label>
+      <input type="email" id="email" name="email" value="{{email}}">
+      <br>
+      <label for="age" >age: </label>
+      <input type="number" id="age" name="age" value="{{age}}">
+      <br>     
+
+      <button type="submit" id="signup">Sign Up</button>
+    </form>
+  </main>
+  <br>
+  <p>Already have an account? Click here to log-in</p>
+   <a href="/users/login">Log In</a>
+</body>

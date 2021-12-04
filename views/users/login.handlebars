@@ -1,0 +1,27 @@
+<head>
+  <meta charset="utf-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="/public/css/main.css">
+</head>
+
+<body>
+  <h1>Login</h1>
+    <main>
+    <p>enter the username and password to login:</p>
+    {{#if error}}
+    <p class="error">{{error}}</p>
+    {{/if}}
+    <form action="/users/login" method="POST" id="login-form">
+      <label for="username">username: </label>
+      <input type="text" id="username" name="username" value="{{username}}">
+      <br>
+      <label for="password" >password: </label>
+      <input type="password" id="password" name="password" value="{{password}}">
+      <br>
+      <button type="submit" id="login">Login</button>
+    </form>
+  </main>
+  <br>
+  <p>Need to register? Click here to sign-up</p>
+  <a href="/users/signup">SignUp</a>
+</body>
