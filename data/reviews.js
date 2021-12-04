@@ -2,15 +2,14 @@ const mongoCollections = require("../config/mongoCollections");
 const restaurantFunctions = require("./recipes.js");
 const restaurants = mongoCollections.restaurants;
 const reviews = mongoCollections.reviews;
-const util = require("./util");
 let { ObjectId } = require("mongodb");
 const helper = require("./helper");
 
 module.exports = {
   async create(recipeId, rating, reviewText, userId) {
-    util.checkProperString(recipeId, "Recipe ID");
-    util.checkProperString(reviewText, "Review Text");
-    util.checkProperString(userId, "User Id");
+    helper.checkProperString(recipeId, "Recipe ID");
+    helper.checkProperString(reviewText, "Review Text");
+    helper.checkProperString(userId, "User Id");
 
     if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";
     // let ID = ObjectId(recipeId);
@@ -20,11 +19,11 @@ module.exports = {
       throw "Error: No recipe with that id";
     }
 
-    util.checkProperNumber(rating, "Rating");
+    helper.checkProperNumber(rating, "Rating");
     if (rating < 1 || rating > 5)
       throw "Error: Rating value must be between 1 to 5";
 
-    // util.checkProperDate(dateOfReview);
+    // helper.checkProperDate(dateOfReview);
 
     const reviewCollection = await reviews();
     let newReview = {
@@ -54,7 +53,7 @@ module.exports = {
   },
 
   async getAll(recipeId) {
-    util.checkProperString(recipeId, "Recipe ID");
+    helper.checkProperString(recipeId, "Recipe ID");
     if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";
     // let ID = ObjectId(recipeId);
 
@@ -67,7 +66,7 @@ module.exports = {
   },
 
   async get(id) {
-    util.checkProperString(id, "Review ID");
+    helper.checkProperString(id, "Review ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
     const reviewCollection = await reviews();
@@ -81,7 +80,7 @@ module.exports = {
   },
 
   async remove(id) {
-    util.checkProperString(id, "Review ID");
+    helper.checkProperString(id, "Review ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
 

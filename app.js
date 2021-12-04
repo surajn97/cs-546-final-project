@@ -8,8 +8,6 @@ const exphandlebars = require("express-handlebars");
 const session = require("express-session");
 const port = process.env.PORT || 3000;
 const { engine } = require("express-handlebars");
-const configRoutes = require("./routes");
-const static = express.static(__dirname + "/public");
 
 app.use("/public", static);
 app.use(express.json());
@@ -18,7 +16,6 @@ app.use(
     extended: true,
   })
 );
-app.use("/public", static);
 
 app.use(
   session({
