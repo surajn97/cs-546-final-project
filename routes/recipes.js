@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const recipeData = data.recipes;
+const ingredientsData = data.ingredients;
 const helper = data.helper;
 
 router.get("/:id", async (req, res) => {
@@ -23,9 +24,13 @@ router.get("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    let recipeList = await recipeData.getAll();
-    res.json(recipeList);
-
+    // const recipeList = await recipeData.getAll();
+    const categorizedIngredients = await ingredientsData.getAll();
+    res.render("recipes", {
+      // recipeList: recipeList,
+      categorizedIngredients: categorizedIngredients,
+      recipes_page: true,
+    });
     return;
   } catch (e) {
     res.status(500).json({ error: e });
@@ -36,80 +41,46 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   let recipeInfo = req.body;
-
   if (!recipeInfo) {
-    res.status(400).json({ error: "You must provide data to create a recipe" });
-
+    e = "You must provide data to update a recipe";
+    res.status(400).json({ error: e });
     return;
   }
-  if (!recipeInfo.name) {
-    res.status(400).json({ error: "You must provide a name" });
 
-    return;
-  }
-  if (!recipeInfo.location) {
-    res.status(400).json({ error: "You must provide a location" });
-
-    return;
-  }
-  if (!recipeInfo.phoneNumber) {
-    res.status(400).json({ error: "You must provide a phone Number" });
-
-    return;
-  }
-  if (!recipeInfo.website) {
-    res.status(400).json({ error: "You must provide a website" });
-
-    return;
-  }
-  if (!recipeInfo.priceRange) {
-    res.status(400).json({ error: "You must provide a price Range" });
-
-    return;
-  }
-  if (!recipeInfo.cuisines) {
-    res.status(400).json({ error: "You must provide a Cuisines" });
-
-    return;
-  }
-  if (!recipeInfo.serviceOptions) {
-    res.status(400).json({ error: "You must provide a service options" });
-
-    return;
-  }
-  if (recipeInfo.serviceOptions.dineIn == null) {
-    res
-      .status(400)
-      .json({ error: "You must provide a service options dineIn" });
-
-    return;
-  }
-  if (recipeInfo.serviceOptions.takeOut == null) {
-    res
-      .status(400)
-      .json({ error: "You must provide a service options takeOut" });
-
-    return;
-  }
-  if (recipeInfo.serviceOptions.delivery == null) {
-    res
-      .status(400)
-      .json({ error: "You must provide a service options delivery" });
+  const ctime = parseInt(recipeInfo.cookingTime);
+  const serv = parseInt(recipeInfo.servings);
+  let ingarray = [];
+  const ing = `${recipeInfo.ingredients}`;
+  try {
+    helper.checkProperString(ing, "Individual ingredient String");
+    ingarray = ing.split(",");
+    helper.checkProperString(recipeInfo.name, "Name");
+    helper.checkProperNumber(ctime, "Cooking Time");
+    helper.checkProperArray(ingarray, "Ingredients");
+    ingarray.forEach(element => {
+      helper.checkProperString(element, "Individual ingredient");
+    });
+    helper.checkProperString(recipeInfo.mealType, "Meal Type");
+    helper.checkProperString(recipeInfo.cuisine, "Cuisine");
+    helper.checkProperString(recipeInfo.instructions, "Instructions");
+    helper.checkProperNumber(serv, "Servings");
+  } catch (e) {
+    res.status(400).json({ error: e });
     return;
   }
 
   try {
     const newRecipe = await recipeData.create(
       recipeInfo.name,
-      recipeInfo.location,
-      recipeInfo.phoneNumber,
-      recipeInfo.website,
-      recipeInfo.priceRange,
-      recipeInfo.cuisines,
-      recipeInfo.serviceOptions
+      "7b7997a2-c0d2-4f8c-b27a-6a1d4b5b6310",
+      ctime,
+      ingarray,
+      recipeInfo.mealType,
+      recipeInfo.cuisine,
+      recipeInfo.instructions,
+      serv
     );
     res.json(newRecipe);
-
     return;
   } catch (e) {
     res.status(500).json({ error: e });
@@ -126,49 +97,24 @@ router.put("/:id", async (req, res) => {
   }
   const updatedData = req.body;
   if (!updatedData) {
-    res.status(400).json({ error: "You must provide data to update a recipe" });
-    return;
-  }
-  if (!updatedData.name) {
-    res.status(400).json({ error: "You must provide a name" });
-
-    return;
-  }
-  if (!updatedData.location) {
-    res.status(400).json({ error: "You must provide a location" });
-
-    return;
-  }
-  if (!updatedData.phoneNumber) {
-    res.status(400).json({ error: "You must provide a phone Number" });
-
-    return;
-  }
-  if (!updatedData.website) {
-    res.status(400).json({ error: "You must provide a website" });
-
-    return;
-  }
-  if (!updatedData.priceRange) {
-    res.status(400).json({ error: "You must provide a price Range" });
-
-    return;
-  }
-  if (!updatedData.cuisines) {
-    res.status(400).json({ error: "You must provide a Cuisines" });
-
-    return;
-  }
-  if (!updatedData.serviceOptions) {
-    res.status(400).json({ error: "You must provide a service options" });
-
+    e = "You must provide data to update a recipe";
+    res.status(400).json({ error: e });
     return;
   }
 
   try {
-    await recipeData.get(req.params.id);
+    helper.checkProperString(updatedData.name, "Name");
+    helper.checkProperNumber(updatedData.cookingTime, "Cooking Time");
+    helper.checkProperArray(updatedData.ingredients, "Ingredients");
+    updatedData.ingredients.forEach(element => {
+      helper.checkProperString(element, "Individual ingredient");
+    });
+    helper.checkProperString(updatedData.mealType, "Meal Type");
+    helper.checkProperString(updatedData.cuisine, "Cuisine");
+    helper.checkProperString(updatedData.instructions, "Instructions");
+    helper.checkProperNumber(updatedData.servings, "Servings");
   } catch (e) {
-    res.status(404).json({ error: e });
+    res.status(400).json({ error: e });
     return;
   }
 
@@ -176,17 +122,104 @@ router.put("/:id", async (req, res) => {
     const updatedRecipe = await recipeData.update(
       req.params.id,
       updatedData.name,
-      updatedData.location,
-      updatedData.phoneNumber,
-      updatedData.website,
-      updatedData.priceRange,
-      updatedData.cuisines,
-      updatedData.serviceOptions
+      updatedData.cookingTime,
+      updatedData.ingredients,
+      updatedData.mealType,
+      updatedData.cuisine,
+      updatedData.instructions,
+      updatedData.servings
     );
     res.json(updatedRecipe);
-  } catch (e) {
-    res.status(500).json({ error: e });
     return;
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
+});
+
+router.patch("/:id", async (req, res) => {
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
+  const updatedData = req.body;
+  let newUpdatedDataObj = {};
+  if (!updatedData) {
+    e = "You must provide data to update a recipe";
+    res.status(400).json({ error: e });
+    return;
+  }
+
+  try {
+    const oldRecipe = await recipeData.get(req.params.id);
+    if (updatedData.name && updatedData.name !== oldRecipe.name) {
+      helper.checkProperString(updatedData.name, "Name");
+      newUpdatedDataObj.name = updatedData.name;
+    }
+
+    if (
+      updatedData.cookingTime &&
+      updatedData.cookingTime !== oldRecipe.cookingTime
+    ) {
+      helper.checkProperNumber(updatedData.cookingTime, "Cooking Time");
+      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+    }
+
+    if (
+      updatedData.ingredients &&
+      updatedData.ingredients !== oldRecipe.ingredients
+    ) {
+      helper.checkProperArray(updatedData.ingredients, "Ingredients");
+      updatedData.ingredients.forEach(element => {
+        helper.checkProperString(element, "Individual ingredient");
+      });
+      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+    }
+
+    if (updatedData.mealType && updatedData.mealType !== oldRecipe.mealType) {
+      helper.checkProperString(updatedData.mealType, "Meal Type");
+      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+    }
+
+    if (updatedData.cuisine && updatedData.cuisine !== oldRecipe.cuisine) {
+      helper.checkProperString(updatedData.cuisine, "Cuisine");
+      newUpdatedDataObj.cuisine = updatedData.cuisine;
+    }
+
+    if (
+      updatedData.instructions &&
+      updatedData.instructions !== oldRecipe.instructions
+    ) {
+      helper.checkProperString(updatedData.instructions, "Instructions");
+      newUpdatedDataObj.instructions = updatedData.instructions;
+    }
+
+    if (updatedData.servings && updatedData.servings !== oldRecipe.servings) {
+      helper.checkProperNumber(updatedData.servings, "Servings");
+      newUpdatedDataObj.servings = updatedData.servings;
+    }
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
+
+  if (Object.keys(newUpdatedDataObj).length !== 0) {
+    try {
+      const newUpdatedData = await recipeData.patch(
+        req.params.id,
+        newUpdatedDataObj
+      );
+      res.json(newUpdatedData);
+    } catch (e) {
+      res.status(500).json({ error: e });
+    }
+  } else {
+    res.status(400).json({
+      error:
+        "No fields have been changed from their inital values, so no update has occurred",
+    });
   }
 });
 

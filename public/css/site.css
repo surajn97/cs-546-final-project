@@ -97,3 +97,19 @@ p {
   -o-user-select: text;
   user-select: text;
 }
+
+
+.stars {
+  vertical-align: middle;
+}
+
+span.stars, span.stars>* {
+  display: inline-block;
+  background: url(http://i.imgur.com/YsyS5y8.png) 0 -16px repeat-x;
+  width: 80px;
+  height: 18px;
+}
+span.stars>*{
+  max-width:80px;
+  background-position: 0 0;
+}
