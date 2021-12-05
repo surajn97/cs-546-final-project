@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const recipeData = data.recipes;
+const ingredientsData = data.ingredients;
 const helper = data.helper;
 
 router.get("/:id", async (req, res) => {
@@ -23,9 +24,13 @@ router.get("/:id", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    let recipeList = await recipeData.getAll();
-    res.json(recipeList);
-
+    // const recipeList = await recipeData.getAll();
+    const categorizedIngredients = await ingredientsData.getAll();
+    res.render("recipes", {
+      // recipeList: recipeList,
+      categorizedIngredients: categorizedIngredients,
+      recipes_page: true,
+    });
     return;
   } catch (e) {
     res.status(500).json({ error: e });

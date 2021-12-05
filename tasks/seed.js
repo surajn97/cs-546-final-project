@@ -31,7 +31,7 @@ const main = async () => {
     }
     console.log("Done seeding " + dbConnection.env + " database");
     dbConnection.closeConnection();
-    await db.serverConfig.close();
+    // await db.serverConfig.close();
   }
   // };
 

@@ -1,0 +1,143 @@
+<div class="mt-4">
+  <button
+    type="button"
+    id="search-ingredients"
+    class="btn btn-outline-primary ms-4 me-2"
+    data-bs-toggle="modal"
+    data-bs-target="#searchIngredientsModal"
+  >Search ingredients<i class="fa fa-search mx-2"></i></button>
+  <button type="button" id="clear-ingredients" class="btn btn-danger mx-2">Clear
+    All</button>
+  <button
+    type="button"
+    class="btn btn-success mx-2"
+    data-bs-toggle="modal"
+    data-bs-target="#selectedIngredientsModal"
+  >
+    Show selected ingredients
+  </button>
+</div>
+
+<!-- Modal Search -->
+<div
+  class="modal fade"
+  id="searchIngredientsModal"
+  tabindex="-1"
+  aria-labelledby="searchIngredientsLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="searchIngredientsLabel">Search Ingredients</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div id="modal-search-body" class="modal-body p-3">
+        <input
+          id="ingredient-search-input"
+          name="ingredient-search-input"
+          type="text"
+          class="form-control"
+          placeholder="Search Ingredients"
+          aria-label="Ingredient"
+          aria-describedby="button-addon2"
+          aria-label="Search"
+        />
+        <div id="ingredient-search-results">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+        >Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Selected Ingredients -->
+<div
+  class="modal fade"
+  id="selectedIngredientsModal"
+  tabindex="-1"
+  aria-labelledby="selectedIngredientsLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="selectedIngredientsLabel">Selected
+          Ingredients</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body p-3">
+
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+        >Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="accordion" id="accordionExample">
+  {{#each categorizedIngredients as |item key|}}
+    <div class="accordion-item m-4">
+      <div class="accordion-header" id="heading{{cleanID key}}">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapse{{cleanID key}}"
+          aria-expanded="true"
+          aria-controls="collapse{{cleanID key}}"
+        >
+          <img
+            src="public/images/ingredients/{{key}}.png"
+            alt="{{key}}"
+            width="50"
+            height="50"
+            class="m-2"
+          />
+          <label class="mx-2 ingredient-title">{{key}}</label>
+        </button>
+      </div>
+      <div
+        id="collapse{{cleanID key}}"
+        class="accordion-collapse collapse show"
+        aria-labelledby="heading{{cleanID key}}"
+      >
+        <div class="ingredient-check-div accordion-body">
+          {{#each item}}
+            <input
+              type="checkbox"
+              id="check-{{id}}"
+              name="{{id}}"
+              class="chk-btn ingredient-check"
+              value="{{name}}"
+            />
+            <label for="check-{{id}}" class="ingredient-label">{{name}}</label>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>
+
+<script src="/public/js/ingredients.js"></script>
