@@ -142,6 +142,73 @@ module.exports = {
     return recipen;
   },
 
+  async patch(id, updatedData) {
+    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
+
+    let ID = ObjectId(id);
+    let newUpdatedDataObj = await this.get(id);
+    const oldRecipe = await this.get(id);
+
+    if (updatedData.name && updatedData.name !== oldRecipe.name) {
+      helper.checkProperString(updatedData.name, "Name");
+      newUpdatedDataObj.name = updatedData.name;
+    }
+
+    if (
+      updatedData.cookingTime &&
+      updatedData.cookingTime !== oldRecipe.cookingTime
+    ) {
+      helper.checkProperNumber(updatedData.cookingTime, "Cooking Time");
+      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+    }
+
+    if (
+      updatedData.ingredients &&
+      updatedData.ingredients !== oldRecipe.ingredients
+    ) {
+      helper.checkProperArray(updatedData.ingredients, "Ingredients");
+      updatedData.ingredients.forEach(element => {
+        helper.checkProperString(element, "Individual ingredient");
+      });
+      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+    }
+
+    if (updatedData.mealType && updatedData.mealType !== oldRecipe.mealType) {
+      helper.checkProperString(updatedData.mealType, "Meal Type");
+      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+    }
+
+    if (updatedData.cuisine && updatedData.cuisine !== oldRecipe.cuisine) {
+      helper.checkProperString(updatedData.cuisine, "Cuisine");
+      newUpdatedDataObj.cuisine = updatedData.cuisine;
+    }
+
+    if (
+      updatedData.instructions &&
+      updatedData.instructions !== oldRecipe.instructions
+    ) {
+      helper.checkProperString(updatedData.instructions, "Instructions");
+      newUpdatedDataObj.instructions = updatedData.instructions;
+    }
+
+    if (updatedData.servings && updatedData.servings !== oldRecipe.servings) {
+      helper.checkProperNumber(updatedData.servings, "Servings");
+      newUpdatedDataObj.servings = updatedData.servings;
+    }
+    delete newUpdatedDataObj._id;
+    console.log(`newUpdatedDataObj: ${newUpdatedDataObj}`);
+    const recipeCollection = await recipes();
+    const updateInfo = await recipeCollection.updateOne(
+      { _id: ID },
+      { $set: newUpdatedDataObj }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Update failed";
+    const recipen = await this.get(id);
+
+    return recipen;
+  },
+
   async modifyingRatings(recipeId) {
     helper.checkProperString(recipeId);
     if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";

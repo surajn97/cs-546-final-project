@@ -8,7 +8,9 @@ const commentRoutes = require("./comments");
 const privateRoutes = require('./private');
 
 
-const constructorMethod = (app) => {
+const constructorMethod = app => {
+  app.use("/recipes", recipeRoutes);
+
   app.use("/reviews", reviewRoutes);
   app.use("/users", userRoutes);
   app.use('/private', privateRoutes);
