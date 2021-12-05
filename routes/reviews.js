@@ -3,20 +3,21 @@ const { recipes } = require("../data");
 const router = express.Router();
 const data = require("../data");
 const reviewData = data.reviews;
+const helper = require("../data/helper");
 
 router.get("/review/:id", async (req, res) => {
-  try {
-    helper.checkAndGetID(req.params.id);
-  } catch (e) {
-    res.status(400).json({ error: e });
-    return;
-  }
-  // if (!req.params.id) {
-  //   res.status(400).json({
-  //     error: "You must Supply an recipe id to get review of that recipe",
-  //   });
+  // try {
+  //   helper.checkAndGetID(req.params.id);
+  // } catch (e) {
+  //   res.status(400).json({ error: e });
   //   return;
   // }
+  if (!req.params.id) {
+    res.status(400).json({
+      error: "You must Supply an recipe id to get review of that recipe",
+    });
+    return;
+  }
   try {
     const review = await reviewData.get(req.params.id);
     res.json(review);

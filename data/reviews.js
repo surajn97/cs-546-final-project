@@ -1,6 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
-const restaurantFunctions = require("./recipes.js");
-const restaurants = mongoCollections.restaurants;
+const recipeFunctions = require("./recipes.js");
+const recipes = mongoCollections.recipes;
 const reviews = mongoCollections.reviews;
 let { ObjectId } = require("mongodb");
 const helper = require("./helper");
@@ -43,12 +43,8 @@ module.exports = {
     const newId = insertInfo.insertedId.toString();
 
     const reviewobj = await this.get(newId);
-    await restaurantFunctions.addReviewToRestaurant(
-      restaurantId,
-      newId,
-      reviewobj
-    );
-    const modRest = await restaurantFunctions.modifyingRatings(restaurantId);
+    await recipeFunctions.addReviewToRecipe(recipeId, newId, reviewobj);
+    const modRest = await recipeFunctions.modifyingRatings(recipeId);
     return modRest;
   },
 

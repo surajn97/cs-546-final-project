@@ -43,6 +43,7 @@ router.get("/", async (req, res) => {
     const categorizedIngredients = await ingredientsData.getAll();
     res.render("ingredients", {
       categorizedIngredients: categorizedIngredients,
+      ingredients_page: true
     });
 
     return;
