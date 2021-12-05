@@ -50,7 +50,7 @@ module.exports = {
     const usersCollection = await users();
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     // Add new user to DB 
-    console.log('create in data');
+    // console.log('create in data');
     let newUser = {
       username: low_username,
       Password: hashedPassword,

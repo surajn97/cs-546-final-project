@@ -7,9 +7,9 @@ const recipes = require('../data/recipes');
 router.get('/', async (req, res) => {
   if (req.session.user) {
     const userData = req.session.user;
-    console.log("userData")
-    console.log(userData)
-    console.log("userData")
+    // console.log("userData")
+    // console.log(userData)
+    // console.log("userData")
 
 
     // Get list of myFavoriteRecipe
