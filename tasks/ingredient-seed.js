@@ -183,7 +183,7 @@ async function main() {
   console.log("Done seeding database");
   // await db.serverConfig.close();
   dbConnection.closeConnection();
-  // await db.serverConfig.close();
+  await db.serverConfig.close();
 }
 
 main().catch(error => {
