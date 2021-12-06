@@ -161,13 +161,10 @@ const ingredientsList = {
 };
 
 async function main() {
-  // const db = await dbConnection();
-  // try {
-  //   await db.dropCollection("ingredients");
-  // } catch (e) {}
   const db = await dbConnection.connectToDb();
-  // await db.dropDatabase();
-  await db.dropCollection("ingredients");
+  try {
+    await db.dropCollection("ingredients");
+  } catch (e) {}
 
   for (const ig in ingredientsList) {
     for (const ingredient in ingredientsList[ig]) {
@@ -181,11 +178,9 @@ async function main() {
     }
   }
   console.log("Done seeding database");
-  // await db.serverConfig.close();
   dbConnection.closeConnection();
-  // await db.serverConfig.close();
 }
 
-main().catch(error => {
+main().catch((error) => {
   console.log(error);
 });

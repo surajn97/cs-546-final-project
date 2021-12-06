@@ -1,143 +1,127 @@
-<div class="mt-4">
-  <button
-    type="button"
-    id="search-ingredients"
-    class="btn btn-outline-primary ms-4 me-2"
-    data-bs-toggle="modal"
-    data-bs-target="#searchIngredientsModal"
-  >Search ingredients<i class="fa fa-search mx-2"></i></button>
-  <button type="button" id="clear-ingredients" class="btn btn-danger mx-2">Clear
-    All</button>
-  <button
-    type="button"
-    class="btn btn-success mx-2"
-    data-bs-toggle="modal"
-    data-bs-target="#selectedIngredientsModal"
+<div class="mx-3 my-4">
+
+  <div>
+    <button
+      type="button"
+      class="btn btn-primary me-2"
+      id="ingredients-toggle-button"
+    >
+      <i class="far fa-list-alt me-2"></i>
+      Added
+    </button>
+    <button type="button" id="clear-ingredients" class="btn btn-danger">
+     <i class="far fa-trash-alt me-2"></i></i>Clear All</button>
+  </div>
+
+  {{! Search Button }}
+  <div class="d-grid gap-2 mt-3">
+    <button
+      type="button"
+      id="search-ingredients"
+      class="btn btn-outline-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#searchIngredientsModal"
+    >Search ingredients<i class="fa fa-search ms-2"></i></button>
+  </div>
+
+  {{! Modal Search }}
+  <div
+    class="modal fade"
+    id="searchIngredientsModal"
+    tabindex="-1"
+    aria-labelledby="searchIngredientsLabel"
+    aria-hidden="true"
   >
-    Show selected ingredients
-  </button>
-</div>
-
-<!-- Modal Search -->
-<div
-  class="modal fade"
-  id="searchIngredientsModal"
-  tabindex="-1"
-  aria-labelledby="searchIngredientsLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="searchIngredientsLabel">Search Ingredients</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div id="modal-search-body" class="modal-body p-3">
-        <input
-          id="ingredient-search-input"
-          name="ingredient-search-input"
-          type="text"
-          class="form-control"
-          placeholder="Search Ingredients"
-          aria-label="Ingredient"
-          aria-describedby="button-addon2"
-          aria-label="Search"
-        />
-        <div id="ingredient-search-results">
-
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="searchIngredientsLabel">Search Ingredients</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-bs-dismiss="modal"
-        >Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Selected Ingredients -->
-<div
-  class="modal fade"
-  id="selectedIngredientsModal"
-  tabindex="-1"
-  aria-labelledby="selectedIngredientsLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="selectedIngredientsLabel">Selected
-          Ingredients</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body p-3">
-
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-bs-dismiss="modal"
-        >Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="accordion" id="accordionExample">
-  {{#each categorizedIngredients as |item key|}}
-    <div class="accordion-item m-4">
-      <div class="accordion-header" id="heading{{cleanID key}}">
-        <button
-          class="accordion-button"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapse{{cleanID key}}"
-          aria-expanded="true"
-          aria-controls="collapse{{cleanID key}}"
-        >
-          <img
-            src="public/images/ingredients/{{key}}.png"
-            alt="{{key}}"
-            width="50"
-            height="50"
-            class="m-2"
+        <div id="modal-search-body" class="modal-body p-3">
+          <input
+            id="ingredient-search-input"
+            name="ingredient-search-input"
+            type="text"
+            class="form-control"
+            placeholder="Search Ingredients"
+            aria-label="Ingredient"
+            aria-describedby="button-addon2"
+            aria-label="Search"
           />
-          <label class="mx-2 ingredient-title">{{key}}</label>
-        </button>
-      </div>
-      <div
-        id="collapse{{cleanID key}}"
-        class="accordion-collapse collapse show"
-        aria-labelledby="heading{{cleanID key}}"
-      >
-        <div class="ingredient-check-div accordion-body">
-          {{#each item}}
-            <input
-              type="checkbox"
-              id="check-{{id}}"
-              name="{{id}}"
-              class="chk-btn ingredient-check"
-              value="{{name}}"
-            />
-            <label for="check-{{id}}" class="ingredient-label">{{name}}</label>
-          {{/each}}
+          <div id="ingredient-search-results">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+          >Close</button>
         </div>
       </div>
     </div>
-  {{/each}}
+  </div>
+
+  {{!Selected Ingredients }}
+  <div id="selected-ingredients-div" class="my-2" hidden>
+      <p class="text-center m-4">No ingredients selected</p>
+  </div>
+
+  <div class="accordion" id="all-ingredients-div">
+    {{#each categorizedIngredients as |item key|}}
+      {{! Category }}
+      <div class="accordion-item my-3">
+        <div class="accordion-header" id="heading{{cleanID key}}">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapse{{cleanID key}}"
+            aria-expanded="true"
+            aria-controls="collapse{{cleanID key}}"
+          >
+            <img
+              src="public/images/ingredients/{{key}}.png"
+              alt="{{key}}"
+              width="50"
+              height="50"
+              class="m-2"
+            />
+            <label class="mx-2 ingredient-title">{{key}}</label>
+          </button>
+        </div>
+        <div
+          id="collapse{{cleanID key}}"
+          class="accordion-collapse collapse show"
+          aria-labelledby="heading{{cleanID key}}"
+        >
+          <div class="ingredient-check-div accordion-body">
+            {{! Ingredient }}
+            {{#each item}}
+              <input
+                type="checkbox"
+                id="check-{{id}}"
+                name="{{id}}"
+                class="chk-btn ingredient-check"
+                value="{{name}}"
+              />
+              <label
+                for="check-{{id}}"
+                class="ingredient-label"
+              >{{name}}</label>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
 </div>
 
 <script src="/public/js/ingredients.js"></script>
