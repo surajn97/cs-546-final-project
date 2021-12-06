@@ -1,23 +1,24 @@
-{{!-- 
+
 
 
 <head>
     <meta charset="utf-8">
     <title>User Profile:</title>
     <link rel="stylesheet" href="/public/css/main.css">
-</head> --}}
+</head>
 
-<div class="mt-4 text-center">
+<body>
     <h1>User Profile:</h1>
+    <main>
         <p>username:   {{username}}<p>
         <p>first name: {{firstname}}<p>
         <p>last name:  {{lastname}}<p>
         <p>email:      {{email}}<p>
         <p>age:      {{age}}<p>
     <h2>Favorited Recipes:</h2>
-     <div class="container">
+ <div class="container">
                     {{#if hasFRecipe}}
-                    <ul class = "list-group list-group-flush">  
+                    <ul class = "list-group col-10 list-group-flush">  
                         {{#each myFavRecipe}}
                             <li class = "list-group-item">
                                 <a href = "/recipe/{{this.id}}"><span class="mr-2">&starf;</span>{{this.name}}</a>
@@ -32,7 +33,7 @@
     <h2>My Recipes:</h2>
      <div class="container">
                     {{#if hasMRecipe}}
-                    <ul class = "list-group list-group-flush">  
+                    <ul class = "list-group col-10 list-group-flush">  
                         {{#each myRecipes}}
                             <li class = "list-group-item">
                                 <a href = "/recipe/{{this.id}}"><span class="mr-2">&starf;</span>{{this.name}}</a>
@@ -47,7 +48,7 @@
     <h2>My Reviews:</h2>
      <div class="container">
                     {{#if hasReview}}
-                    <ul class = "list-group list-group-flush">  
+                    <ul class = "list-group col-10 list-group-flush">  
                         {{#each myReviews}}
                             <li class = "list-group-item">
                                 <a href = "/recipe/{{this.id}}"><span class="mr-2">&starf;</span>{{this.recipename}}</a>
@@ -60,5 +61,6 @@
                     {{/if}}
                 </div>
 
+    </main>
     <a href="users/logout">logout</a>
-</div>
+</body>

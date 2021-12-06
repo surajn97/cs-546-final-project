@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
     if (req.session.user) {
         res.redirect('/private');
     } else {
-        res.render('users/login');
+        res.render('users/test');
     }
 });
 
@@ -65,7 +65,7 @@ router.post('/signup', async (req, res) => {
         if (!re.test(String(email).toLowerCase())) throw 'error 400, You must provide a valid email.';
         if (typeof age !== 'number' || age <= 0) throw 'error 400, You must provide a positive number in age.';
         //
-        // console.log('create in routes');
+        console.log('create in routes');
 
         var result = await users.createUser(username, password, firstname, lastname, email, age);
         req.session.user = result;
@@ -115,11 +115,11 @@ router.post('/login', async (req, res) => {
     if (typeof result != 'undefined') {
         // req.session.user = { username: req.body.username };
         req.session.user = result;
-        // console.log(req.session.user)
+        console.log(req.session.user)
         res.redirect('/private');
 
     } else {
-        // res.status(400).render('users/login', { error: "You did not provide a valid username or password" });
+        res.status(400).render('users/login', { error: "You did not provide a valid username or password" });
     }
 
 });
