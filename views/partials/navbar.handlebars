@@ -16,21 +16,21 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a
-            class="nav-link {{#if ingredients_page}}active{{/if}}"
-            {{#if ingredients_page}} aria-current="page" {{/if}} 
+            class="nav-link active"
+            aria-current="page"
             href="ingredients"
           >Ingredients</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{#if recipes_page}}active{{/if}}" {{#if recipes_page}} aria-current="page" {{/if}} href="/recipes">Recipes</a>
+          <a class="nav-link" href="#">Recipes</a>
         </li>
       </ul>
       <form class="d-flex">
         <input
           class="form-control me-2"
           type="search"
-          placeholder="Search Recipes"
-          aria-label="Search Recipes"
+          placeholder="Search"
+          aria-label="Search"
         />
         <button
           class="btn btn-outline-success me-3"
