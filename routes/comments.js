@@ -105,7 +105,7 @@ router.post("/:id", async (req, res) => {
             // add logged in user id
             req.params.id,
             commentBody.comment,
-          );
+        );
         res.json(newComment);
         // res.status(200);
         return;
@@ -120,12 +120,12 @@ router.post("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
     try {
-      helper.checkAndGetID(req.params.id);
+        helper.checkAndGetID(req.params.id);
     } catch (e) {
-      res.status(400).json({
-        error: e
-      });
-      return;
+        res.status(400).json({
+            error: e
+        });
+        return;
     }
     // if (!req.params.id) {
     //   res.status(400).json({ error: "You must Supply and ID to delete" });
@@ -133,27 +133,27 @@ router.delete("/:id", async (req, res) => {
     //   return;
     // }
     try {
-      await commentsData.get(req.params.id);
+        await commentsData.get(req.params.id);
     } catch (e) {
-      res.status(404).json({
-        error: e
-      });
-      // res.status(404);
-      return;
+        res.status(404).json({
+            error: e
+        });
+        // res.status(404);
+        return;
     }
     try {
-      let commentResp = await commentsData.remove(req.params.id);
-      res.json(commentResp);
-      // res.status(200);
-      return;
+        let commentResp = await commentsData.remove(req.params.id);
+        res.json(commentResp);
+        // res.status(200);
+        return;
     } catch (e) {
-      res.status(500).json({
-        error: e
-      });
-      return;
-      // res.status(500);
-      // recipes;
+        res.status(500).json({
+            error: e
+        });
+        return;
+        // res.status(500);
+        // recipes;
     }
-  });
+});
 
 module.exports = router;

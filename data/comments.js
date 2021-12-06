@@ -88,7 +88,7 @@ module.exports = {
         }
       },
     });
-    if(!review)
+    if (!review)
       throw "No review found which contains provided comment id";
     const reviewID = review._id.toString();
     const deletionInfo = await commentCollection.deleteOne({

@@ -60,7 +60,7 @@ module.exports = {
       throw "Error: No recipe with that id";
     }
     const reviews = recipe.reviews;
-    if(!reviews)
+    if (!reviews)
       throw "Error: No reviews found for recipe";
     return reviews;
   },
