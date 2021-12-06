@@ -60,17 +60,17 @@ router.post("/:id", async (req, res) => {
   }
 
   if (!req.params.id) {
-    res.status(400).json({ error: "You must provide review id" });
+    res.status(400).json({ error: "You must provide recipe id" });
     // res.status(400);
     return;
   }
-  if (!ReviewData.title) {
-    res.status(400).json({ error: "You must provide review title" });
+  if (!ReviewData.reviewText) {
+    res.status(400).json({ error: "You must provide review text" });
     // res.status(400);
     return;
   }
-  if (!ReviewData.reviewer) {
-    res.status(400).json({ error: "You must provide reviewer" });
+  if (!ReviewData.userId) {
+    res.status(400).json({ error: "You must provide reviewer user id" });
     // res.status(400);
     return;
   }
@@ -78,24 +78,14 @@ router.post("/:id", async (req, res) => {
     res.status(400).json({ error: "You must provide rating" });
     return;
   }
-  if (!ReviewData.dateOfReview) {
-    res.status(400).json({ error: "You must provide date Of Review" });
-    return;
-  }
-  if (!ReviewData.review) {
-    res.status(400).json({ error: "You must provide review" });
-    return;
-  }
 
   try {
-    const { title, reviewer, rating, dateOfReview, review } = ReviewData;
+    const { recipeId, userId, reviewText, rating, dateOfReview, likes, dislikes, comments } = ReviewData;
     const newReview = await reviewData.create(
       req.params.id,
-      title,
-      reviewer,
-      rating,
-      dateOfReview,
-      review
+      ReviewData.rating,
+      ReviewData.reviewText,
+      ReviewData.userId
     );
     res.json(newReview);
     // res.status(200);

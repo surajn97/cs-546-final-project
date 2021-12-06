@@ -33,7 +33,7 @@ module.exports = {
       likes: [],
       dislikes: [],
       comments: [],
-      userId: userId,
+      userId: ObjectId(userId),
       dateOfReview: new Date(),
     };
 
@@ -44,8 +44,8 @@ module.exports = {
 
     const reviewobj = await this.get(newId);
     await recipeFunctions.addReviewToRecipe(recipeId, newId, reviewobj);
-    const modRest = await recipeFunctions.modifyingRatings(recipeId);
-    return modRest;
+    await recipeFunctions.modifyingRatings(recipeId);
+    return reviewobj;
   },
 
   async getAll(recipeId) {
@@ -58,6 +58,8 @@ module.exports = {
       throw "Error: No recipe with that id";
     }
     const reviews = recipe.reviews;
+    if(!reviews)
+      throw "Error: No reviews found for recipe";
     return reviews;
   },
 
@@ -80,7 +82,7 @@ module.exports = {
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
 
-    const review = await get(id);
+    const review = await this.get(id);
     if (!review) {
       throw "Error: No review with that id";
     }
