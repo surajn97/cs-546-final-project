@@ -1,20 +1,24 @@
 const express = require("express");
-const { recipes } = require("../data");
+const {
+  recipes
+} = require("../data");
 const router = express.Router();
 const data = require("../data");
 const reviewData = data.reviews;
 const helper = require("../data/helper");
 
 router.get("/review/:id", async (req, res) => {
-  // try {
-  //   helper.checkAndGetID(req.params.id);
-  // } catch (e) {
-  //   res.status(400).json({ error: e });
-  //   return;
-  // }
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({
+      error: e
+    });
+    return;
+  }
   if (!req.params.id) {
     res.status(400).json({
-      error: "You must Supply an recipe id to get review of that recipe",
+      error: "You must supply a review id to get reviews data",
     });
     return;
   }
@@ -22,7 +26,9 @@ router.get("/review/:id", async (req, res) => {
     const review = await reviewData.get(req.params.id);
     res.json(review);
   } catch (e) {
-    res.status(404).json({ error: e });
+    res.status(404).json({
+      error: e
+    });
     return;
   }
 });
@@ -31,7 +37,15 @@ router.get("/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
+    return;
+  }
+  if (!req.params.id) {
+    res.status(400).json({
+      error: "You must supply a recipe id to get reviews of that recipe",
+    });
     return;
   }
   try {
@@ -39,7 +53,9 @@ router.get("/:id", async (req, res) => {
     res.json(reviewList);
     // res.status(200);
   } catch (e) {
-    res.status(500).json({ error: e });
+    res.status(500).json({
+      error: e
+    });
     return;
     // res.status(500);
   }
@@ -49,49 +65,73 @@ router.post("/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   const ReviewData = req.body;
   if (!ReviewData) {
-    res.status(400).json({ error: "You must Supply data to post" });
+    res.status(400).json({
+      error: "You must Supply data to post"
+    });
     return;
     // res.status(400);
   }
 
   if (!req.params.id) {
-    res.status(400).json({ error: "You must provide recipe id" });
+    res.status(400).json({
+      error: "You must provide recipe id"
+    });
     // res.status(400);
     return;
   }
   if (!ReviewData.reviewText) {
-    res.status(400).json({ error: "You must provide review text" });
+    res.status(400).json({
+      error: "You must provide review text"
+    });
     // res.status(400);
     return;
   }
   if (!ReviewData.userId) {
-    res.status(400).json({ error: "You must provide reviewer user id" });
+    res.status(400).json({
+      error: "You must provide reviewer user id"
+    });
     // res.status(400);
     return;
   }
   if (!ReviewData.rating) {
-    res.status(400).json({ error: "You must provide rating" });
+    res.status(400).json({
+      error: "You must provide rating"
+    });
     return;
   }
 
   try {
-    const { recipeId, userId, reviewText, rating, dateOfReview, likes, dislikes, comments } = ReviewData;
+    const {
+      recipeId,
+      userId,
+      reviewText,
+      rating,
+      dateOfReview,
+      likes,
+      dislikes,
+      comments
+    } = ReviewData;
     const newReview = await reviewData.create(
       req.params.id,
       ReviewData.rating,
       ReviewData.reviewText,
+      // should be logged in user id
       ReviewData.userId
     );
     res.json(newReview);
     // res.status(200);
     return;
   } catch (e) {
-    res.status(500).json({ error: e });
+    res.status(500).json({
+      error: e
+    });
     // res.status(500);
     return;
   }
@@ -101,7 +141,9 @@ router.delete("/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   // if (!req.params.id) {
@@ -112,7 +154,9 @@ router.delete("/:id", async (req, res) => {
   try {
     await reviewData.get(req.params.id);
   } catch (e) {
-    res.status(404).json({ error: e });
+    res.status(404).json({
+      error: e
+    });
     // res.status(404);
     return;
   }
@@ -122,7 +166,9 @@ router.delete("/:id", async (req, res) => {
     // res.status(200);
     return;
   } catch (e) {
-    res.status(500).json({ error: e });
+    res.status(500).json({
+      error: e
+    });
     return;
     // res.status(500);
     // recipes;
