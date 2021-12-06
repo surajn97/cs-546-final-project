@@ -4,14 +4,31 @@ let { ObjectId } = require("mongodb");
 const helper = require("./helper");
 
 function convertIngredientsToCategories(ingredientList) {
+  helper.checkProperArrayAllowEmpty(ingredientList);
   const categories = [...new Set(ingredientList.map((item) => item.category))];
   let categorizedIngredients = {};
   for (const category of categories) {
     categorizedIngredients[category] = ingredientList
       .filter((x) => x.category === category)
-      .map((y) => ({ name: y.name, id: y._id.toString() }));
+      .map((y) => ({
+        name: y.name,
+        id: y._id.toString(),
+        protien: y.protien,
+        carb: y.carb,
+        fat: y.fat,
+        calories: y.calories,
+      }));
   }
   return categorizedIngredients;
+}
+
+function getCalories(p, c, f) {
+  helper.checkProperNumber(p);
+  helper.checkProperNumber(c);
+  helper.checkProperNumber(f);
+  if (p < 0 || c < 0 || f < 0) throw "Nutritional info cannot be negative";
+  const calories = p * 4 + c * 4 + f * 9;
+  return Math.round(calories * 100) / 100;
 }
 
 module.exports = {
@@ -33,7 +50,7 @@ module.exports = {
       userGenerated: false,
     };
     const insertInfo = await ingredientCollection.insertOne(newIngredient);
-    if (insertInfo.insertedCount === 0)
+    if (!insertInfo.acknowledged)
       throw `Could not create the Ingredient ${name}`;
     const newId = insertInfo.insertedId.toString();
     const ingredient = await this.get(newId);
@@ -88,32 +105,38 @@ module.exports = {
   },
 
   async get(id) {
-    helper.checkProperString(id, "Ingredient ID");
-    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
-    let ID = ObjectId(id);
+    let ID = helper.checkAndGetID(id);
     const ingredientCollection = await ingredients();
-
     const ingredient = await ingredientCollection.findOne({ _id: ID });
     if (ingredient === null) {
       throw "Error: No ingredient with that id";
     }
     ingredient._id = ingredient._id.toString();
+    ingredient.calories = getCalories(
+      ingredient.protien,
+      ingredient.carb,
+      ingredient.fat
+    );
     return ingredient;
   },
 
-  async getAll(search_term) {
+  async getAll() {
     const ingredientCollection = await ingredients();
     const ingredientList = await ingredientCollection.find({}).toArray();
+
+    ingredientList.forEach(function (ingredient) {
+      ingredient.calories = getCalories(
+        ingredient.protien,
+        ingredient.carb,
+        ingredient.fat
+      );
+    });
     return convertIngredientsToCategories(ingredientList);
   },
 
   async remove(id) {
-    helper.checkProperString(id, "Ingredient ID");
-    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
-    let ID = ObjectId(id);
-
+    let ID = helper.checkProperObject(id);
     const ingredientCollection = await ingredients();
-
     const deletionInfo = await ingredientCollection.deleteOne({ _id: ID });
 
     if (deletionInfo.deletedCount === 0) {
@@ -122,17 +145,22 @@ module.exports = {
     return { ingredientId: id, deleted: true };
   },
 
-  async update(id, name) {
-    helper.checkProperString(name, "Name");
-    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
-
-    const ingredient = await this.get(id);
-    let ID = ObjectId(id);
-
+  async update(id, name, category, protien, carb, fat) {
+    helper.checkProperString(name, "Ingredient Name");
+    helper.checkProperString(category, "Ingredient Category");
+    helper.checkProperNumber(protien, "Ingredient Protien");
+    helper.checkProperNumber(carb, "Ingredient Carb");
+    helper.checkProperNumber(fat, "Ingredient fat");
+    if (protien < 0 || carb < 0 || fat < 0)
+      throw "Nutritional info cannot be negative";
+    let ID = helper.checkProperObject(id);
     let updatedIngredient = {
       name: name,
+      category: category,
+      protien: protien,
+      carb: carb,
+      fat: fat,
     };
-
     const ingredientCollection = await ingredients();
     const updateInfo = await ingredientCollection.updateOne(
       { _id: ID },
@@ -141,19 +169,6 @@ module.exports = {
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
       throw "Update failed";
     const ingredientn = await this.get(id);
-
     return ingredientn;
-  },
-
-  async modifyingNuValue(ingredientId) {
-    //
-  },
-
-  async addNuValue(ingredientId, reviewId, reviewobj) {
-    //add Nu Value
-  },
-
-  async removeNuValue(ingredientId, reviewId) {
-    //remove nuValue
   },
 };

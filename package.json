@@ -12,12 +12,13 @@
   "author": "Project CS546 Group 4",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
-    "express-session": "^1.17.2",
-    "mongodb": "^4.2.0",
-    "xss": "^1.0.10",
     "express-handlebars": "^6.0.2",
-    "handlebars": "^4.7.7"
+    "express-session": "^1.17.2",
+    "handlebars": "^4.7.7",
+    "mongodb": "^4.2.0",
+    "xss": "^1.0.10"
   }
 }

@@ -12,30 +12,30 @@ router.get("/:id", async (req, res) => {
     return;
   }
   try {
-    let recipe = await ingredientsData.get(req.params.id);
-    res.json(recipe);
-    return;
+    let ingredient = await ingredientsData.get(req.params.id);
+    res.status(200).json(ingredient);
   } catch (e) {
     res.status(404).json({ error: e });
-    return;
   }
 });
 
-router.post("/ingredient-search", async (req, res) => {
-  const searchText = req.body.ingredientSearchText;
-  try {
-    helper.checkProperString(searchText, "Ingredient Search");
-    const result = await ingredientsData.searchIngredient(searchText);
-    res.render("ingredients", {
-      categorizedIngredients: result,
-    });
-  } catch (e) {
-    res.status(400).json({ error: e });
-  }
-});
+// router.post("/ingredient-search", async (req, res) => {
+//   const searchText = req.body.ingredientSearchText;
+//   try {
+//     helper.checkProperString(searchText, "Ingredient Search");
+//     const result = await ingredientsData.searchIngredient(searchText);
+//     res.render("ingredients", {
+//       categorizedIngredients: result,
+//     });
+//   } catch (e) {
+//     res.status(400).json({ error: e });
+//   }
+// });
 
+//When an ingredient is selected, this route is triggered
 router.post("/selected", async (req, res) => {
   console.log(req.body);
+  res.status(200);
 });
 
 router.get("/", async (req, res) => {
@@ -43,14 +43,10 @@ router.get("/", async (req, res) => {
     const categorizedIngredients = await ingredientsData.getAll();
     res.render("ingredients", {
       categorizedIngredients: categorizedIngredients,
-      ingredients_page: true
+      ingredients_page: true,
     });
-
-    return;
   } catch (e) {
     res.status(500).json({ error: e });
-
-    return;
   }
 });
 
@@ -63,52 +59,27 @@ router.put("/:id", async (req, res) => {
   }
   const updatedData = req.body;
   if (!updatedData) {
-    res.status(400).json({ error: "You must provide data to update a recipe" });
+    res
+      .status(400)
+      .json({ error: "You must provide data to update an ingredient" });
     return;
   }
-  if (!updatedData.name) {
-    res.status(400).json({ error: "You must provide a name" });
-
+  try {
+    helper.checkProperString(updatedData.name, "Ingredient Name");
+    helper.checkProperString(updatedData.category, "Ingredient Category");
+    helper.checkProperNumber(updatedData.protien, "Ingredient Protien");
+    helper.checkProperNumber(updatedData.carb, "Ingredient Carb");
+    helper.checkProperNumber(updatedData.fat, "Ingredient fat");
+  } catch (e) {
+    res.status(400).json({ error: e });
     return;
   }
-  if (!updatedData.location) {
-    res.status(400).json({ error: "You must provide a location" });
-
-    return;
-  }
-  if (!updatedData.phoneNumber) {
-    res.status(400).json({ error: "You must provide a phone Number" });
-
-    return;
-  }
-  if (!updatedData.website) {
-    res.status(400).json({ error: "You must provide a website" });
-
-    return;
-  }
-  if (!updatedData.priceRange) {
-    res.status(400).json({ error: "You must provide a price Range" });
-
-    return;
-  }
-  if (!updatedData.cuisines) {
-    res.status(400).json({ error: "You must provide a Cuisines" });
-
-    return;
-  }
-  if (!updatedData.serviceOptions) {
-    res.status(400).json({ error: "You must provide a service options" });
-
-    return;
-  }
-
   try {
     await ingredientsData.get(req.params.id);
   } catch (e) {
     res.status(404).json({ error: e });
     return;
   }
-
   try {
     const updatedRecipe = await ingredientsData.update(
       req.params.id,
@@ -120,10 +91,9 @@ router.put("/:id", async (req, res) => {
       updatedData.cuisines,
       updatedData.serviceOptions
     );
-    res.json(updatedRecipe);
+    res.status(200).json(updatedRecipe);
   } catch (e) {
     res.status(500).json({ error: e });
-    return;
   }
 });
 
@@ -135,13 +105,11 @@ router.delete("/:id", async (req, res) => {
     return;
   }
   try {
-    let review = await ingredientsData.remove(req.params.id);
-    res.json(review);
-
+    let ingredient = await ingredientsData.remove(req.params.id);
+    res.status(200).json(ingredient);
     return;
   } catch (e) {
-    res.json({ error: e });
-    res.status(500);
+    res.status(500).json({ error: e });
     return;
   }
 });

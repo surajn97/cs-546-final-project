@@ -1,7 +1,31 @@
+const axios = require("axios");
 const mongoCollections = require("../config/mongoCollections");
 const recipes = mongoCollections.recipes;
 let { ObjectId } = require("mongodb");
 const helper = require("./helper");
+const youtubeApi = "AIzaSyBzNYNEd6S5VRWmD4_pgCp6T_MpIxTix2U";
+
+const getYoutubeLink = async (title) => {
+  helper.checkProperString(title);
+  const searchKeyword = title.split(" ").join("+") + "+Recipe";
+  try {
+    const result = await axios.get(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${searchKeyword}&type=video&key=${youtubeApi}`
+    );
+    if (
+      !result ||
+      !result.data ||
+      !result.data.items ||
+      result.data.items.length == 0 ||
+      !result.data.items[0].id ||
+      !result.data.items[0].id.videoId
+    )
+      throw "Could not retrieve youtube URL";
+    return `https://www.youtube.com/watch?v=${result.data.items[0].id.videoId}`;
+  } catch (e) {
+    throw "Could not retrieve youtube URL";
+  }
+};
 
 module.exports = {
   async create(
@@ -18,7 +42,7 @@ module.exports = {
     helper.checkProperString(postedBy, "User");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach(element => {
+    ingredients.forEach((element) => {
       helper.checkProperString(element, "Individual ingredient");
     }); //************* Store Ing ID or Name??? */
     helper.checkProperString(mealType, "Meal Type");
@@ -52,12 +76,18 @@ module.exports = {
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
     const recipeCollection = await recipes();
-
     const recipe = await recipeCollection.findOne({ _id: ID });
     if (recipe === null) {
       throw "Error: No recipe with that id";
     }
     recipe._id = recipe._id.toString();
+    let url;
+    try {
+      url = await getYoutubeLink(recipe.name);
+    } catch (e) {
+      url = "";
+    }
+    recipe.youtubeURL = url;
     return recipe;
   },
 
@@ -66,7 +96,7 @@ module.exports = {
 
     const recipeList = await recipeCollection.find({}).toArray();
     const rstList = [];
-    recipeList.forEach(item => {
+    recipeList.forEach((item) => {
       let obj = {};
       obj._id = item._id.toString();
       obj.name = item.name;
@@ -104,7 +134,7 @@ module.exports = {
     helper.checkProperString(name, "Name");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach(element => {
+    ingredients.forEach((element) => {
       helper.checkProperString(element, "Individual ingredient");
     }); //************* Store Ing ID or Name??? */
     helper.checkProperString(mealType, "Meal Type");
@@ -167,7 +197,7 @@ module.exports = {
       updatedData.ingredients !== oldRecipe.ingredients
     ) {
       helper.checkProperArray(updatedData.ingredients, "Ingredients");
-      updatedData.ingredients.forEach(element => {
+      updatedData.ingredients.forEach((element) => {
         helper.checkProperString(element, "Individual ingredient");
       });
       newUpdatedDataObj.cookingTime = updatedData.cookingTime;
@@ -222,7 +252,7 @@ module.exports = {
       let currentRecipe = await this.get(recipeId);
       const reviewsarray = currentRecipe.reviews;
       let sumRating = reviewsarray
-        .map(s => s.rating)
+        .map((s) => s.rating)
         .reduce((a, b) => a + b, 0);
       newRating = sumRating / len;
     }

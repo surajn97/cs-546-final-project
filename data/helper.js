@@ -39,6 +39,12 @@ const checkProperArray = (array) => {
   if (array.length == 0) throw "Cannot pass an empty array";
 };
 
+const checkProperArrayAllowEmpty = (array) => {
+  if (!array) throw "Error: No parameter supplied. Please pass an array";
+  if (!Array.isArray(array))
+    throw `Error: Parameter passed, "${array}" is not an array.It is "${typeof array}". Please pass an array instead`;
+};
+
 const checkProperObject = (object, checklength) => {
   if (!object) throw "Error: Please pass the object";
   if (!(object.constructor === Object)) {
@@ -86,6 +92,7 @@ module.exports = {
   checkProperString,
   isValidURL,
   checkProperArray,
+  checkProperArrayAllowEmpty,
   checkProperObject,
   checkProperNumber,
   checkProperDate,
