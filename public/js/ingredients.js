@@ -30,7 +30,7 @@
       const id = $(this).attr("name");
       const ingredientText = $(this).val();
       addToSelectedIngredientsList(id, ingredientText);
-      currentIngredients.push(ingredientText);
+      currentIngredients.push(id);
     });
     if (!atleastOne) {
       selectedIngredientsDiv.append(
