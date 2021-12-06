@@ -252,11 +252,14 @@ module.exports = {
         $push: {
           reviews: {
             _id: reviewID,
-            title: reviewobj.title,
-            reviewer: reviewobj.reviewer,
+            recipeId: reviewobj.recipeId,
             rating: reviewobj.rating,
+            reviewText: reviewobj.reviewText,
+            likes: reviewobj.likes,
+            dislikes: reviewobj.dislikes,
+            comments: reviewobj.comments,
+            userId: reviewobj.userId,
             dateOfReview: reviewobj.dateOfReview,
-            review: reviewobj.review,
           },
         },
       }

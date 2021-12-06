@@ -2,7 +2,9 @@ const mongoCollections = require("../config/mongoCollections");
 const recipeFunctions = require("./recipes.js");
 const recipes = mongoCollections.recipes;
 const reviews = mongoCollections.reviews;
-let { ObjectId } = require("mongodb");
+let {
+  ObjectId
+} = require("mongodb");
 const helper = require("./helper");
 
 module.exports = {
@@ -33,7 +35,7 @@ module.exports = {
       likes: [],
       dislikes: [],
       comments: [],
-      userId: userId,
+      userId: ObjectId(userId),
       dateOfReview: new Date(),
     };
 
@@ -44,8 +46,8 @@ module.exports = {
 
     const reviewobj = await this.get(newId);
     await recipeFunctions.addReviewToRecipe(recipeId, newId, reviewobj);
-    const modRest = await recipeFunctions.modifyingRatings(recipeId);
-    return modRest;
+    await recipeFunctions.modifyingRatings(recipeId);
+    return reviewobj;
   },
 
   async getAll(recipeId) {
@@ -58,6 +60,8 @@ module.exports = {
       throw "Error: No recipe with that id";
     }
     const reviews = recipe.reviews;
+    if (!reviews)
+      throw "Error: No reviews found for recipe";
     return reviews;
   },
 
@@ -67,7 +71,9 @@ module.exports = {
     let ID = ObjectId(id);
     const reviewCollection = await reviews();
 
-    const review = await reviewCollection.findOne({ _id: ID });
+    const review = await reviewCollection.findOne({
+      _id: ID
+    });
     if (review === null) {
       throw "Error: No review with that id";
     }
@@ -80,7 +86,7 @@ module.exports = {
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
 
-    const review = await get(id);
+    const review = await this.get(id);
     if (!review) {
       throw "Error: No review with that id";
     }
@@ -88,10 +94,16 @@ module.exports = {
     const reviewCollection = await reviews();
     const recipeCollection = await recipes();
     const recipe = await recipeCollection.findOne({
-      reviews: { $elemMatch: { _id: ID } },
+      reviews: {
+        $elemMatch: {
+          _id: ID
+        }
+      },
     });
     const recipeID = recipe._id.toString();
-    const deletionInfo = await reviewCollection.deleteOne({ _id: ID });
+    const deletionInfo = await reviewCollection.deleteOne({
+      _id: ID
+    });
 
     if (deletionInfo.deletedCount === 0) {
       throw `Error: Could not delete review with id of ${ID}`;
@@ -100,7 +112,10 @@ module.exports = {
     await recipeFunctions.removeReviewFromRecipe(recipeID, ID);
     await recipeFunctions.modifyingRatings(recipeID);
 
-    return { reviewId: id, deleted: true };
+    return {
+      reviewId: id,
+      deleted: true
+    };
   },
 
   async addCommentToReview(reviewId, commentId, commentobj) {
@@ -110,25 +125,24 @@ module.exports = {
     if (!ObjectId.isValid(commentId)) throw "Error: Not a valid ObjectId";
     let commentID = ObjectId(commentId);
 
-    let currentReview = await get(reviewId);
+    let currentReview = await this.get(reviewId);
     if (!currentReview) {
       throw "Error: No review with that id";
     }
 
     const reviewCollection = await reviews();
-    const updateInfo = await reviewCollection.updateOne(
-      { _id: reviewID },
-      {
-        $push: {
-          comments: {
-            _id: commentID,
-            userId: commentobj.userId,
-            comment: commentobj.comment,
-            dateOfComment: commentobj.dateOfComment,
-          },
+    const updateInfo = await reviewCollection.updateOne({
+      _id: reviewID
+    }, {
+      $push: {
+        comments: {
+          _id: commentID,
+          userId: commentobj.userId,
+          comment: commentobj.comment,
+          dateOfComment: commentobj.dateOfComment,
         },
-      }
-    );
+      },
+    });
 
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
       throw "Update failed at adding comment to review";
@@ -143,19 +157,24 @@ module.exports = {
     if (!ObjectId.isValid(commentId)) throw "Error: Not a valid ObjectId";
     let commentID = ObjectId(commentId);
 
-    let currentReview = await get(reviewId);
+    let currentReview = await this.get(reviewId);
     if (!currentReview) {
       throw "Error: No review with that id";
     }
 
     const reviewCollection = await reviews();
-    const updateInfo = await reviewCollection.updateOne(
-      { _id: ID },
-      { $pull: { comments: { _id: commentID } } }
-    );
+    const updateInfo = await reviewCollection.updateOne({
+      _id: ID
+    }, {
+      $pull: {
+        comments: {
+          _id: commentID
+        }
+      }
+    });
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
       throw "Error: Update failed while removing comment from review";
 
-    return await get(reviewId);
+    return await this.get(reviewId);
   },
 };

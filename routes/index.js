@@ -10,13 +10,10 @@ const privateRoutes = require('./private');
 
 const constructorMethod = app => {
   app.use("/recipes", recipeRoutes);
-
-  app.use("/reviews", reviewRoutes);
   app.use("/users", userRoutes);
   app.use('/private', privateRoutes);
-  app.use('/recipes', recipeRoutes);
-
-  // app.use("/comments", commentRoutes);
+  app.use("/reviews", reviewRoutes);
+  app.use("/comments", commentRoutes);
   app.use("/ingredients", ingredientRoutes);
   app.use("/", (req, res) => {
     // res.render("home");
