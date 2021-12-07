@@ -4,7 +4,54 @@
   <link rel="stylesheet" href="/public/css/main.css">
 </head> --}}
 
-<div class="mt-4 text-center">
+<main class="form-signin">
+  <h1 class="h3 mb-3 fw-normal">Welcome to What's Cooking</h1>
+  {{#if error}}
+  <p class="error">{{error}}</p>
+  {{/if}}
+  <form action="/users/signup" method="POST" id="signup-form">
+    {{!-- <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> --}}
+    
+    <div class="form-floating">
+      <input type="text" class="form-control" id="username" name="username" value="{{username}}" placeholder="Username">
+      <label for="username">Username</label>
+    </div>
+
+    <div class="form-floating">
+      <input type="password" class="form-control" id="password" name="password" value="{{password}}" placeholder="Password">
+      <label for="password">Password</label>
+    </div>
+
+    <div class="form-floating">
+      <input type="text" class="form-control" id="firstname" name="firstname" value="{{firstname}}" placeholder="Firstname">
+      <label for="firstname">Firstname</label>
+    </div>
+
+    <div class="form-floating">
+      <input type="text" class="form-control" id="lastname" name="lastname" value="{{lastname}}" placeholder="Lastname">
+      <label for="lastname">Lastname</label>
+    </div>
+    <div class="form-floating">
+      <input type="text" class="form-control" id="email" name="email" value="{{email}}" placeholder="Email">
+      <label for="email">Email</label>
+    </div>
+    <div class="form-floating">
+      <input type="number" class="form-control" id="age" name="age" value="{{age}}" placeholder="Age">
+      <label for="age">Age</label>
+    </div>
+
+    <div class="invalid-feedback mb-3">
+      You must fill in all of the fields, and passsword has at least 6 characters without spaces.
+    </div>
+    
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+    {{!-- <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p> --}}
+  </form>
+  <br>
+  <p>Already have an account? Click here to <a href="/users/login">log-in</a>.</p>
+</main>
+
+{{!-- <div class="mt-4 text-center">
   <h1>Sign Up</h1>
     <p>enter the username and password to sign up:</p>
     {{#if error}}
@@ -43,4 +90,6 @@
   <br>
   <p>Already have an account? Click here to log-in</p>
    <a href="/users/login">Log In</a>
-</div>    <script src="/public/js/signup.js"></script>
+</div>     --}}
+
+<script src="/public/js/signup.js"></script>

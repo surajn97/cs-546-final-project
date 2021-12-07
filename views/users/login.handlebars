@@ -4,8 +4,39 @@
   <link rel="stylesheet" href="/public/css/main.css">
 </head> --}}
 
-<div class="mt-4 text-center">
-  <h1 class="display-1">Login</h1>  
+<main class="form-signin">
+  <h1 class="h3 mb-3 fw-normal">Welcome back</h1>
+  {{#if error}}
+  <p class="error">{{error}}</p>
+  {{/if}}
+  <form action="/users/login" method="POST" id="login-form">
+    {{!-- <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> --}}
+    
+    <div class="form-floating">
+      <input type="text" class="form-control" id="username" name="username" value="{{username}}" placeholder="Username">
+      <label for="username">Username</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="password" name="password" value="{{password}}" placeholder="Password">
+      <label for="password">Password</label>
+    </div>
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <div class="invalid-feedback mb-3">
+        Username cannot be empty,and passsword has at least 6 characters without spaces.
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    {{!-- <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p> --}}
+  </form>
+  <br>
+  <p>Need to register? Click here to <a href="/users/signup">sign-up</a>.</p>
+</main>
+
+{{!-- <div class="mt-4 text-center">
+  <h1 class="display-1">Login</h1>
     <p>enter the username and password to login:</p>
     {{#if error}}
     <p class="error">{{error}}</p>
@@ -25,5 +56,5 @@
   <br>
   <p>Need to register? Click here to sign-up</p>
   <a href="/users/signup">SignUp</a>
-</div>
-    <script src="/public/js/login.js"></script>
+</div> --}}
+<script src="/public/js/login.js"></script>
