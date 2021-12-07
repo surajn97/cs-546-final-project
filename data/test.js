@@ -14,7 +14,7 @@ const userobj = {
   myReviews: [
     "9vd99ce2-c0d2-4f8c-b27a-6a1d4b5b5063",
     "695d97a2-c0d2-4f8c-b27a-6a1d4b5b6927",
-  ]
+  ],
 };
 
 const recipeobj = {
@@ -26,11 +26,19 @@ const recipeobj = {
   cuisine: "French Cuisine",
   ingredients: [
     {
-      _id: "871982708es312sesde3414",
-      quantity: 3,
-      quantityMeasure: "teaspoons",
+      id: "61ae7e244561ee1064b2b684",
+      quantity: 125,
+      quantityMeasure: "grams",
     },
-    { _id: "871982708es312sesde3415", quantity: 4, quantityMeasure: "grams" },
+    { id: "61ae7e244561ee1064b2b685", quantity: 1, quantityMeasure: "Bowl" },
+  ],
+  otherIngredients: [
+    {
+      name: "Cualiflower",
+      quantity: 1,
+      quantityMeasure: "Bowl",
+    },
+    { name: "Rice", quantity: 2, quantityMeasure: "Bowl" },
   ],
   instructions:
     "Easy rice-like side dish that's much lower GI and ready in just 10 minutes",
@@ -39,7 +47,7 @@ const recipeobj = {
     "695d97a2-c0d2-4f8c-b27a-6a1d4b5b6927",
   ],
   overallRating: 4,
-  servings: 8
+  servings: 8,
 };
 
 const reviewObj = {
@@ -50,31 +58,31 @@ const reviewObj = {
   likes: ["c0d27a2-c0d2-4f8c-b27a-6ad9v9wb6310"],
   dislikes: ["c0d27a2-c0d2-4f8c-b27a-6ad9v9wb6322"],
   comments: ["c0o27m2-m0e2-4n8t-b27a-6ad9v9wb9471"],
-  userID: "c0d27a2-c0d2-4f8c-b27a-6ad9v9wb6310"
+  userID: "c0d27a2-c0d2-4f8c-b27a-6ad9v9wb6310",
 };
 
 const commentObj = {
   // _id: "c0o27m2-m0e2-4n8t-b27a-6ad9v9wb9471",
   name: "John_D",
-  comment: "Nice try."
+  comment: "Nice try.",
 };
 
 const ingredientObjs = [
-  {name: "Sugar"},
-  {name: "Onion"},
-  {name: "Garlic"},
-  {name: "Olive Oil"},
-  {name: "Tomato"},
-  {name: "Salt"},
-  {name: "Milk"},
-  {name: "Potato"},
-  {name: "Chilli"},
-  {name: "Cheese"},
-  {name: "Turnip"},
-  {name: "Cabbage"},
-  {name: "Zucchini"},
-  {name: "Bell Pepper"},
-  {name: "Red Pepper"},
+  { name: "Sugar" },
+  { name: "Onion" },
+  { name: "Garlic" },
+  { name: "Olive Oil" },
+  { name: "Tomato" },
+  { name: "Salt" },
+  { name: "Milk" },
+  { name: "Potato" },
+  { name: "Chilli" },
+  { name: "Cheese" },
+  { name: "Turnip" },
+  { name: "Cabbage" },
+  { name: "Zucchini" },
+  { name: "Bell Pepper" },
+  { name: "Red Pepper" },
 ];
 
 module.exports = {
@@ -82,5 +90,5 @@ module.exports = {
   recipeobj: recipeobj,
   reviewObj: reviewObj,
   commentObj: commentObj,
-  ingredientObjs: ingredientObjs
-}
+  ingredientObjs: ingredientObjs,
+};

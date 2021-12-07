@@ -14,6 +14,7 @@ const main = async () => {
   if (dbConnection.env != "production") {
     const db = await dbConnection.connectToDb();
     await db.dropDatabase();
+    // await db.dropCollection("recipes");
     try {
       const usersCollection = await users();
       const ingredientsCollection = await ingredients();
@@ -31,7 +32,7 @@ const main = async () => {
     }
     console.log("Done seeding " + dbConnection.env + " database");
     dbConnection.closeConnection();
-    // await db.serverConfig.close();
+    await db.serverConfig.close();
   }
   // };
 

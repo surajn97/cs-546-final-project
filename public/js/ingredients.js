@@ -6,6 +6,7 @@
   const clearIngredientsButton = $("#clear-ingredients");
   const selectedIngredientsModal = $("#selectedIngredientsModal");
   const ingredientToggleButtons = $("#ingredients-toggle-button");
+  const url = "http://localhost:3000/recipes/selected";
 
   /* #region  Helper Functions */
   const checkProperString = (string, parameter) => {
@@ -30,18 +31,22 @@
       const id = $(this).attr("name");
       const ingredientText = $(this).val();
       addToSelectedIngredientsList(id, ingredientText);
-      currentIngredients.push(ingredientText);
+      currentIngredients.push(id);
     });
     if (!atleastOne) {
       selectedIngredientsDiv.append(
         $('<p class="text-center m-4">No ingredients selected</p>')
       );
     }
-    $.ajax({
-      type: "POST",
-      url: "http://localhost:3000/ingredients/selected",
-      data: { ingredients: currentIngredients },
-    });
+    return currentIngredients;
+    // $.ajax({
+    //   type: "POST",
+    //   url: url,
+    //   data: { ingredients: currentIngredients },
+    //   success: function (ret) {
+    //     document.write(ret);
+    //   },
+    // });
   }
 
   function addToSelectedIngredientsList(id, ingredientText) {
@@ -77,11 +82,11 @@
       selectedIngredientsDiv.append(
         $('<p class="text-center m-4">No ingredients selected</p>')
       );
-      $.ajax({
-        type: "POST",
-        url: "http://localhost:3000/ingredients/selected",
-        data: { ingredients: [] },
-      });
+      // $.ajax({
+      //   type: "POST",
+      //   url: url,
+      //   data: { ingredients: [] },
+      // });
       // Snackbar.show({
       //   text: "Example notification text.",
       //   pos: "bottom-center",
@@ -174,6 +179,13 @@
           );
         }
       });
+    });
+
+    $("#generate-recipe").on("submit", function (e) {
+      let data = getAllSelectedIngredientsAndSend();
+      let ip = $("#<input/>").attr("type", "hidden").attr("ingredients", data);
+      ip.appendTo("#generate-recipe");
+      return true;
     });
 
     //search modal on close
