@@ -8,7 +8,30 @@
     <input type="number" name="cookingTime" id="cookingTime" />
 </br>
     <label for="ingredients"> Ingredients: </label>
-    <input type="text" name="ingredients" id="ingredients" />
+    <input type="text" name="ingredients" id="ingredients" hidden/>
+
+    
+<div class="input-group">
+  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Ingredient">
+    <div class="input-group-append">
+        <input type="Number" class="form-control" aria-label="Text input with dropdown button" placeholder="Quantity">
+    </div>
+     
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Quantity Measure</button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="#" selected>Grams</a>
+            <a class="dropdown-item" href="#">Teaspoon</a>
+            <a class="dropdown-item" href="#">Tablespoon</a>
+            {{!-- <div role="separator" class="dropdown-divider"></div> --}}
+            <a class="dropdown-item" href="#">Bowl</a>
+        </div>
+    </div>
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button">Button</button>
+    </div>
+  </div>
+</div>
 </br>
 
 </br>
