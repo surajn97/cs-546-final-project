@@ -20,6 +20,21 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/name/:name", async (req, res) => {
+  try {
+    helper.checkProperString(req.params.name);
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
+  try {
+    let ingredient = await ingredientsData.getByName(req.params.name);
+    res.status(200).json(ingredient);
+  } catch (e) {
+    res.status(404).json({ error: e });
+  }
+});
+
 // router.post("/ingredient-search", async (req, res) => {
 //   const searchText = req.body.ingredientSearchText;
 //   try {

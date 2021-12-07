@@ -5,12 +5,12 @@ const helper = require("./helper");
 
 function convertIngredientsToCategories(ingredientList) {
   helper.checkProperArrayAllowEmpty(ingredientList);
-  const categories = [...new Set(ingredientList.map((item) => item.category))];
+  const categories = [...new Set(ingredientList.map(item => item.category))];
   let categorizedIngredients = {};
   for (const category of categories) {
     categorizedIngredients[category] = ingredientList
-      .filter((x) => x.category === category)
-      .map((y) => ({
+      .filter(x => x.category === category)
+      .map(y => ({
         name: y.name,
         id: y._id.toString(),
         protien: y.protien,
@@ -102,6 +102,21 @@ module.exports = {
       })
       .toArray();
     return convertIngredientsToCategories(result);
+  },
+  async getByName(name) {
+    helper.checkProperString(name);
+    const ingredientCollection = await ingredients();
+    const ingredient = await ingredientCollection.findOne({ name: name });
+    if (ingredient === null) {
+      throw "Error: No ingredient with that name";
+    }
+    ingredient._id = ingredient._id.toString();
+    ingredient.calories = getCalories(
+      ingredient.protien,
+      ingredient.carb,
+      ingredient.fat
+    );
+    return ingredient;
   },
 
   async get(id) {
