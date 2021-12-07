@@ -36,7 +36,9 @@ router.get('/signup', async (req, res) => {
     if (req.session.user) {
         res.redirect('/private');
     } else {
-        res.render('users/signup');
+        res.render('users/signup', {
+            login_signup_page: true,
+        });
     }
 });
 
@@ -89,6 +91,7 @@ router.get('/login', async (req, res) => {
         res.redirect('/private');
     } else {
         res.render('users/login', {
+            login_signup_page: true,
             // title: 'Log In',
             // authenticated: false,
             // partial: 'login-script'
