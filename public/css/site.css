@@ -119,6 +119,12 @@ input.chk-btn:checked + label {
   width: 40%;
 }
 
+.recipe-card-img {
+  width: 100%;
+  height: 25vw;
+  object-fit: cover;
+}
+
 #recipe-page-title {
   font-size: 40px;
   font-weight: 200;
