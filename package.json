@@ -17,8 +17,10 @@
     "express": "^4.17.1",
     "express-handlebars": "^6.0.2",
     "express-session": "^1.17.2",
+    "g-i-s": "^2.1.6",
     "handlebars": "^4.7.7",
     "mongodb": "^4.2.0",
+    "scrape-youtube": "^2.1.13",
     "xss": "^1.0.10"
   }
 }

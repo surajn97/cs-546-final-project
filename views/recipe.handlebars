@@ -1,38 +1,116 @@
-<section>
-  <h1>{{title}}</h1>
-</section> 
-<div class="slider-wrap">
-    <div class="slider-item" style="background-image: url('img/hero_1.jpg');">
-        <div class="container">
-            <div class="row slider-text align-items-center justify-content-center">
-                <div class="col-md-8 text-center col-sm-12 ">
-                    <p class="mb-2" data-aos="fade-up"><span class="mx-3">&bullet;</span> Posted by : {{data.postedBy}} </p>
-                    <h1 data-aos="fade-up" data-aos-delay="100">{{data.name}}</h1>
-              
-                </div>
-            </div>
+<div class="container my-4" id="recipe-page-container">
+  <div class="position-relative d-flex p-0">
+    <div id="recipe-page-card">
+      <div id="recipe-page-title">
+        {{data.name}}
+      </div>
+      <div class="d-flex justify-content-center p-2">
+        <span class="stars">{{data.overallRating}}</span>
+      </div>
+    </div>
+    <img
+      class="center-block"
+      id="recipe-detail-image"
+      src="{{data.recipeImageURL}}"
+      alt="{{data.name}} Recipe"
+    />
+  </div>
+  <div class="row align-start p-3 m-0" id="recipe-page-title-info">
+    <div class="col d-flex flex-row">
+      <img
+        class="my-auto"
+        src="/public/images/serving-dish.png"
+        width="32"
+        height="32"
+      />
+      <div class="d-flex flex-column my-auto mx-3">
+        Serves<br />
+        {{data.servings}}
+      </div>
+    </div>
+    <div class="col d-flex flex-row">
+      <img
+        class="my-auto"
+        src="/public/images/wall-clock.png"
+        width="32"
+        height="32"
+      />
+      <div class="d-flex flex-column my-auto mx-3">
+        Ready in<br />
+        {{data.cookingTime}}
+      </div>
+    </div>
+    <div class="col d-flex flex-row">
+      <img
+        class="my-auto"
+        src="/public/images/meal.png"
+        width="32"
+        height="32"
+      />
+      <div class="d-flex flex-column my-auto mx-3">
+        Meal Type<br />
+        {{data.mealType}}
+      </div>
+    </div>
+    <div class="col d-flex flex-row">
+      <img
+        class="my-auto"
+        src="/public/images/cuisine.png"
+        width="32"
+        height="32"
+      />
+      <div class="d-flex flex-column my-auto mx-3">
+        Cuisine<br />
+        {{data.cuisine}}
+      </div>
+    </div>
+  </div>
+  <div class="container p-0 mt-3">
+    <div>
+      <p class="fs-5 fw-light">{{data.instructions}}</p>
+    </div>
+    <div class="row mt-3">
+      <div class="col">
+        <div>
+          <p class="fs-2 fw-light">Ingredients</p>
+          <ul>
+            {{#each data.ingredients}}
+              <li class="fs-6 fw-light">{{text}}</li>
+            {{/each}}
+          </ul>
         </div>
-    </div> 
-</div>
+      </div>
+      <div class="col">
+        <p class="fs-2 fw-light">Nutrition Information</p>
+        <div class="d-flex flex-row">
+          <div class="nutrition-border me-1">
+            <p class="nutrition-title">CALORIES</p>
+            <p class="nutrition-value">{{data.calories}} kcal</p>
+          </div>
+          <div class="nutrition-border mx-1">
+            <p class="nutrition-title">PROTIEN</p>
+            <p class="nutrition-value">{{data.protien}} g</p>
+          </div>
+          <div class="nutrition-border mx-1">
+            <p class="nutrition-title">CARBS</p>
+            <p class="nutrition-value">{{data.carb}} g</p>
+          </div>
+          <div class="nutrition-border mx-1">
+            <p class="nutrition-title">FAT</p>
+            <p class="nutrition-value">{{data.fat}} g</p>
+          </div>
+        </div>
 
-<section>  Cooking Time: {{data.cookingTime}}</section>
-</br>
-<section> Ingredients:
-    {{#each data.ingredients}}
-      <li>
-          {{this.name}}
-      </li>
-    {{/each}}
-</section>
-</br>
-<section> Meal Type: {{data.mealType}}</section>
-</br>
-<section> Cuisine: {{data.cuisine}}</section>
-</br>
-<section> Instructions: {{data.instructions}}</section>
-</br>
-<section>Servings: {{data.servings}}</section>
-{{#if error}}
-    <section id="errors">{{error}}</section>
-{{/if}}
-</section>
+      </div>
+    </div>
+  </div>
+  <p class="fs-2 fw-light">Instruction Video</p>
+  <div class="ratio ratio-16x9">
+    <iframe
+      src="{{data.youtubeURL}}"
+      title="YouTube video"
+      allowfullscreen
+    ></iframe>
+  </div>
+
+</div>

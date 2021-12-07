@@ -12,11 +12,12 @@ function convertIngredientsToCategories(ingredientList) {
       .filter((x) => x.category === category)
       .map((y) => ({
         name: y.name,
-        id: y._id.toString(),
+        _id: y._id.toString(),
         protien: y.protien,
         carb: y.carb,
         fat: y.fat,
         calories: y.calories,
+        checked: y.checked,
       }));
   }
   return categorizedIngredients;
@@ -123,13 +124,30 @@ module.exports = {
   async getAll() {
     const ingredientCollection = await ingredients();
     const ingredientList = await ingredientCollection.find({}).toArray();
-
     ingredientList.forEach(function (ingredient) {
       ingredient.calories = getCalories(
         ingredient.protien,
         ingredient.carb,
         ingredient.fat
       );
+      ingredient.checked = false;
+    });
+    return convertIngredientsToCategories(ingredientList);
+  },
+
+  async getAllWithChecked(checkedIngredients) {
+    helper.checkProperArray(checkedIngredients);
+    const ingredientCollection = await ingredients();
+    const ingredientList = await ingredientCollection.find({}).toArray();
+    ingredientList.forEach(function (ingredient) {
+      ingredient.calories = getCalories(
+        ingredient.protien,
+        ingredient.carb,
+        ingredient.fat
+      );
+      if (checkedIngredients.includes(ingredient._id.toString()))
+        ingredient.checked = true;
+      else ingredient.checked = false;
     });
     return convertIngredientsToCategories(ingredientList);
   },
