@@ -5,7 +5,7 @@ let { ObjectId } = require("mongodb");
 const helper = require("./helper");
 const youtubeApi = "AIzaSyBzNYNEd6S5VRWmD4_pgCp6T_MpIxTix2U";
 
-const getYoutubeLink = async (title) => {
+const getYoutubeLink = async title => {
   helper.checkProperString(title);
   const searchKeyword = title.split(" ").join("+") + "+Recipe";
   try {
@@ -26,6 +26,8 @@ const getYoutubeLink = async (title) => {
     throw "Could not retrieve youtube URL";
   }
 };
+const ingredientsData = require("./ingredients");
+const userData = require("./users");
 
 module.exports = {
   async create(
@@ -33,6 +35,7 @@ module.exports = {
     postedBy,
     cookingTime,
     ingredients,
+    otherIngredients,
     mealType,
     cuisine,
     instructions,
@@ -42,9 +45,20 @@ module.exports = {
     helper.checkProperString(postedBy, "User");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach((element) => {
-      helper.checkProperString(element, "Individual ingredient");
-    }); //************* Store Ing ID or Name??? */
+    helper.checkProperArray(otherIngredients, "Other Ingredients");
+    ingredients.forEach(element => {
+      helper.checkProperObject(element, "Individual ingredient");
+      helper.checkProperString(element.id, "Id of ingredient");
+      helper.checkProperNumber(element.quantity, "Quantity of ingredient");
+      helper.checkProperString(element.quantityMeasure, "Quantity Measure");
+    });
+    otherIngredients.forEach(element => {
+      helper.checkProperObject(element, "Other Ingredients Individual");
+      helper.checkProperString(element.name, "Id of ingredient");
+      helper.checkProperNumber(element.quantity, "Quantity of ingredient");
+      helper.checkProperString(element.quantityMeasure, "Quantity Measure");
+    });
+
     helper.checkProperString(mealType, "Meal Type");
     helper.checkProperString(cuisine, "Cuisine");
     helper.checkProperString(instructions);
@@ -55,6 +69,7 @@ module.exports = {
       postedBy: postedBy,
       cookingTime: cookingTime,
       ingredients: ingredients,
+      otherIngredients: otherIngredients,
       mealType: mealType,
       cuisine: cuisine,
       overallRating: 0,
@@ -91,16 +106,26 @@ module.exports = {
     return recipe;
   },
 
-  async getAll() {
+  async getAll(selectedIngredients) {
     const recipeCollection = await recipes();
 
     const recipeList = await recipeCollection.find({}).toArray();
-    const rstList = [];
-    recipeList.forEach((item) => {
-      let obj = {};
-      obj._id = item._id.toString();
-      obj.name = item.name;
-      rstList.push(obj);
+    let rstList = [];
+
+    recipeList.forEach(item => {
+      if (item.ingredients.length <= selectedIngredients.length) {
+        let flag = false;
+        for (element of item.ingredients) {
+          if (!selectedIngredients.includes(element.id)) {
+            flag = false;
+            break;
+          }
+          flag = true;
+        }
+        if (flag) {
+          rstList.push(item);
+        }
+      }
     });
 
     return rstList;
@@ -134,7 +159,7 @@ module.exports = {
     helper.checkProperString(name, "Name");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach((element) => {
+    ingredients.forEach(element => {
       helper.checkProperString(element, "Individual ingredient");
     }); //************* Store Ing ID or Name??? */
     helper.checkProperString(mealType, "Meal Type");
@@ -197,7 +222,7 @@ module.exports = {
       updatedData.ingredients !== oldRecipe.ingredients
     ) {
       helper.checkProperArray(updatedData.ingredients, "Ingredients");
-      updatedData.ingredients.forEach((element) => {
+      updatedData.ingredients.forEach(element => {
         helper.checkProperString(element, "Individual ingredient");
       });
       newUpdatedDataObj.cookingTime = updatedData.cookingTime;
@@ -252,7 +277,7 @@ module.exports = {
       let currentRecipe = await this.get(recipeId);
       const reviewsarray = currentRecipe.reviews;
       let sumRating = reviewsarray
-        .map((s) => s.rating)
+        .map(s => s.rating)
         .reduce((a, b) => a + b, 0);
       newRating = sumRating / len;
     }

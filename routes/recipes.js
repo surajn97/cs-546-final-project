@@ -3,6 +3,8 @@ const router = express.Router();
 const data = require("../data");
 const recipeData = data.recipes;
 const ingredientsData = data.ingredients;
+const userData = data.users;
+const reviewData = data.reviews;
 const helper = data.helper;
 
 router.get("/:id", async (req, res) => {
@@ -14,7 +16,12 @@ router.get("/:id", async (req, res) => {
   }
   try {
     let recipe = await recipeData.get(req.params.id);
-    res.json(recipe);
+    let reviews = await reviewData.getAll(req.params.id);
+    res.render("recipe", {
+      data: recipe,
+      reviews: reviews,
+    });
+
     return;
   } catch (e) {
     res.status(404).json({ error: e });
@@ -22,16 +29,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+//When an ingredient is selected, this route is triggered
+router.post("/selected", async (req, res) => {
   try {
-    // const recipeList = await recipeData.getAll();
+    let ingredientsList = req.body;
+    helper.checkProperObject(ingredientsList);
+    helper.checkProperArrayAllowEmpty(ingredientsList.ingredients);
+    const recipeList = await recipeData.getAll(ingredientsList.ingredients);
     const categorizedIngredients = await ingredientsData.getAll();
-    res.render("recipes", {
-      // recipeList: recipeList,
+    res.render("recipeList", {
+      recipeList: recipeList,
       categorizedIngredients: categorizedIngredients,
       recipes_page: true,
+      test: "ingredient",
     });
-    return;
   } catch (e) {
     res.status(500).json({ error: e });
 
@@ -39,19 +50,39 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const categorizedIngredients = await ingredientsData.getAll();
+    res.render("recipelist", {
+      recipeList: [],
+      categorizedIngredients: categorizedIngredients,
+      recipes_page: true,
+      test: "recipe",
+    });
+    return;
+  } catch (e) {
+    res.status(500).json({ error: e });
+    return;
+  }
+});
+
 router.post("/", async (req, res) => {
   let recipeInfo = req.body;
+
   if (!recipeInfo) {
     e = "You must provide data to update a recipe";
     res.status(400).json({ error: e });
     return;
   }
-
   const ctime = parseInt(recipeInfo.cookingTime);
   const serv = parseInt(recipeInfo.servings);
   let ingarray = [];
   const ing = `${recipeInfo.ingredients}`;
+
+  let curentuser = req.session.user;
+
   try {
+    helper.checkProperObject(curentuser._id);
     helper.checkProperString(ing, "Individual ingredient String");
     ingarray = ing.split(",");
     helper.checkProperString(recipeInfo.name, "Name");
@@ -68,11 +99,12 @@ router.post("/", async (req, res) => {
     res.status(400).json({ error: e });
     return;
   }
+  let postedBy = curentuser._id;
 
   try {
     const newRecipe = await recipeData.create(
       recipeInfo.name,
-      "7b7997a2-c0d2-4f8c-b27a-6a1d4b5b6310",
+      postedBy,
       ctime,
       ingarray,
       recipeInfo.mealType,
@@ -216,7 +248,7 @@ router.patch("/:id", async (req, res) => {
       res.status(500).json({ error: e });
     }
   } else {
-    res.status(400).json({
+    res.status(500).json({
       error:
         "No fields have been changed from their inital values, so no update has occurred",
     });

@@ -1,10 +1,6 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col">
-      {{>ingredients}}
-    </div>
 
-    <div class="col-8">
+{{#if recipeList.length}}
+    <div>
       <div class="mt-4">
         <h3>120 Recipes found for the ingredients you selected</h3>
       </div>      
@@ -55,5 +51,9 @@
         </div>
       </div>
     </div>
+{{else}}
+  <div>
+    Select Ingredients to get recipes{{test}} 
   </div>
-</div>
+{{/if}}
+  </div>

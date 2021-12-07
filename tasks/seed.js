@@ -45,13 +45,12 @@ const main = async () => {
           cuisine: "French Cuisine",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
               quantity: 3,
               quantityMeasure: "teaspoons",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "rice")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "rice")._id,
               quantity: 4,
               quantityMeasure: "grams",
             },
@@ -83,6 +82,6 @@ const main = async () => {
   // console.log("Done seeding database");
 };
 
-main().catch((error) => {
+main().catch(error => {
   console.log(error);
 });

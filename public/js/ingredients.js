@@ -6,6 +6,9 @@
   const clearIngredientsButton = $("#clear-ingredients");
   const selectedIngredientsModal = $("#selectedIngredientsModal");
   const ingredientToggleButtons = $("#ingredients-toggle-button");
+  const url = "http://localhost:3000/recipes/selected";
+  let ingInput = $("#ingData");
+  let myform = $("generate-recipe");
 
   /* #region  Helper Functions */
   const checkProperString = (string, parameter) => {
@@ -37,11 +40,15 @@
         $('<p class="text-center m-4">No ingredients selected</p>')
       );
     }
-    $.ajax({
-      type: "POST",
-      url: "http://localhost:3000/ingredients/selected",
-      data: { ingredients: currentIngredients },
-    });
+    return currentIngredients;
+    // $.ajax({
+    //   type: "POST",
+    //   url: url,
+    //   data: { ingredients: currentIngredients },
+    //   success: function (ret) {
+    //     document.write(ret);
+    //   },
+    // });
   }
 
   function addToSelectedIngredientsList(id, ingredientText) {
@@ -77,11 +84,11 @@
       selectedIngredientsDiv.append(
         $('<p class="text-center m-4">No ingredients selected</p>')
       );
-      $.ajax({
-        type: "POST",
-        url: "http://localhost:3000/ingredients/selected",
-        data: { ingredients: [] },
-      });
+      // $.ajax({
+      //   type: "POST",
+      //   url: url,
+      //   data: { ingredients: [] },
+      // });
       // Snackbar.show({
       //   text: "Example notification text.",
       //   pos: "bottom-center",
@@ -174,6 +181,16 @@
           );
         }
       });
+    });
+
+    myform.submit(function (event) {
+      let data = getAllSelectedIngredientsAndSend();
+
+      // let ip = $("#<input/>").attr("type", "hidden").attr("ingredients", data);
+      // ip.appendTo("#generate-recipe");
+      $(ingInput).val(data);
+
+      return true;
     });
 
     //search modal on close

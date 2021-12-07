@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const ingredientsData = data.ingredients;
+const recipeData = data.recipes;
 const helper = data.helper;
 
 router.get("/:id", async (req, res) => {
@@ -31,12 +32,6 @@ router.get("/:id", async (req, res) => {
 //     res.status(400).json({ error: e });
 //   }
 // });
-
-//When an ingredient is selected, this route is triggered
-router.post("/selected", async (req, res) => {
-  console.log(req.body);
-  res.status(200);
-});
 
 router.get("/", async (req, res) => {
   try {
