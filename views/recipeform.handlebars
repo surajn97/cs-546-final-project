@@ -1,57 +1,80 @@
-<section>
-  <h1>{{title}}</h1>
-  <form method="POST" id="recipe-form" action="/recipes">
-    <label for="name"> Name: </label>
-    <input type="text" name="name" id="name" />
-</br>
-    <label for="cookingTime"> Cooking Time </label>
-    <input type="number" name="cookingTime" id="cookingTime" />
-</br>
-    <label for="ingredients"> Ingredients: </label>
-    <input type="text" name="ingredients" id="ingredients" hidden/>
-
-    
+<h1>{{title}}</h1>
+<form method="POST" id="recipe-form" action="/recipes">
+<i class="material-icons" id="fav">favorite_border</i>
 <div class="input-group">
-  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Ingredient">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="name">Recipe Name</label>
+    </div>
+    <input type="text" name="name" id="name" class="form-control" aria-label="Text input with dropdown button" placeholder="Recipe Name">
+</div>
+</br>  
+<div class="input-group">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="cookingTime">Cooking Time</label>
+    </div>
+    <input type="number" name="cookingTime" id="cookingTime" class="form-control" aria-label="Text input with dropdown button" placeholder="Cooking Time">
+</div>
+</br>
+{{!-- <label for="ingredients"> Ingredients: </label> --}}
+<div id="showDiv">
+    <input type="text" class="form-control" name="ingredients" id="ingredients" placeholder="Just to store object value" val=[] disabled/>
+</div>
+<div class="input-group">
+  <input type="text" class="form-control" id="ingName" name="ingName" placeholder="Ingredient">
     <div class="input-group-append">
-        <input type="Number" class="form-control" aria-label="Text input with dropdown button" placeholder="Quantity">
+        <input type="Number" class="form-control" id="quantity" name="quantity" placeholder="Quantity">
     </div>
      
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Quantity Measure</button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="#" selected>Grams</a>
-            <a class="dropdown-item" href="#">Teaspoon</a>
-            <a class="dropdown-item" href="#">Tablespoon</a>
-            {{!-- <div role="separator" class="dropdown-divider"></div> --}}
-            <a class="dropdown-item" href="#">Bowl</a>
-        </div>
+    <select class="form-control" name="qMeasure" id="qMeasure" >
+    <option value="grams" selected>Grams</option>
+    <option value="teaspoon">Teaspoons</option>
+    <option value="tablespoon">Tablespoons</option>
+    <option value="bowl">Bowl</option>
+    <option value="pieces">Pieces</option>
+  </select>
     </div>
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button">Button</button>
+        <button class="btn btn-outline-secondary" id="addIng" name="addIng" type="button">Add</button>
     </div>
-  </div>
 </div>
 </br>
 
+<div class="input-group">
+    <select class="form-control" name="mealType" id="mealType" >
+    <option selected>Mealtype</option>
+    <option value="1">Breakfast</option>
+    <option value="2">Brunch</option>
+    <option value="3">Lunch</option>
+    <option value="4">Snacks</option>
+    <option value="5">Dinner</option>
+  </select>
+    <input class="form-control" type="number" name="servings" id="servings" placeholder="servings"/>
+    <input class="form-control" type="number" name="cookingTime" id="cookingTime" class="form-control" placeholder="Cooking Time">
+</div>
 </br>
-    <label for="mealType"> Meal Type: </label>
-    <input type="text" name="mealType" id="mealType" />
-</br>
-    <label for="cuisine"> Cuisine: </label>
-    <input type="text" name="cuisine" id="cuisine" />
-</br>
-    <label for="instructions"> Instructions: </label>
-    <textarea name="instructions" id="instructions"></textarea>
-</br>
-    <label for="servings"> Servings: </label>
-    <input type="number" name="servings" id="servings" />
-</br>
-    <button id="button" type="submit">Submit </button>
+<div class="input-group">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="cuisine">Cuisine</label>
     </div>
-  </form>
-  {{#if error}}
+    <input class="form-control" type="text" name="cuisine" id="cuisine" placeholder="cuisine"/>
+</div>
+</br>
+<div class="input-group">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="instructions">Instructions</label>
+    </div>
+    <textarea class="form-control" name="instructions" id="instructions"placeholder="Instructions"></textarea>
+</div>
+</br>
+
+<div class="input-group">
+    <button class="btn btn-outline-secondary" id="button" type="submit">Submit </button>
+</div>
+    
+
+</form>
+{{#if error}}
     <p id="errors">{{error}}</p>
-  {{/if}}
-</section>
-<script src="/public/js/form.js"></script>
+{{/if}}
+<script src="/public/js/recipe.js"></script>
