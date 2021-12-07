@@ -37,17 +37,12 @@ router.post("/selected", async (req, res) => {
     helper.checkProperArrayAllowEmpty(ingredientsList.ingredients);
     const recipeList = await recipeData.getAll(ingredientsList.ingredients);
     const categorizedIngredients = await ingredientsData.getAll();
-    res.render("home", {
+    res.render("recipeList", {
       recipeList: recipeList,
       categorizedIngredients: categorizedIngredients,
       recipes_page: true,
-      test: "ingrefient",
+      test: "ingredient",
     });
-    // res.render("error", {
-    //   error: "error",
-    //   status: "500",
-    // });
-    // return;
   } catch (e) {
     res.status(500).json({ error: e });
 
@@ -58,7 +53,7 @@ router.post("/selected", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const categorizedIngredients = await ingredientsData.getAll();
-    res.render("home", {
+    res.render("recipelist", {
       recipeList: [],
       categorizedIngredients: categorizedIngredients,
       recipes_page: true,

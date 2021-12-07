@@ -1,0 +1,34 @@
+<section>
+  <h1>{{title}}</h1>
+  <form method="POST" id="recipe-form" action="/recipes">
+    <label for="name"> Name: </label>
+    <input type="text" name="name" id="name" />
+</br>
+    <label for="cookingTime"> Cooking Time </label>
+    <input type="number" name="cookingTime" id="cookingTime" />
+</br>
+    <label for="ingredients"> Ingredients: </label>
+    <input type="text" name="ingredients" id="ingredients" />
+</br>
+
+</br>
+    <label for="mealType"> Meal Type: </label>
+    <input type="text" name="mealType" id="mealType" />
+</br>
+    <label for="cuisine"> Cuisine: </label>
+    <input type="text" name="cuisine" id="cuisine" />
+</br>
+    <label for="instructions"> Instructions: </label>
+    <textarea name="instructions" id="instructions"></textarea>
+</br>
+    <label for="servings"> Servings: </label>
+    <input type="number" name="servings" id="servings" />
+</br>
+    <button id="button" type="submit">Submit </button>
+    </div>
+  </form>
+  {{#if error}}
+    <p id="errors">{{error}}</p>
+  {{/if}}
+</section>
+<script src="/public/js/form.js"></script>

@@ -127,9 +127,6 @@ module.exports = {
         }
       }
     });
-    // rstList.forEach(item => {
-    //   item._id = item._id.toString();
-    // });
 
     return rstList;
   },

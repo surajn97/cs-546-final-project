@@ -7,6 +7,8 @@
   const selectedIngredientsModal = $("#selectedIngredientsModal");
   const ingredientToggleButtons = $("#ingredients-toggle-button");
   const url = "http://localhost:3000/recipes/selected";
+  let ingInput = $("#ingData");
+  let myform = $("generate-recipe");
 
   /* #region  Helper Functions */
   const checkProperString = (string, parameter) => {
@@ -181,10 +183,13 @@
       });
     });
 
-    $("#generate-recipe").on("submit", function (e) {
+    myform.submit(function (event) {
       let data = getAllSelectedIngredientsAndSend();
-      let ip = $("#<input/>").attr("type", "hidden").attr("ingredients", data);
-      ip.appendTo("#generate-recipe");
+
+      // let ip = $("#<input/>").attr("type", "hidden").attr("ingredients", data);
+      // ip.appendTo("#generate-recipe");
+      $(ingInput).val(data);
+
       return true;
     });
 

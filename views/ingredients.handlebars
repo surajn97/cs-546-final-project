@@ -11,9 +11,11 @@
     </button>
     <button type="button" id="clear-ingredients" class="btn btn-danger">
      <i class="far fa-trash-alt me-2"></i></i>Clear All</button>
-     <form method="POST" id="generate-recipe" action="recipes/selected"> <button type="button"  class="btn btn-danger"></button></form>
-     
+     <form method="POST" id="generate-recipe" action="recipes/selected">
+     <input type = "text" name="ingdata" id ="ingdata" hidden=true/>
+      <button type="button"  class="btn btn-danger"></button>
      <i class="far fa-trash-alt me-2"></i></i>Generate</button>
+     </form>
   </div>
 
   {{! Search Button }}
