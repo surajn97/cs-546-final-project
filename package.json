@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "seed": "node ./tasks/seed.js",
-    "ingredient-seed": "node ./tasks/ingredient-seed.js"
+    "seed": "node ./tasks/seed.js"
   },
   "author": "Project CS546 Group 4",
   "license": "ISC",
