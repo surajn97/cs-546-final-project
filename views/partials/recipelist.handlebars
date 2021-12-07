@@ -1,0 +1,38 @@
+
+{{#if recipeList.length}}
+    <div>
+      <div class="mt-4">
+        {{#if recipeList.[1]}}
+          <h3>{{recipeList.length}} Recipes found for the ingredients you selected</h3>
+        {{else}}
+          <h3>{{recipeList.length}} Recipe found for the ingredients you selected</h3>
+        {{/if}}
+      </div>      
+      <div class="row row-cols-1 row-cols-md-3 g-4 g-md-3 g-lg-3 mt-3">
+         {{#each recipeList}}
+        <div class="col">
+          <div class="card">
+            <img src="{{recipeImageURL}}"  class="card-img-top" alt="{{name}} Recipe">
+            <div class="card-body">
+              <h5 class="card-title"><a href="/recipes/{{_id}}" target="_blank">{{name}}</a> <small class="text-muted"><i class="bi bi-box-arrow-up-right"></i></small></h5>
+              <p class="card-text">Rating: <span class="stars">{{overallRating}}</span></p>
+              <p class="card-text">{{trimString instructions 0 50}}...</p>
+              <p class="card-text"><small class="text-muted">Posted By: {{postedBy.firstName}} {{postedBy.lastName}}</small></p>
+            </div>
+          </div>
+        </div>
+         {{/each}}
+      </div>
+    </div>
+{{else if ingredientsSelected}}
+  <div class="container mx-auto d-block w-50 mt-4">
+    <img src="/public/images/not-found.png" class="img-fluid" alt="Select Ingredients"/>
+<p class="text-center mt-3">Could not find any recipes</p>
+  </div>
+{{else}}
+  <div class="container mx-auto d-block w-50 mt-4">
+    <img src="/public/images/blank-recipe-list.png" class="img-fluid" alt="Select Ingredients"/>
+<p class="text-center mt-3">Add your ingredients to get started</p>
+  </div>
+{{/if}}
+  </div>

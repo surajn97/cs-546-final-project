@@ -29,43 +29,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//When an ingredient is selected, this route is triggered
-router.post("/selected", async (req, res) => {
-  try {
-    let ingredientsList = req.body;
-    helper.checkProperObject(ingredientsList);
-    helper.checkProperArrayAllowEmpty(ingredientsList.ingredients);
-    const recipeList = await recipeData.getAll(ingredientsList.ingredients);
-    const categorizedIngredients = await ingredientsData.getAll();
-    res.render("recipeList", {
-      recipeList: recipeList,
-      categorizedIngredients: categorizedIngredients,
-      recipes_page: true,
-      test: "ingredient",
-    });
-  } catch (e) {
-    res.status(500).json({ error: e });
-
-    return;
-  }
-});
-
-router.get("/", async (req, res) => {
-  try {
-    const categorizedIngredients = await ingredientsData.getAll();
-    res.render("recipelist", {
-      recipeList: [],
-      categorizedIngredients: categorizedIngredients,
-      recipes_page: true,
-      test: "recipe",
-    });
-    return;
-  } catch (e) {
-    res.status(500).json({ error: e });
-    return;
-  }
-});
-
 router.post("/", async (req, res) => {
   let recipeInfo = req.body;
 
@@ -88,7 +51,7 @@ router.post("/", async (req, res) => {
     helper.checkProperString(recipeInfo.name, "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach(element => {
+    ingarray.forEach((element) => {
       helper.checkProperString(element, "Individual ingredient");
     });
     helper.checkProperString(recipeInfo.mealType, "Meal Type");
@@ -142,7 +105,7 @@ router.put("/:id", async (req, res) => {
     helper.checkProperString(updatedData.name, "Name");
     helper.checkProperNumber(updatedData.cookingTime, "Cooking Time");
     helper.checkProperArray(updatedData.ingredients, "Ingredients");
-    updatedData.ingredients.forEach(element => {
+    updatedData.ingredients.forEach((element) => {
       helper.checkProperString(element, "Individual ingredient");
     });
     helper.checkProperString(updatedData.mealType, "Meal Type");
@@ -209,7 +172,7 @@ router.patch("/:id", async (req, res) => {
       updatedData.ingredients !== oldRecipe.ingredients
     ) {
       helper.checkProperArray(updatedData.ingredients, "Ingredients");
-      updatedData.ingredients.forEach(element => {
+      updatedData.ingredients.forEach((element) => {
         helper.checkProperString(element, "Individual ingredient");
       });
       newUpdatedDataObj.cookingTime = updatedData.cookingTime;

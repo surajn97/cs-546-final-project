@@ -82,6 +82,57 @@ input.chk-btn:checked + label {
   background: #f7f7f7;
 }
 
+#recipe-page-container {
+  width: 60%;
+}
+
+#recipe-page-title-info {
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+.nutrition-border {
+  border-radius: 100px/30px;
+  border: #bf180c 1px solid;
+  color: #e11d10;
+  background-clip: content-box;
+  width: 70px;
+  text-align: center;
+}
+
+.nutrition-title {
+  font-size: 10px;
+  font-weight: 400;
+  padding-top: 10px;
+}
+
+.nutrition-value {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+#recipe-page-card {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.9);
+  left: 5%;
+  top: 5%;
+  padding: 5px;
+  width: 40%;
+}
+
+#recipe-page-title {
+  font-size: 40px;
+  font-weight: 200;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+#recipe-detail-image {
+  object-fit: cover;
+  object-position: center; /* Center the image within the element */
+  width: 100%;
+  max-height: 500px;
+}
+
 * {
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -98,18 +149,19 @@ p {
   user-select: text;
 }
 
-
 .stars {
   vertical-align: middle;
 }
 
-span.stars, span.stars>* {
+span.stars,
+span.stars > * {
   display: inline-block;
-  background: url(http://i.imgur.com/YsyS5y8.png) 0 -16px repeat-x;
+  /* background: url(http://i.imgur.com/YsyS5y8.png) 0 -16px repeat-x; */
+  background: url(/public/images/rating.png) 0 -16px repeat-x;
   width: 80px;
   height: 18px;
 }
-span.stars>*{
-  max-width:80px;
+span.stars > * {
+  max-width: 80px;
   background-position: 0 0;
 }

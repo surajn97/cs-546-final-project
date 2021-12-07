@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const ingredientsData = data.ingredients;
-const recipeData = data.recipes;
 const helper = data.helper;
 
 router.get("/:id", async (req, res) => {
@@ -34,19 +33,6 @@ router.get("/name/:name", async (req, res) => {
     res.status(404).json({ error: e });
   }
 });
-
-// router.post("/ingredient-search", async (req, res) => {
-//   const searchText = req.body.ingredientSearchText;
-//   try {
-//     helper.checkProperString(searchText, "Ingredient Search");
-//     const result = await ingredientsData.searchIngredient(searchText);
-//     res.render("ingredients", {
-//       categorizedIngredients: result,
-//     });
-//   } catch (e) {
-//     res.status(400).json({ error: e });
-//   }
-// });
 
 router.get("/", async (req, res) => {
   try {
