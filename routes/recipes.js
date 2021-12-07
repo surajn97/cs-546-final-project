@@ -82,7 +82,7 @@ router.post("/", async (req, res) => {
   let curentuser = req.session.user;
 
   try {
-    helper.checkProperObject(curentuser._id);
+    helper.checkAndGetID(curentuser._id);
     helper.checkProperString(ing, "Individual ingredient String");
     ingarray = ing.split(",");
     helper.checkProperString(recipeInfo.name, "Name");
@@ -112,7 +112,11 @@ router.post("/", async (req, res) => {
       recipeInfo.instructions,
       serv
     );
-    res.json(newRecipe);
+    // res.json(newRecipe);
+    res.render("recipe", {
+      data: newRecipe,
+      reviews: reviews,
+    });
     return;
   } catch (e) {
     res.status(500).json({ error: e });
@@ -162,6 +166,7 @@ router.put("/:id", async (req, res) => {
       updatedData.servings
     );
     res.json(updatedRecipe);
+
     return;
   } catch (e) {
     res.status(400).json({ error: e });
@@ -243,7 +248,11 @@ router.patch("/:id", async (req, res) => {
         req.params.id,
         newUpdatedDataObj
       );
-      res.json(newUpdatedData);
+      // res.json(newUpdatedData);
+      res.render("recipe", {
+        data: newUpdatedData,
+        reviews: reviews,
+      });
     } catch (e) {
       res.status(500).json({ error: e });
     }
