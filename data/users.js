@@ -68,7 +68,7 @@ module.exports = {
 
     const newId = insertInfo.insertedId.toString();
     const user = await this.get(newId); //?
-    // user._id = user._id.toString();
+    user._id = user._id.toString();
     return user;
     // return { userInserted: true };
   },
@@ -106,7 +106,7 @@ module.exports = {
     if (user === null) throw 'No user with that id.';
     user._id = user._id.toString();
 
-    return user;;
+    return user;
   },
 
   async update(

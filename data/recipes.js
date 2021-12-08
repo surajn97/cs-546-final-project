@@ -372,7 +372,7 @@ module.exports = {
             likes: reviewobj.likes,
             dislikes: reviewobj.dislikes,
             comments: reviewobj.comments,
-            userId: reviewobj.userId,
+            user: reviewobj.user,
             dateOfReview: reviewobj.dateOfReview,
           },
         },

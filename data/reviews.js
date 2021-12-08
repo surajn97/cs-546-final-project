@@ -1,7 +1,9 @@
 const mongoCollections = require("../config/mongoCollections");
 const recipeFunctions = require("./recipes.js");
+const userFunctions = require("./users");
 const recipes = mongoCollections.recipes;
 const reviews = mongoCollections.reviews;
+
 let { ObjectId } = require("mongodb");
 const helper = require("./helper");
 
@@ -19,11 +21,17 @@ module.exports = {
       throw "Error: No recipe with that id";
     }
 
+    try{
+      rating = parseInt(rating);
+    } catch (e) {
+      throw "Error: Rating is not a number";
+    }
     helper.checkProperNumber(rating, "Rating");
     if (rating < 1 || rating > 5)
       throw "Error: Rating value must be between 1 to 5";
 
     // helper.checkProperDate(dateOfReview);
+    const user = await userFunctions.get(userId);
 
     const reviewCollection = await reviews();
     let newReview = {
@@ -33,7 +41,7 @@ module.exports = {
       likes: [],
       dislikes: [],
       comments: [],
-      userId: ObjectId(userId),
+      user: user,
       dateOfReview: new Date(),
     };
 
