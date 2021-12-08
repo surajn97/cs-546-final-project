@@ -15,11 +15,12 @@ router.get("/:id", async (req, res) => {
     return;
   }
   try {
-    let recipe = await recipeData.get(req.params.id);
+    let recipe = await recipeData.getWithOnlineData(req.params.id);
     let reviews = await reviewData.getAll(req.params.id);
     res.render("recipe", {
       data: recipe,
       reviews: reviews,
+      title: recipe.name,
     });
 
     return;

@@ -194,6 +194,10 @@ const ingredientObjs = {
     Strawberry: { p: 0, c: 0, f: 0 },
     Watermelon: { p: 0, c: 0, f: 0 },
   },
+  Miscellaneous: {
+    Oil: { p: 2.2, c: 13, f: 0.2 },
+    "Olive Oil": { p: 2.2, c: 13, f: 0.2 },
+  },
 };
 
 module.exports = {

@@ -1,6 +1,7 @@
 (function ($) {
   const ingredientSearch = $("#ingredient-search-input");
   const ingredientCheckBox = $(".ingredient-check");
+  const ingredientSuggestionCheckBox = $(".ingredient-check-suggestion");
   const allIngredientsDiv = $("#all-ingredients-div");
   const selectedIngredientsDiv = $("#selected-ingredients-div");
   const selectedIngredientsModal = $("#selectedIngredientsModal");
@@ -79,8 +80,23 @@
   }
 
   $(document).ready(function () {
+    getAllSelectedIngredients();
+
     // Triggered when ingredients are clicked
-    ingredientCheckBox.on("click", getAllSelectedIngredients);
+    ingredientCheckBox.on("click", function (e) {
+      const id = $(this).attr("name");
+      const isChecked = $(this).prop("checked");
+      $(`#check-suggestion-${id}`).prop("checked", isChecked);
+      getAllSelectedIngredients();
+    });
+
+    // Triggered when Suggested ingredients are clicked
+    ingredientSuggestionCheckBox.on("click", function (e) {
+      const id = $(this).attr("name");
+      const isChecked = $(this).prop("checked");
+      $(`#check-${id}`).prop("checked", isChecked);
+      getAllSelectedIngredients();
+    });
 
     //Ingredient Toggle
     ingredientToggleButtons.on("click", function (e) {
@@ -104,6 +120,7 @@
     $(document).on("click", ".selected-ingredient-delete", function () {
       const id = $(this).attr("name");
       $(`#check-${id}`).prop("checked", false);
+      $(`#check-suggestion-${id}`).prop("checked", false);
       getAllSelectedIngredients();
     });
 
@@ -111,6 +128,7 @@
     $(document).on("click", ".search-ingredient-div-delete", function () {
       const id = $(this).attr("name");
       $(`#check-${id}`).prop("checked", false);
+      $(`#check-suggestion-${id}`).prop("checked", false);
       $(this).removeClass("search-ingredient-div-delete");
       $(this).addClass("search-ingredient-div-add");
       $(this).find("i").removeClass("fa-trash");
@@ -122,6 +140,7 @@
     $(document).on("click", ".search-ingredient-div-add", function () {
       const id = $(this).attr("name");
       $(`#check-${id}`).prop("checked", true);
+      $(`#check-suggestion-${id}`).prop("checked", true);
       $(this).removeClass("search-ingredient-div-add");
       $(this).addClass("search-ingredient-div-delete");
       $(this).find("i").removeClass("fa-plus-circle");
@@ -183,6 +202,27 @@
       });
     });
 
+    $("#suggested-ingredients").on("click", function (e) {
+      let data = getAllSelectedIngredients();
+      if (data.ingredients.length == 0) {
+        showToast(true, "Please select atleast One ingredient");
+        return;
+      }
+      data.random = false;
+      $(document).ready(function () {
+        $(`<form method="POST" action="${url}"></form>`)
+          .append(
+            $("<input>", {
+              name: "ingredientsList",
+              value: JSON.stringify(data),
+              type: "hidden",
+            })
+          )
+          .appendTo("body")
+          .submit();
+      });
+    });
+
     $("#random-recipe").on("click", function (e) {
       let data = getAllSelectedIngredients();
       if (data.ingredients.length == 0) {
@@ -202,6 +242,11 @@
           .appendTo("body")
           .submit();
       });
+    });
+
+    //search modal on open
+    $("#searchIngredientsModal").on("shown.bs.modal", function () {
+      ingredientSearch.focus();
     });
 
     //search modal on close
