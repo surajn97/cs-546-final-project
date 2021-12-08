@@ -1,0 +1,25 @@
+<div class="container my-2 p-2" id="suggestion-box">
+  <p class="ms-2">Do you have?</p>
+  {{! Ingredient }}
+  {{#each ingredientSuggestions}}
+    <input
+      type="checkbox"
+      id="check-suggestion-{{_id}}"
+      name="{{_id}}"
+      class="chk-btn ingredient-check-suggestion"
+      value="{{name}}"
+    />
+    <label
+      for="check-suggestion-{{_id}}"
+      class="ingredient-label"
+    >{{name}}</label>
+  {{/each}}
+  <div>
+    <button
+      type="button"
+      id="suggested-ingredients"
+      class="btn btn-success ms-2 mt-1"
+    >Search</button>
+  </div>
+
+</div>

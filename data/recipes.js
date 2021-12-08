@@ -89,7 +89,7 @@ module.exports = {
     return recipe;
   },
 
-  async get(id) {
+  async getWithOnlineData(id) {
     helper.checkProperString(id, "Recipe ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(id);
@@ -130,11 +130,41 @@ module.exports = {
     return recipe;
   },
 
+  async get(id) {
+    helper.checkProperString(id, "Recipe ID");
+    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
+    let ID = ObjectId(id);
+    const recipeCollection = await recipes();
+    const recipe = await recipeCollection.findOne({ _id: ID });
+    if (recipe === null) {
+      throw "Error: No recipe with that id";
+    }
+    recipe._id = recipe._id.toString();
+    return recipe;
+  },
+
   async getAll(selectedIngredients) {
     const recipeCollection = await recipes();
     const recipeList = await recipeCollection.find({}).toArray();
-    let rstList = [];
+    const rstList = [];
+    const missingIngredientRecipes = await recipeCollection
+      .find({
+        "ingredients._id": { $in: selectedIngredients },
+      })
+      .toArray();
 
+    let ingredientSuggestion = [];
+
+    for (const rec of missingIngredientRecipes) {
+      for (const rec_ing of rec.ingredients) {
+        if (
+          !selectedIngredients.includes(rec_ing._id) &&
+          !ingredientSuggestion.some((e) => e._id === rec_ing._id)
+        ) {
+          ingredientSuggestion.push(await ingredientsData.get(rec_ing._id));
+        }
+      }
+    }
     recipeList.forEach((item) => {
       if (item.ingredients.length <= selectedIngredients.length) {
         let flag = false;
@@ -156,7 +186,10 @@ module.exports = {
       item.recipeImageURL = url;
       item.postedBy = await userData.get(item.postedBy);
     }
-    return rstList;
+    return {
+      recipeList: rstList,
+      ingredientSuggestions: ingredientSuggestion,
+    };
   },
 
   async remove(id) {

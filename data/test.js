@@ -69,7 +69,6 @@ const ingredientObjs = {
     Olive: { p: 2.2, c: 13, f: 0.2 },
     Onion: { p: 2.2, c: 13, f: 0.2 },
     Scallions: { p: 2.2, c: 13, f: 0.2 },
-    Parsley: { p: 2.2, c: 13, f: 0.2 },
     Parsnip: { p: 2.2, c: 13, f: 0.2 },
     Peas: { p: 2.2, c: 13, f: 0.2 },
     "Green Chilli": { p: 2.2, c: 13, f: 0.2 },
@@ -194,6 +193,10 @@ const ingredientObjs = {
     Raspberry: { p: 0, c: 0, f: 0 },
     Strawberry: { p: 0, c: 0, f: 0 },
     Watermelon: { p: 0, c: 0, f: 0 },
+  },
+  Miscellaneous: {
+    Oil: { p: 2.2, c: 13, f: 0.2 },
+    "Olive Oil": { p: 2.2, c: 13, f: 0.2 },
   },
 };
 

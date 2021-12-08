@@ -26,7 +26,11 @@
       id="random-recipe"
       class="btn btn-danger"
     >Randomize</button>
-    <button type="button" id="all-recipe" class="btn btn-danger">View All</button>
+    <button
+      type="button"
+      id="all-recipe"
+      class="btn btn-success"
+    >Search</button>
   </div>
 
   {{! Modal Search }}
@@ -55,8 +59,6 @@
             type="text"
             class="form-control"
             placeholder="Search Ingredients"
-            aria-label="Ingredient"
-            aria-describedby="button-addon2"
             aria-label="Search"
           />
           <div id="ingredient-search-results">
@@ -93,13 +95,13 @@
             aria-controls="collapse{{cleanID key}}"
           >
             <img
-              src="/public/images/ingredients/{{key}}.png"
+              src="/public/images/ingredients/{{cleanID key}}.png"
               alt="{{key}}"
               width="50"
               height="50"
               class="m-2"
             />
-            <label class="mx-2 ingredient-title">{{key}}</label>
+            <strong class="mx-2 ingredient-title">{{key}}</strong>
           </button>
         </div>
         <div
@@ -139,4 +141,3 @@
     {{/each}}
   </div>
 </div>
-<script src="/public/js/ingredients.js"></script>
