@@ -1,32 +1,36 @@
 <div class="mx-3 my-4">
 
+  {{! Search Button }}
+  <div class="d-grid gap-2 my-3">
+    <button
+      type="button"
+      id="search-ingredients"
+      class="btn btn-outline-primary btn-block"
+      data-bs-toggle="modal"
+      data-bs-target="#searchIngredientsModal"
+    >Search ingredients<i class="fa fa-search ms-2"></i></button>
+  </div>
   <div>
     <button
       type="button"
-      class="btn btn-primary me-2"
+      class="btn btn-primary"
       id="ingredients-toggle-button"
     >
       <i class="far fa-list-alt me-2"></i>
       Added
     </button>
-    <button type="button" id="clear-ingredients" class="btn btn-danger">
-     <i class="far fa-trash-alt me-2"></i></i>Clear All</button>
-     <form method="POST" id="generate-recipe" action="recipes/selected">
-     <input type = "text" name="ingdata" id ="ingdata" hidden=true/>
-      <button type="button"  class="btn btn-danger"></button>
-     <i class="far fa-trash-alt me-2"></i></i>Generate</button>
-     </form>
-  </div>
-
-  {{! Search Button }}
-  <div class="d-grid gap-2 mt-3">
+    <a class="btn btn-danger" role="button" href="/">
+      <i class="far fa-trash-alt me-2"></i>Clear All</a>
     <button
       type="button"
-      id="search-ingredients"
-      class="btn btn-outline-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#searchIngredientsModal"
-    >Search ingredients<i class="fa fa-search ms-2"></i></button>
+      id="random-recipe"
+      class="btn btn-danger"
+    >Randomize</button>
+    <button
+      type="button"
+      id="all-recipe"
+      class="btn btn-success"
+    >Search</button>
   </div>
 
   {{! Modal Search }}
@@ -55,8 +59,6 @@
             type="text"
             class="form-control"
             placeholder="Search Ingredients"
-            aria-label="Ingredient"
-            aria-describedby="button-addon2"
             aria-label="Search"
           />
           <div id="ingredient-search-results">
@@ -76,7 +78,7 @@
 
   {{!Selected Ingredients }}
   <div id="selected-ingredients-div" class="my-2" hidden>
-      <p class="text-center m-4">No ingredients selected</p>
+    <p class="text-center m-4">No ingredients selected</p>
   </div>
 
   <div class="accordion" id="all-ingredients-div">
@@ -93,13 +95,13 @@
             aria-controls="collapse{{cleanID key}}"
           >
             <img
-              src="public/images/ingredients/{{key}}.png"
+              src="/public/images/ingredients/{{cleanID key}}.png"
               alt="{{key}}"
               width="50"
               height="50"
               class="m-2"
             />
-            <label class="mx-2 ingredient-title">{{key}}</label>
+            <strong class="mx-2 ingredient-title">{{key}}</strong>
           </button>
         </div>
         <div
@@ -110,15 +112,26 @@
           <div class="ingredient-check-div accordion-body">
             {{! Ingredient }}
             {{#each item}}
-              <input
-                type="checkbox"
-                id="check-{{id}}"
-                name="{{id}}"
-                class="chk-btn ingredient-check"
-                value="{{name}}"
-              />
+              {{#if checked}}
+                <input
+                  type="checkbox"
+                  id="check-{{_id}}"
+                  name="{{_id}}"
+                  class="chk-btn ingredient-check"
+                  value="{{name}}"
+                  checked
+                />
+              {{else}}
+                <input
+                  type="checkbox"
+                  id="check-{{_id}}"
+                  name="{{_id}}"
+                  class="chk-btn ingredient-check"
+                  value="{{name}}"
+                />
+              {{/if}}
               <label
-                for="check-{{id}}"
+                for="check-{{_id}}"
                 class="ingredient-label"
               >{{name}}</label>
             {{/each}}
@@ -128,5 +141,3 @@
     {{/each}}
   </div>
 </div>
-
-<script src="/public/js/ingredients.js"></script>

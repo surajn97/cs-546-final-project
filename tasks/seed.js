@@ -21,10 +21,15 @@ const main = async () => {
       const recipesCollection = await recipes();
       const reviewsCollection = await reviews();
       const commentsCollection = await comments();
-      await usersCollection.insertOne(testData.userobj);
+      const userInfo = await usersCollection.insertOne(testData.userobj);
       let igList = [];
+
       for (const ig in testData.ingredientObjs) {
-        for (const ingredient in testData.ingredientObjs[ig]) {
+        let keys = Object.keys(testData.ingredientObjs[ig]),
+          i,
+          len = keys.length;
+        keys.sort();
+        for (const ingredient of keys) {
           igList.push(
             await ingredientsData.create(
               ingredient,
@@ -38,31 +43,137 @@ const main = async () => {
       }
       const recipeobj = [
         {
-          name: "Cauliflower rice",
-          postedBy: "7b7997a2-c0d2-4f8c-b27a-6a1d4b5b6310",
-          cookingTime: "10",
+          name: "Cauliflower Rice",
+          postedBy: userInfo.insertedId.toString(),
+          cookingTime: "25",
           mealType: "Lunch",
-          cuisine: "French Cuisine",
+          cuisine: "French",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
-              quantity: 3,
-              quantityMeasure: "teaspoons",
+              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
+                ._id,
+              quantity: 1,
+              quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "rice")._id,
-              quantity: 4,
-              quantityMeasure: "grams",
+              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
+              quantity: 3,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
+              quantity: 1,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "parsley")._id,
+              quantity: 2,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "lemon")._id,
+              quantity: 0.5,
+              quantityMeasure: "qty",
             },
           ],
           instructions:
-            "Easy rice-like side dish that's much lower GI and ready in just 10 minutes",
+            "Easy rice-like side dish that's much lower GI and ready in just 10 minutes. Trim the cauliflower florets, cutting away as much stem as possible. In 3 batches, break up the florets into a food processor and pulse until the mixture resembles couscous.Heat the oil in a large skillet over medium-high heat. At the first wisp of smoke from the oil, add the onions, and stir to coat. Continue cooking, stirring frequently, until the onions are golden brown at the edges and have softened, about 8 minutes. Add the cauliflower, and stir to combine. Add 1 teaspoon salt, and continue to cook, stirring frequently, until the cauliflower has softened, 3 to 5 minutes. Remove from the heat. Spoon the cauliflower into a large serving bowl, garnish with the parsley, sprinkle with the lemon juice and season to taste with salt. Serve warm.",
           reviews: [
             "9vd99ce2-c0d2-4f8c-b27a-6a1d4b5b5063",
             "695d97a2-c0d2-4f8c-b27a-6a1d4b5b6927",
           ],
           overallRating: 4,
-          servings: 8,
+          servings: 1,
+        },
+        {
+          name: "Cauliflower Mac and Cheese",
+          postedBy: userInfo.insertedId.toString(),
+          cookingTime: "50",
+          mealType: "Snack",
+          cuisine: "American",
+          ingredients: [
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "butter")._id,
+              quantity: 1,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
+                ._id,
+              quantity: 3,
+              quantityMeasure: "cups",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "milk")._id,
+              quantity: 3,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "mustard")._id,
+              quantity: 0.5,
+              quantityMeasure: "teaspoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "parmesan")._id,
+              quantity: 0.25,
+              quantityMeasure: "cup",
+            },
+          ],
+          instructions:
+            "Bring a large pot of salted water to a boil. Preheat the oven to 375 degrees F. Grease a baking dish with butter. Cook the cauliflower in the boiling water until just crisp-tender, about 10 minutes. Drain well. In a large saucepan, heat the milk and butter over medium heat. Whisk in the dry mustard and add some hot sauce, salt and pepper. Just before the milk comes to a boil, turn off the heat and stir in the pepper jack and goat cheese. When melted and smooth, stir in the cauliflower. Spread the mixture into the prepared baking dish and sprinkle over the Parmesan. Bake until the top is golden brown and the mixture is bubbling, about 30 minutes. Let rest for a few minutes before serving.",
+          reviews: [
+            "9vd99ce2-c0d2-4f8c-b27a-6a1d4b5b5063",
+            "695d97a2-c0d2-4f8c-b27a-6a1d4b5b6927",
+          ],
+          overallRating: 4.3,
+          servings: 4,
+        },
+        {
+          name: "Baked Artichoke",
+          postedBy: userInfo.insertedId.toString(),
+          cookingTime: "90",
+          mealType: "Snack",
+          cuisine: "American",
+          ingredients: [
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "artichoke")._id,
+              quantity: 1,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "lemon")._id,
+              quantity: 0.5,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
+              quantity: 2,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
+              quantity: 1,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "parsley")._id,
+              quantity: 2,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "parmesan")._id,
+              quantity: 0.5,
+              quantityMeasure: "cup",
+            },
+          ],
+          instructions:
+            "Remove the stem of the artichoke. Cut about 1 inch (2 cm) off the top of the artichoke. Take a pair of kitchen scissors and snip off the thorns on the tip of the artichoke petals. Take half a lemon and rub lemon juice over the cut portion of the artichoke to prevent it from browning. Drizzle with olive oil and season with salt and pepper. Spread open the petals and rub minced garlic all over. Add the parsley and Parmesan; make sure to get it in between the petals. Top with more pepper if desired. Wrap the artichoke in aluminum foil. Bake at 425°F (220°C) for 1 hour and 20 minutes. When done, serve with extra parsley, lemon wedge and your favorite dipping sauce.",
+          reviews: [
+            "9vd99ce2-c0d2-4f8c-b27a-6a1d4b5b5063",
+            "695d97a2-c0d2-4f8c-b27a-6a1d4b5b6927",
+          ],
+          overallRating: 4.3,
+          servings: 4,
         },
       ];
 
@@ -82,6 +193,6 @@ const main = async () => {
   // console.log("Done seeding database");
 };
 
-main().catch(error => {
+main().catch((error) => {
   console.log(error);
 });

@@ -1,14 +1,14 @@
 (function ($) {
   const ingredientSearch = $("#ingredient-search-input");
   const ingredientCheckBox = $(".ingredient-check");
+  const ingredientSuggestionCheckBox = $(".ingredient-check-suggestion");
   const allIngredientsDiv = $("#all-ingredients-div");
   const selectedIngredientsDiv = $("#selected-ingredients-div");
-  const clearIngredientsButton = $("#clear-ingredients");
   const selectedIngredientsModal = $("#selectedIngredientsModal");
   const ingredientToggleButtons = $("#ingredients-toggle-button");
-  const url = "http://localhost:3000/recipes/selected";
-  let ingInput = $("#ingData");
-  let myform = $("generate-recipe");
+  const url = "http://localhost:3000/";
+  const toastDiv = $("#toast-div");
+  const toastDivText = $("#toast-div-text");
 
   /* #region  Helper Functions */
   const checkProperString = (string, parameter) => {
@@ -24,7 +24,7 @@
   };
   /* #endregion */
 
-  function getAllSelectedIngredientsAndSend() {
+  function getAllSelectedIngredients() {
     let currentIngredients = [];
     selectedIngredientsDiv.empty();
     atleastOne = true;
@@ -40,16 +40,21 @@
         $('<p class="text-center m-4">No ingredients selected</p>')
       );
     }
-    return currentIngredients;
-    // $.ajax({
-    //   type: "POST",
-    //   url: url,
-    //   data: { ingredients: currentIngredients },
-    //   success: function (ret) {
-    //     document.write(ret);
-    //   },
-    // });
+    return { ingredients: currentIngredients };
   }
+
+  const showToast = (isError, text) => {
+    toastDiv.removeClass("bg-danger");
+    toastDiv.removeClass("bg-success");
+
+    if (isError) toastDiv.addClass("bg-danger");
+    else toastDiv.addClass("bg-danger");
+    toastDivText.text(text);
+    toastDiv.attr("hidden", false);
+    setTimeout(function () {
+      toastDiv.attr("hidden", true);
+    }, 2000);
+  };
 
   function addToSelectedIngredientsList(id, ingredientText) {
     try {
@@ -75,28 +80,23 @@
   }
 
   $(document).ready(function () {
-    //Clear all selected ingredients
-    clearIngredientsButton.on("click", function () {
-      $("input.ingredient-check:checkbox:checked").each(function () {
-        $(this).prop("checked", false);
-      });
-      selectedIngredientsDiv.empty();
-      selectedIngredientsDiv.append(
-        $('<p class="text-center m-4">No ingredients selected</p>')
-      );
-      // $.ajax({
-      //   type: "POST",
-      //   url: url,
-      //   data: { ingredients: [] },
-      // });
-      // Snackbar.show({
-      //   text: "Example notification text.",
-      //   pos: "bottom-center",
-      // });
-    });
+    getAllSelectedIngredients();
 
     // Triggered when ingredients are clicked
-    ingredientCheckBox.on("click", getAllSelectedIngredientsAndSend);
+    ingredientCheckBox.on("click", function (e) {
+      const id = $(this).attr("name");
+      const isChecked = $(this).prop("checked");
+      $(`#check-suggestion-${id}`).prop("checked", isChecked);
+      getAllSelectedIngredients();
+    });
+
+    // Triggered when Suggested ingredients are clicked
+    ingredientSuggestionCheckBox.on("click", function (e) {
+      const id = $(this).attr("name");
+      const isChecked = $(this).prop("checked");
+      $(`#check-${id}`).prop("checked", isChecked);
+      getAllSelectedIngredients();
+    });
 
     //Ingredient Toggle
     ingredientToggleButtons.on("click", function (e) {
@@ -120,34 +120,32 @@
     $(document).on("click", ".selected-ingredient-delete", function () {
       const id = $(this).attr("name");
       $(`#check-${id}`).prop("checked", false);
-      getAllSelectedIngredientsAndSend();
-      // $(this).remove();
-      // if (selectedIngredientsModalBody.children().length == 0)
-      //   selectedIngredientsModalBody.append(
-      //     $('<p class="text-center m-3">No ingredients selected</p>')
-      //   );
+      $(`#check-suggestion-${id}`).prop("checked", false);
+      getAllSelectedIngredients();
     });
 
     //Search Ingredient Modal delete
     $(document).on("click", ".search-ingredient-div-delete", function () {
       const id = $(this).attr("name");
       $(`#check-${id}`).prop("checked", false);
+      $(`#check-suggestion-${id}`).prop("checked", false);
       $(this).removeClass("search-ingredient-div-delete");
       $(this).addClass("search-ingredient-div-add");
       $(this).find("i").removeClass("fa-trash");
       $(this).find("i").addClass("fa-plus-circle");
-      getAllSelectedIngredientsAndSend();
+      getAllSelectedIngredients();
     });
 
     //Search Ingredient Modal add
     $(document).on("click", ".search-ingredient-div-add", function () {
       const id = $(this).attr("name");
       $(`#check-${id}`).prop("checked", true);
+      $(`#check-suggestion-${id}`).prop("checked", true);
       $(this).removeClass("search-ingredient-div-add");
       $(this).addClass("search-ingredient-div-delete");
       $(this).find("i").removeClass("fa-plus-circle");
       $(this).find("i").addClass("fa-trash");
-      getAllSelectedIngredientsAndSend();
+      getAllSelectedIngredients();
     });
 
     //Search
@@ -183,14 +181,72 @@
       });
     });
 
-    myform.submit(function (event) {
-      let data = getAllSelectedIngredientsAndSend();
+    $("#all-recipe").on("click", function (e) {
+      let data = getAllSelectedIngredients();
+      if (data.ingredients.length == 0) {
+        showToast(true, "Please select atleast One ingredient");
+        return;
+      }
+      data.random = false;
+      $(document).ready(function () {
+        $(`<form method="POST" action="${url}"></form>`)
+          .append(
+            $("<input>", {
+              name: "ingredientsList",
+              value: JSON.stringify(data),
+              type: "hidden",
+            })
+          )
+          .appendTo("body")
+          .submit();
+      });
+    });
 
-      // let ip = $("#<input/>").attr("type", "hidden").attr("ingredients", data);
-      // ip.appendTo("#generate-recipe");
-      $(ingInput).val(data);
+    $("#suggested-ingredients").on("click", function (e) {
+      let data = getAllSelectedIngredients();
+      if (data.ingredients.length == 0) {
+        showToast(true, "Please select atleast One ingredient");
+        return;
+      }
+      data.random = false;
+      $(document).ready(function () {
+        $(`<form method="POST" action="${url}"></form>`)
+          .append(
+            $("<input>", {
+              name: "ingredientsList",
+              value: JSON.stringify(data),
+              type: "hidden",
+            })
+          )
+          .appendTo("body")
+          .submit();
+      });
+    });
 
-      return true;
+    $("#random-recipe").on("click", function (e) {
+      let data = getAllSelectedIngredients();
+      if (data.ingredients.length == 0) {
+        showToast(true, "Please select atleast One ingredient");
+        return;
+      }
+      data.random = true;
+      $(document).ready(function () {
+        $(`<form method="POST" action="${url}"></form>`)
+          .append(
+            $("<input>", {
+              name: "ingredientsList",
+              value: JSON.stringify(data),
+              type: "hidden",
+            })
+          )
+          .appendTo("body")
+          .submit();
+      });
+    });
+
+    //search modal on open
+    $("#searchIngredientsModal").on("shown.bs.modal", function () {
+      ingredientSearch.focus();
     });
 
     //search modal on close

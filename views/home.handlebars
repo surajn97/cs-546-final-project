@@ -1,9 +1,14 @@
 <div class="container-fluid">
-    <p>{{test}}</p>
+  <div class="row text-white" id="toast-div" hidden>
+    <p class="text-center mt-3" id="toast-div-text"></p>
+  </div>
   <div class="row">
     <div class="col">
       {{>ingredients}}
     </div>
-    <div class="col-8">
+    <div class="col-8" id="recipe-partial">
        {{>recipelist}} 
     </div>
+  </div>
+</div>
+<script src="/public/js/ingredients.js"></script>

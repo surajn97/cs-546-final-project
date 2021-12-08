@@ -5,4 +5,9 @@ module.exports = {
   cleanID: function (string) {
     return string.replace(/[^a-zA-Z0-9]/g, "");
   },
+  trimString: function (passedString, startstring, endstring) {
+    var theString = passedString.substring(startstring, endstring);
+    return theString;
+    // return new Handlebars.SafeString(theString);
+  },
 };
