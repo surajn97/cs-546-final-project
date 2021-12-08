@@ -3,6 +3,11 @@
   font-weight: 600;
 }
 
+#suggestion-box {
+  border: 1px solid #f5f5f5;
+  border-radius: 10px;
+}
+
 .ingredient-label {
   margin: 7px;
 }

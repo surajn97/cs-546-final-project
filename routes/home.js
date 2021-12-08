@@ -11,7 +11,9 @@ router.get("/", async (req, res) => {
     res.render("home", {
       categorizedIngredients: categorizedIngredients,
       recipeList: [],
+      ingredientSuggestions: [],
       ingredientsSelected: false,
+      title: "What's Cooking?",
     });
   } catch (e) {
     res.status(500).json({ error: e });
@@ -44,19 +46,23 @@ router.post("/", async (req, res) => {
       return;
     }
 
-    recipesList = await recipeData.getAll(dataObj.ingredients);
+    const recipeObj = await recipeData.getAll(dataObj.ingredients);
     //Redirect to a random recipe page
-    if (dataObj.random && recipesList.length > 0) {
-      const randomIndex = Math.floor(Math.random() * recipesList.length);
-      res.redirect("/recipes/" + recipesList[randomIndex]._id);
+    if (dataObj.random && recipeObj.recipeList.length > 0) {
+      const randomIndex = Math.floor(
+        Math.random() * recipeObj.recipeList.length
+      );
+      res.redirect("/recipes/" + recipeObj.recipeList[randomIndex]._id);
     } else {
       categorizedIngredients = await ingredientsData.getAllWithChecked(
         dataObj.ingredients
       );
       res.render("home", {
         categorizedIngredients: categorizedIngredients,
-        recipeList: recipesList,
+        recipeList: recipeObj.recipeList,
+        ingredientSuggestions: recipeObj.ingredientSuggestions,
         ingredientsSelected: true,
+        title: "What's Cooking?",
       });
     }
   } catch (e) {
