@@ -5,64 +5,36 @@
         {{data.name}}
       </div>
       <div class="d-flex justify-content-center p-2">
-        <span class="stars">{{data.overallRating}}</span>
+        {{!-- <span class="stars">{{data.overallRating}}</span> --}}
+        <div class="rating">{{data.overallRating}}</div>
       </div>
     </div>
-    <img
-      class="center-block"
-      id="recipe-detail-image"
-      src="{{data.recipeImageURL}}"
-      alt="{{data.name}} Recipe"
-    />
+    <img class="center-block" id="recipe-detail-image" src="{{data.recipeImageURL}}" alt="{{data.name}} Recipe" />
   </div>
   <div class="row align-start p-3 m-0" id="recipe-page-title-info">
     <div class="col d-flex flex-row">
-      <img
-        class="my-auto"
-        src="/public/images/serving-dish.png"
-        alt="Serves"
-        width="32"
-        height="32"
-      />
+      <img class="my-auto" src="/public/images/serving-dish.png" alt="Serves" width="32" height="32" />
       <div class="d-flex flex-column my-auto mx-3">
         Serves<br />
         {{data.servings}}
       </div>
     </div>
     <div class="col d-flex flex-row">
-      <img
-        class="my-auto"
-        src="/public/images/wall-clock.png"
-        alt="Ready in"
-        width="32"
-        height="32"
-      />
+      <img class="my-auto" src="/public/images/wall-clock.png" alt="Ready in" width="32" height="32" />
       <div class="d-flex flex-column my-auto mx-3">
         Ready in<br />
         {{data.cookingTime}}
       </div>
     </div>
     <div class="col d-flex flex-row">
-      <img
-        class="my-auto"
-        src="/public/images/meal.png"
-        alt="Meal Type"
-        width="32"
-        height="32"
-      />
+      <img class="my-auto" src="/public/images/meal.png" alt="Meal Type" width="32" height="32" />
       <div class="d-flex flex-column my-auto mx-3">
         Meal Type<br />
         {{data.mealType}}
       </div>
     </div>
     <div class="col d-flex flex-row">
-      <img
-        class="my-auto"
-        src="/public/images/cuisine.png"
-        alt="Cuisine"
-        width="32"
-        height="32"
-      />
+      <img class="my-auto" src="/public/images/cuisine.png" alt="Cuisine" width="32" height="32" />
       <div class="d-flex flex-column my-auto mx-3">
         Cuisine<br />
         {{data.cuisine}}
@@ -79,7 +51,7 @@
           <p class="fs-2 fw-light">Ingredients</p>
           <ul>
             {{#each data.ingredients}}
-              <li class="fs-6 fw-light">{{text}}</li>
+            <li class="fs-6 fw-light">{{text}}</li>
             {{/each}}
           </ul>
         </div>
@@ -110,11 +82,67 @@
   </div>
   <p class="fs-2 fw-light">Instruction Video</p>
   <div class="ratio ratio-16x9">
-    <iframe
-      src="{{data.youtubeURL}}"
-      title="YouTube video"
-      allowfullscreen
-    ></iframe>
+    <iframe src="{{data.youtubeURL}}" title="YouTube video" allowfullscreen></iframe>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col">
+    </div>
+    <div class="col-8">
+      <h4>{{reviews.length}} Responses to "{{data.name}}" recipe</h4>
+      {{#each reviews}}
+      <dl class="row mt-3 border-start border-4">
+        <dt class="col-sm-3">Reviewer</dt>
+        <dd class="col-sm-9">{{user.firstname}} {{user.lastname}}</dd>
+        <dt class="col-sm-3">Comments</dt>
+        <dd class="col-sm-9">{{reviewText}}</dd>
+        <dt class="col-sm-3">Rating</dt>
+        <dd class="col-sm-9"><div class="rating">{{rating}}</div></dd>
+        <dt class="col-sm-3">Reviewed on</dt>
+        <dd class="col-sm-9">{{dateOfReview}}</dd>
+      </dl>
+      {{/each}}
+    </div>
+    <div class="col">
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col">
+    </div>
+    <div class="col-8">
+      <h4>Let us know what you think! Leave your review here:</h4>
+      {{#unless session.user}}
+      <div class="alert alert-warning" role="alert">
+        Please <a href="/users/login">login</a> first to review the recipe!
+      </div>
+      {{/unless}}
+      <div class="row text-white" id="toast-div" hidden>
+        <p class="text-center mt-3" id="toast-div-text"></p>
+      </div>
+      <form action="/reviews/{{data._id}}" method="POST" id="review-form">
+        {{!-- <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+        </div> --}}
+        <div class="mb-3">
+          <label for="reviewText" class="form-label">Comment</label>
+          <textarea class="form-control" id="reviewText" rows="3" name="reviewText" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="raty" class="form-label">Rate this recipe</label>
+          <div class="raty" id="raty"></div>
+        </div>
+        <div class="mb-3">
+          <input type="hidden" name="userId" id="userId" value="{{#if session.user}}{{ session.user._id }}{{/if}}">
+          <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+    <div class="col">
+    </div>
   </div>
 
 </div>
+
+<script src="/public/js/recipe.js"></script>

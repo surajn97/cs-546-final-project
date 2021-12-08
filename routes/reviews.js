@@ -62,6 +62,11 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/:id", async (req, res) => {
+  if (!req.session.user) {
+    res.status(401).json({
+      error: "Unauthorized!"
+    });
+  }
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
@@ -125,7 +130,7 @@ router.post("/:id", async (req, res) => {
       // should be logged in user id
       ReviewData.userId
     );
-    res.json(newReview);
+    res.redirect("/recipes/" + req.params.id);
     // res.status(200);
     return;
   } catch (e) {

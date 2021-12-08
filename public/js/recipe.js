@@ -7,6 +7,32 @@ let ingName = $("#ingName");
 const url = "http://localhost:3000/ingredients/name/";
 let showdiv = $("#showDiv");
 
+$('.raty').raty({
+  path: '/public/images',
+  scoreName: 'rating'
+});
+// $('input[name="rating"]').attr('required', true);
+// $('input[name="rating"]').attr('value', 5);
+
+// $('.rating').raty({ readOnly: true, score: 3 });
+$.fn.ratings = function () {
+  // return this.each(function(i,e){$(e).html($('<span/>').width($(e).text()*16));});
+  this.each(function (i, e) {
+    var score = $(e).text();
+    $(e).html("");
+    $(e).raty({
+      path: '/public/images',
+      halfShow: true,
+      readOnly: true,
+      score: score
+    });
+  });
+};
+$('.rating').ratings();
+
+const toastDiv = $("#toast-div");
+const toastDivText = $("#toast-div-text");
+
 $(document).ready(function () {
   ingAddButton.on("click", function (event) {
     let q = quantity.val().trim();
@@ -31,5 +57,34 @@ $(document).ready(function () {
       $("#ingredients").val(ingObj);
       console.log(JSON.stringify(ingreInput.val()));
     });
+  });
+
+  const showToast = (isError, text) => {
+    toastDiv.removeClass("bg-danger");
+    toastDiv.removeClass("bg-success");
+
+    if (isError) toastDiv.addClass("bg-danger");
+    else toastDiv.addClass("bg-danger");
+    toastDivText.text(text);
+    toastDiv.attr("hidden", false);
+    setTimeout(function () {
+      toastDiv.attr("hidden", true);
+    }, 5000);
+  };
+
+  $("#review-form").on("submit", function (e) {
+    if ($('#userId').length > 0 && $('#userId').val().length > 0) {
+    } else {
+      e.preventDefault();
+      showToast(true, "Please login first before submitting the review");
+      return false;
+    }
+    if ($('input[name="rating"]').length > 0 && $('input[name="rating"]').val().length > 0) {      
+    } else {
+      e.preventDefault();
+      showToast(true, "Please rate the recipe");
+      return false;
+    }
+    return;
   });
 });
