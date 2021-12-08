@@ -45,30 +45,45 @@ const main = async () => {
         {
           name: "Cauliflower Rice",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "10",
+          cookingTime: "25",
           mealType: "Lunch",
           cuisine: "French",
           ingredients: [
             {
               _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
                 ._id,
-              quantity: 3,
-              quantityMeasure: "teaspoons",
+              quantity: 1,
+              quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "rice")._id,
-              quantity: 4,
-              quantityMeasure: "grams",
+              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
+              quantity: 3,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
+              quantity: 1,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "parsley")._id,
+              quantity: 2,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "lemon")._id,
+              quantity: 0.5,
+              quantityMeasure: "qty",
             },
           ],
           instructions:
-            "Easy rice-like side dish that's much lower GI and ready in just 10 minutes",
+            "Easy rice-like side dish that's much lower GI and ready in just 10 minutes. Trim the cauliflower florets, cutting away as much stem as possible. In 3 batches, break up the florets into a food processor and pulse until the mixture resembles couscous.Heat the oil in a large skillet over medium-high heat. At the first wisp of smoke from the oil, add the onions, and stir to coat. Continue cooking, stirring frequently, until the onions are golden brown at the edges and have softened, about 8 minutes. Add the cauliflower, and stir to combine. Add 1 teaspoon salt, and continue to cook, stirring frequently, until the cauliflower has softened, 3 to 5 minutes. Remove from the heat. Spoon the cauliflower into a large serving bowl, garnish with the parsley, sprinkle with the lemon juice and season to taste with salt. Serve warm.",
           reviews: [
             "9vd99ce2-c0d2-4f8c-b27a-6a1d4b5b5063",
             "695d97a2-c0d2-4f8c-b27a-6a1d4b5b6927",
           ],
           overallRating: 4,
-          servings: 8,
+          servings: 1,
         },
         {
           name: "Cauliflower Mac and Cheese",

@@ -33,19 +33,6 @@ router.get("/name/:name", async (req, res) => {
     res.status(404).json({ error: e });
   }
 });
-
-router.get("/", async (req, res) => {
-  try {
-    const categorizedIngredients = await ingredientsData.getAll();
-    res.render("ingredients", {
-      categorizedIngredients: categorizedIngredients,
-      ingredients_page: true,
-    });
-  } catch (e) {
-    res.status(500).json({ error: e });
-  }
-});
-
 router.put("/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
