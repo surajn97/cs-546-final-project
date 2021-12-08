@@ -47,19 +47,19 @@ module.exports = {
     helper.checkProperString(postedBy, "User");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    // helper.checkProperArray(otherIngredients, "Other Ingredients");
+    helper.checkProperArray(otherIngredients, "Other Ingredients");
     ingredients.forEach((element) => {
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.id, "Id of ingredient");
       helper.checkProperNumber(element.quantity, "Quantity of ingredient");
       helper.checkProperString(element.quantityMeasure, "Quantity Measure");
     });
-    // otherIngredients.forEach(element => {
-    //   helper.checkProperObject(element, "Other Ingredients Individual");
-    //   helper.checkProperString(element.name, "Id of ingredient");
-    //   helper.checkProperNumber(element.quantity, "Quantity of ingredient");
-    //   helper.checkProperString(element.quantityMeasure, "Quantity Measure");
-    // });
+    otherIngredients.forEach((element) => {
+      helper.checkProperObject(element, "Other Ingredients Individual");
+      helper.checkProperString(element.name, "Id of ingredient");
+      helper.checkProperNumber(element.quantity, "Quantity of ingredient");
+      helper.checkProperString(element.quantityMeasure, "Quantity Measure");
+    });
 
     helper.checkProperString(mealType, "Meal Type");
     helper.checkProperString(cuisine, "Cuisine");
