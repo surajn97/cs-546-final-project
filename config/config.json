@@ -1,14 +1,14 @@
 {
-    "development": {
-        "serverUrl": "mongodb://localhost:27017/",
-        "database": "ProjectDB"
-    },
-    "test": {
-        "serverUrl": "mongodb://localhost:27017/",
-        "database": "ProjectDB"
-    },
-    "production": {
-        "serverUrl": "mongodb://localhost:27017/",
-        "database": "ProjectDB"
-    }
+  "development": {
+    "serverUrl": "mongodb://localhost:27017/",
+    "database": "ProjectDB"
+  },
+  "test": {
+    "serverUrl": "mongodb://localhost:27017/",
+    "database": "ProjectDB"
+  },
+  "production": {
+    "serverUrl": "mongodb://localhost:27017/",
+    "database": "ProjectDB"
+  }
 }
