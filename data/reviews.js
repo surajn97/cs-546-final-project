@@ -3,6 +3,9 @@ const recipeFunctions = require("./recipes.js");
 const userFunctions = require("./users");
 const recipes = mongoCollections.recipes;
 const reviews = mongoCollections.reviews;
+// for add to user
+const users = mongoCollections.users;
+
 
 let { ObjectId } = require("mongodb");
 const helper = require("./helper");
@@ -21,7 +24,7 @@ module.exports = {
       throw "Error: No recipe with that id";
     }
 
-    try{
+    try {
       rating = parseInt(rating);
     } catch (e) {
       throw "Error: Rating is not a number";
@@ -50,6 +53,16 @@ module.exports = {
 
     const newId = insertInfo.insertedId.toString();
 
+    //Add the review id to the user
+    const objIdForUser = ObjectId.createFromHexString(userId);
+    const usersCollection = await users();
+    const updatedInfo2 = await usersCollection.updateOne({ _id: objIdForUser }, { $push: { myReviews: String(newReview._id) } });
+    if (updatedInfo2.modifiedCount === 0) {
+      throw 'Could not update Users Collection with Review Data!';
+    }
+
+    /////////
+
     const reviewobj = await this.get(newId);
     await recipeFunctions.addReviewToRecipe(recipeId, newId, reviewobj);
     await recipeFunctions.modifyingRatings(recipeId);
@@ -65,14 +78,9 @@ module.exports = {
     if (!recipe) {
       throw "Error: No recipe with that id";
     }
-    const reviewsList = recipe.reviews;
-    if (!reviewsList) throw "Error: No reviews found for recipe";
-    let reviews_likes_added = [];
-    for(let review of reviewsList) {
-      review["total_likes"] = parseInt(review.likes.length) - parseInt(review.dislikes.length);
-      reviews_likes_added.push(review);
-    }
-    return reviews_likes_added;
+    const reviews = recipe.reviews;
+    if (!reviews) throw "Error: No reviews found for recipe";
+    return reviews;
   },
 
   async get(id) {
@@ -89,21 +97,6 @@ module.exports = {
     }
     review._id = review._id.toString();
     return review;
-  },
-
-  async getAllByUser(id) {
-    helper.checkProperString(id, "User ID");
-    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
-    let ID = ObjectId(id);
-    const reviewCollection = await reviews();
-
-    const reviewsList = await reviewCollection.find({
-      "user._id": id,
-    }).toArray();
-    if (!reviewsList) {
-      throw "Error: No review with that user id";
-    }
-    return reviewsList;
   },
 
   async remove(id) {
@@ -165,7 +158,7 @@ module.exports = {
           comments: {
             _id: commentID,
             userId: commentobj.userId,
-            name: commentobj.name,
+            userName: commentobj.userName,
             comment: commentobj.comment,
             dateOfComment: commentobj.dateOfComment,
           },
@@ -177,80 +170,6 @@ module.exports = {
       throw "Update failed at adding comment to review";
 
     return await this.get(reviewId);
-  },
-
-  async addLikeToReview(reviewId, userId) {
-    if (!ObjectId.isValid(reviewId)) throw "Error: Not a valid ObjectId";
-    let reviewID = ObjectId(reviewId);
-
-    if (!ObjectId.isValid(userId)) throw "Error: Not a valid ObjectId";
-    let userID = ObjectId(userId);
-
-    let currentReview = await this.get(reviewId);
-    if (!currentReview) {
-      throw "Error: No review with that id";
-    }
-
-    if(currentReview.likes.includes(userId)) {
-      throw "You already liked this review";
-    }
-
-    const reviewCollection = await reviews();
-    const updateInfo = await reviewCollection.updateOne(
-      {
-        _id: reviewID,
-      },
-      {
-        $push: {
-          likes: userId,
-        },
-      }
-    );
-
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-      throw "Update failed at adding like to review";
-
-    const updatedReview = await this.get(reviewId);
-    await recipeFunctions.replaceReviewInRecipe(updatedReview.recipeId.toString(), updatedReview);
-
-    return updatedReview;
-  },
-
-  async addDislikeToReview(reviewId, userId) {
-    if (!ObjectId.isValid(reviewId)) throw "Error: Not a valid ObjectId";
-    let reviewID = ObjectId(reviewId);
-
-    if (!ObjectId.isValid(userId)) throw "Error: Not a valid ObjectId";
-    let userID = ObjectId(userId);
-
-    let currentReview = await this.get(reviewId);
-    if (!currentReview) {
-      throw "Error: No review with that id";
-    }
-
-    if(currentReview.dislikes.includes(userId)) {
-      throw "You already disliked this review";
-    }
-
-    const reviewCollection = await reviews();
-    const updateInfo = await reviewCollection.updateOne(
-      {
-        _id: reviewID,
-      },
-      {
-        $push: {
-          dislikes: userId,
-        },
-      }
-    );
-
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-      throw "Update failed at adding dislike to review";
-
-    const updatedReview = await this.get(reviewId);
-    await recipeFunctions.replaceReviewInRecipe(updatedReview.recipeId.toString(), updatedReview);
-
-    return updatedReview;
   },
 
   async removeCommentFromReview(reviewId, commentId) {

@@ -109,9 +109,8 @@ module.exports = {
     return user;
   },
 
-  async update(
-  ) {
-  },
+
+
 };
 
 // //Helper Functions
