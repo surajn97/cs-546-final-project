@@ -33,6 +33,32 @@ router.get("/review/:id", async (req, res) => {
   }
 });
 
+router.get("/user/:id", async (req, res) => {
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({
+      error: e
+    });
+    return;
+  }
+  if (!req.params.id) {
+    res.status(400).json({
+      error: "You must supply a review id to get reviews data",
+    });
+    return;
+  }
+  try {
+    const review = await reviewData.getAllByUser(req.params.id);
+    res.json(review);
+  } catch (e) {
+    res.status(404).json({
+      error: e
+    });
+    return;
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
