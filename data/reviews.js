@@ -3,6 +3,9 @@ const recipeFunctions = require("./recipes.js");
 const userFunctions = require("./users");
 const recipes = mongoCollections.recipes;
 const reviews = mongoCollections.reviews;
+// for add to user
+const users = mongoCollections.users;
+
 
 let { ObjectId } = require("mongodb");
 const helper = require("./helper");
@@ -21,7 +24,7 @@ module.exports = {
       throw "Error: No recipe with that id";
     }
 
-    try{
+    try {
       rating = parseInt(rating);
     } catch (e) {
       throw "Error: Rating is not a number";
@@ -50,6 +53,15 @@ module.exports = {
 
     const newId = insertInfo.insertedId.toString();
 
+    //Add the review id to the user
+    const objIdForUser = ObjectId.createFromHexString(userId);
+    const usersCollection = await users();
+    const updatedInfo2 = await usersCollection.updateOne({ _id: objIdForUser }, { $push: { myReviews: String(newReview._id) } });
+    if (updatedInfo2.modifiedCount === 0) {
+      throw 'Could not update Users Collection with Review Data!';
+    }
+    /////////
+
     const reviewobj = await this.get(newId);
     await recipeFunctions.addReviewToRecipe(recipeId, newId, reviewobj);
     await recipeFunctions.modifyingRatings(recipeId);
@@ -68,7 +80,7 @@ module.exports = {
     const reviewsList = recipe.reviews;
     if (!reviewsList) throw "Error: No reviews found for recipe";
     let reviews_likes_added = [];
-    for(let review of reviewsList) {
+    for (let review of reviewsList) {
       review["total_likes"] = parseInt(review.likes.length) - parseInt(review.dislikes.length);
       reviews_likes_added.push(review);
     }
@@ -191,7 +203,7 @@ module.exports = {
       throw "Error: No review with that id";
     }
 
-    if(currentReview.likes.includes(userId)) {
+    if (currentReview.likes.includes(userId)) {
       throw "You already liked this review";
     }
 
@@ -228,7 +240,7 @@ module.exports = {
       throw "Error: No review with that id";
     }
 
-    if(currentReview.dislikes.includes(userId)) {
+    if (currentReview.dislikes.includes(userId)) {
       throw "You already disliked this review";
     }
 

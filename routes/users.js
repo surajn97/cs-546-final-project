@@ -1,23 +1,3 @@
-// router.get('/', async (req, res) => {
-//     try {
-//         const ingredients = await ingredientsData.getAll();
-//         res.render("users/test", {
-//             title: 'Test',
-//             ingredients: ingredients,
-//             home_page: true
-//         });
-//     } catch (e) {
-//         res.status(400).render('error', {
-//             error: e,
-//             title: 'Error',
-//             status: '400'
-//         });
-//     }
-// });
-
-// module.exports = router;
-
-
 const express = require('express');
 const router = express.Router();
 const users = require('../data/users');
@@ -28,7 +8,9 @@ router.get('/', async (req, res) => {
     if (req.session.user) {
         res.redirect('/private');
     } else {
-        res.render('users/login');
+        res.render('users/login', {
+            authenticated: false,
+        });
     }
 });
 
@@ -38,6 +20,7 @@ router.get('/signup', async (req, res) => {
     } else {
         res.render('users/signup', {
             login_signup_page: true,
+            authenticated: false,
         });
     }
 });
@@ -91,6 +74,7 @@ router.get('/login', async (req, res) => {
         res.redirect('/private');
     } else {
         res.render('users/login', {
+            // authenticated: false,
             login_signup_page: true,
             // title: 'Log In',
             // authenticated: false,
@@ -112,7 +96,9 @@ router.post('/login', async (req, res) => {
 
         var result = await users.checkUser(username, password);
     } catch (e) {
-        res.status(400).render('users/login', { error: e });
+        res.status(400).render('users/login', {
+            error: e, authenticated: false,
+        });
     }
 
     if (typeof result != 'undefined') {
