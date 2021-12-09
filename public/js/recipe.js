@@ -87,4 +87,54 @@ $(document).ready(function () {
     }
     return;
   });
+
+  const showCommentToast = (reviewId, text) => { 
+    const toastDivComment = $("#toast-div-" + reviewId);   
+    toastDivComment.removeClass("bg-success");
+    toastDivComment.addClass("bg-danger");
+    toastDivText.text(text);
+    toastDivComment.attr("hidden", false);
+    setTimeout(function () {
+      toastDivComment.attr("hidden", true);
+    }, 5000);
+  };
+
+  const showCommentForm = (reviewId) => {
+    if ($('#userId-' + reviewId).length > 0 && $('#userId-' + reviewId).val().length > 0) {
+      $('#comment-form-' + reviewId).attr("hidden", false);
+    } else {
+      // e.preventDefault();
+      showCommentToast(reviewId, "Please login first before submitting the comment");
+      // return false;
+    }
+    // return;
+  };
+
 });
+
+function showCommentToast(reviewId, text) {
+  const toastDivComment = $("#toast-div-" + reviewId);
+  const toastDivText = $("#toast-div-text-" + reviewId);
+    toastDivComment.removeClass("bg-success");
+    toastDivComment.addClass("bg-danger");
+    toastDivText.text(text);
+    toastDivComment.attr("hidden", false);
+    setTimeout(function () {
+      toastDivComment.attr("hidden", true);
+    }, 5000);
+}
+
+function showCommentForm(reviewId) {
+  if ($('#userId-' + reviewId).length > 0 && $('#userId-' + reviewId).val().length > 0) {
+    $('#comment-form-' + reviewId).attr("hidden", false);
+  } else {
+    // e.preventDefault();
+    showCommentToast(reviewId, "Please login first before submitting the reply");
+    // return false;
+  }
+}
+
+function hideCommentForm(reviewId) {
+  $('#comment-form-' + reviewId).attr("hidden", true);
+  return false;
+}

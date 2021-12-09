@@ -145,6 +145,7 @@ module.exports = {
           comments: {
             _id: commentID,
             userId: commentobj.userId,
+            userName: commentobj.userName,
             comment: commentobj.comment,
             dateOfComment: commentobj.dateOfComment,
           },

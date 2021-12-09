@@ -103,10 +103,12 @@ router.post("/:id", async (req, res) => {
         const newComment = await commentsData.create(
             req.params.id,
             // add logged in user id
-            req.params.id,
+            commentBody.userId,
             commentBody.comment,
         );
-        res.json(newComment);
+        // res.json(newComment);
+        const review = await reviewsData.get(req.params.id);
+        res.redirect("/recipes/" + review.recipeId.toString());
         // res.status(200);
         return;
     } catch (e) {
