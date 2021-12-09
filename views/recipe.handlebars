@@ -6,7 +6,7 @@
       </div>
       <div class="d-flex justify-content-center p-2">
         {{!-- <span class="stars">{{data.overallRating}}</span> --}}
-        <div class="rating">{{data.overallRating}}</div>
+        <div class="rating d-print-none">{{data.overallRating}}</div>
       </div>
     </div>
     <img class="center-block" id="recipe-detail-image" src="{{data.recipeImageURL}}" alt="{{data.name}} Recipe" />
@@ -41,20 +41,19 @@
       </div>
     </div>
   </div>
+
   <div class="container p-0 mt-3">
     <div>
       <p class="fs-5 fw-light">{{data.instructions}}</p>
     </div>
     <div class="row mt-3">
       <div class="col">
-        <div>
           <p class="fs-2 fw-light">Ingredients</p>
           <ul>
             {{#each data.ingredients}}
             <li class="fs-6 fw-light">{{text}}</li>
             {{/each}}
           </ul>
-        </div>
       </div>
       <div class="col">
         <p class="fs-2 fw-light">Nutrition Information</p>
@@ -79,13 +78,16 @@
 
       </div>
     </div>
+  </div>  
+  <div>
+    <button id="printModal" class="btn btn-outline-primary d-print-none" onclick="window.print()"><i class="fas fa-print"></i><br>Print</button>
   </div>
-  <p class="fs-2 fw-light">Instruction Video</p>
-  <div class="ratio ratio-16x9">
+  <p class="fs-2 fw-light d-print-none">Instruction Video</p>
+  <div class="ratio ratio-16x9 d-print-none">
     <iframe src="{{data.youtubeURL}}" title="YouTube video" allowfullscreen></iframe>
   </div>
 
-  <div class="row mt-4">
+  <div class="row mt-4 d-print-none">
     <div class="col">
     </div>
     <div class="col-8">
@@ -138,7 +140,7 @@
     </div>
   </div>
 
-  <div class="row mt-4">
+  <div class="row mt-4 d-print-none">
     <div class="col">
     </div>
     <div class="col-8">

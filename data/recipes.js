@@ -7,9 +7,9 @@ const gis = require("g-i-s");
 const ingredientsData = require("./ingredients");
 const userData = require("./users");
 const { ingredients } = require("../config/mongoCollections");
-const defaultRecipeImage = "/public/img/product/product-2.jpg";
 const youtube = require("scrape-youtube");
 const data = require(".");
+const defaultRecipeImage = "/public/img/product/product-2.jpg";
 
 const getYoutubeLinkScraped = async (title) => {
   const results = await youtube.search(`${title} Recipe`);
@@ -17,20 +17,6 @@ const getYoutubeLinkScraped = async (title) => {
     throw "Could not retrieve youtube URL";
   }
   return `https://www.youtube.com/embed/${results.videos[0].id}`;
-};
-
-const getgisRecipeImageLink = function (title) {
-  return new Promise(function (resolve, reject) {
-    gis(title + " Recipe", logResults);
-    function logResults(error, results) {
-      if (error) {
-        resolve(defaultRecipeImage);
-      } else {
-        if (results.length > 0) resolve(results[0].url);
-        else resolve(defaultRecipeImage);
-      }
-    }
-  });
 };
 
 module.exports = {
@@ -123,9 +109,7 @@ module.exports = {
     recipe.protien = Math.round(protien * 100) / 100;
     recipe.carb = Math.round(carb * 100) / 100;
     recipe.fat = Math.round(fat * 100) / 100;
-    const recipeImageUrl = await getgisRecipeImageLink(recipe.name);
     recipe.youtubeURL = youtubeUrl;
-    recipe.recipeImageURL = recipeImageUrl;
     return recipe;
   },
 
@@ -204,8 +188,6 @@ module.exports = {
     });
     for (let item of rstList) {
       item._id = item._id.toString();
-      const url = await getgisRecipeImageLink(item.name);
-      item.recipeImageURL = url;
       item.postedBy = await userData.get(item.postedBy);
     }
     return {
@@ -228,8 +210,6 @@ module.exports = {
     }
     for (let item of recipeList) {
       item._id = item._id.toString();
-      const url = await getgisRecipeImageLink(item.name);
-      item.recipeImageURL = url;
       item.postedBy = await userData.get(item.postedBy);
     }
     return recipeList;
@@ -470,5 +450,25 @@ module.exports = {
       throw "Error: Update failed while removing review from recipe";
 
     return await this.get(recipeId);
+  },
+
+  getGoogleImageForRecipe(title) {
+    try {
+      helper.checkProperString(title);
+    } catch (e) {
+      return defaultRecipeImage;
+    }
+    return new Promise(function (resolve, reject) {
+      gis(title + " Recipe", logResults);
+      function logResults(error, results) {
+        if (error) {
+          resolve(defaultRecipeImage);
+        } else {
+          if (results.length > 0)
+            resolve(decodeURIComponent(JSON.parse('"' + results[0].url + '"')));
+          else resolve(defaultRecipeImage);
+        }
+      }
+    });
   },
 };
