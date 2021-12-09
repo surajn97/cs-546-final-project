@@ -11,7 +11,7 @@ const youtube = require("scrape-youtube");
 const data = require(".");
 const defaultRecipeImage = "/public/img/product/product-2.jpg";
 
-const getYoutubeLinkScraped = async (title) => {
+const getYoutubeLinkScraped = async title => {
   const results = await youtube.search(`${title} Recipe`);
   if (!results || !results.videos || results.videos.length == 0) {
     throw "Could not retrieve youtube URL";
@@ -34,16 +34,9 @@ module.exports = {
     helper.checkProperString(postedBy, "User");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    helper.checkProperArray(otherIngredients, "Other Ingredients");
-    ingredients.forEach((element) => {
+    ingredients.forEach(element => {
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.id, "Id of ingredient");
-      helper.checkProperNumber(element.quantity, "Quantity of ingredient");
-      helper.checkProperString(element.quantityMeasure, "Quantity Measure");
-    });
-    otherIngredients.forEach((element) => {
-      helper.checkProperObject(element, "Other Ingredients Individual");
-      helper.checkProperString(element.name, "Id of ingredient");
       helper.checkProperNumber(element.quantity, "Quantity of ingredient");
       helper.checkProperString(element.quantityMeasure, "Quantity Measure");
     });
@@ -97,7 +90,7 @@ module.exports = {
       carb = 0,
       fat = 0;
     for (let ingredient of recipe.ingredients) {
-      const ig = await ingredientsData.get(ingredient._id);
+      const ig = await ingredientsData.get(ingredient.id);
       ingredient.name = ig.name;
       ingredient.text = `${ingredient.quantity} ${ingredient.quantityMeasure} ${ig.name}`;
       calories += ig.calories;
@@ -165,13 +158,13 @@ module.exports = {
       for (const rec_ing of rec.ingredients) {
         if (
           !selectedIngredients.includes(rec_ing._id) &&
-          !ingredientSuggestion.some((e) => e._id === rec_ing._id)
+          !ingredientSuggestion.some(e => e._id === rec_ing._id)
         ) {
           ingredientSuggestion.push(await ingredientsData.get(rec_ing._id));
         }
       }
     }
-    recipeList.forEach((item) => {
+    recipeList.forEach(item => {
       if (item.ingredients.length <= selectedIngredients.length) {
         let flag = false;
         for (element of item.ingredients) {
@@ -243,7 +236,7 @@ module.exports = {
     helper.checkProperString(name, "Name");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach((element) => {
+    ingredients.forEach(element => {
       helper.checkProperString(element, "Individual ingredient");
     }); //************* Store Ing ID or Name??? */
     helper.checkProperString(mealType, "Meal Type");
@@ -306,7 +299,7 @@ module.exports = {
       updatedData.ingredients !== oldRecipe.ingredients
     ) {
       helper.checkProperArray(updatedData.ingredients, "Ingredients");
-      updatedData.ingredients.forEach((element) => {
+      updatedData.ingredients.forEach(element => {
         helper.checkProperString(element, "Individual ingredient");
       });
       newUpdatedDataObj.cookingTime = updatedData.cookingTime;
@@ -361,7 +354,7 @@ module.exports = {
       let currentRecipe = await this.get(recipeId);
       const reviewsarray = currentRecipe.reviews;
       let sumRating = reviewsarray
-        .map((s) => s.rating)
+        .map(s => s.rating)
         .reduce((a, b) => a + b, 0);
       newRating = sumRating / len;
     }

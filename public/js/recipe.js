@@ -7,9 +7,9 @@ let ingName = $("#ingName");
 const url = "http://localhost:3000/ingredients/name/";
 let showdiv = $("#showDiv");
 
-$('.raty').raty({
-  path: '/public/images',
-  scoreName: 'rating'
+$(".raty").raty({
+  path: "/public/images",
+  scoreName: "rating",
 });
 // $('input[name="rating"]').attr('required', true);
 // $('input[name="rating"]').attr('value', 5);
@@ -21,14 +21,14 @@ $.fn.ratings = function () {
     var score = $(e).text();
     $(e).html("");
     $(e).raty({
-      path: '/public/images',
+      path: "/public/images",
       halfShow: true,
       readOnly: true,
-      score: score
+      score: score,
     });
   });
 };
-$('.rating').ratings();
+$(".rating").ratings();
 
 const toastDiv = $("#toast-div");
 const toastDivText = $("#toast-div-text");
@@ -38,6 +38,7 @@ $(document).ready(function () {
     let q = quantity.val().trim();
     let qm = qMeasure.val().trim();
     let iName = ingName.val().trim();
+
     let endpoint = url + iName;
     var configReq = {
       method: "GET",
@@ -45,17 +46,55 @@ $(document).ready(function () {
     };
     $.ajax(configReq).then(function (responseMessage) {
       r = responseMessage;
-
+      let ingArray = JSON.parse(ingreInput.val());
+      let table = $("#table");
+      if (ingArray.length == 0) {
+        table = $(`<table class="table" id="table"><tbody>`);
+      }
       ingObj = {};
       console.log(r);
       ingObj["id"] = r._id.toString();
       ingObj["quantity"] = q;
       ingObj["quantityMeasure"] = qm;
-      showdiv.append(
-        `<p>${ingObj.id} ${ingObj.quantity} ${ingObj.quantityMeasure}</p>`
+      let tr = $(`<tr id="tr${ingArray.length}">`);
+      tr.append(
+        `<td>${iName}</td>
+        <td> ${q} ${qm}</td>
+        <td>`
       );
-      $("#ingredients").val(ingObj);
-      console.log(JSON.stringify(ingreInput.val()));
+
+      let removeicon = $(
+        `<i class="fas fa-lg fa-trash" id="remove${ingArray.length}">`
+      );
+      tr.append(removeicon);
+
+      removeicon.on("click", function (event) {
+        var id = $(this).attr("id");
+        let arrid = id.split("remove")[1];
+        let trid = "tr" + arrid;
+        let trele = $(`#${trid}`);
+        trele.remove();
+        let ingArray = JSON.parse(ingreInput.val());
+        ingArray.splice(id, 1);
+        $("#ingredients").val(JSON.stringify(ingArray));
+        console.log(`ingArray.length: ${ingArray.length}`);
+        if (ingArray.length == 0) {
+          table.remove();
+        }
+
+        console.log(arrid);
+      });
+
+      tr.append(
+        `</i></td>
+        </tr>`
+      );
+      table.append(tr);
+      showdiv.append(table);
+      ingArray.push(ingObj);
+      let inputIngFInalValue = JSON.stringify(ingArray);
+      $("#ingredients").val(inputIngFInalValue);
+      console.log(ingreInput);
     });
   });
 
@@ -73,13 +112,16 @@ $(document).ready(function () {
   };
 
   $("#review-form").on("submit", function (e) {
-    if ($('#userId').length > 0 && $('#userId').val().length > 0) {
+    if ($("#userId").length > 0 && $("#userId").val().length > 0) {
     } else {
       e.preventDefault();
       showToast(true, "Please login first before submitting the review");
       return false;
     }
-    if ($('input[name="rating"]').length > 0 && $('input[name="rating"]').val().length > 0) {      
+    if (
+      $('input[name="rating"]').length > 0 &&
+      $('input[name="rating"]').val().length > 0
+    ) {
     } else {
       e.preventDefault();
       showToast(true, "Please rate the recipe");
@@ -88,8 +130,8 @@ $(document).ready(function () {
     return;
   });
 
-  const showCommentToast = (reviewId, text) => { 
-    const toastDivComment = $("#toast-div-" + reviewId);   
+  const showCommentToast = (reviewId, text) => {
+    const toastDivComment = $("#toast-div-" + reviewId);
     toastDivComment.removeClass("bg-success");
     toastDivComment.addClass("bg-danger");
     toastDivText.text(text);
@@ -99,42 +141,53 @@ $(document).ready(function () {
     }, 5000);
   };
 
-  const showCommentForm = (reviewId) => {
-    if ($('#userId-' + reviewId).length > 0 && $('#userId-' + reviewId).val().length > 0) {
-      $('#comment-form-' + reviewId).attr("hidden", false);
+  const showCommentForm = reviewId => {
+    if (
+      $("#userId-" + reviewId).length > 0 &&
+      $("#userId-" + reviewId).val().length > 0
+    ) {
+      $("#comment-form-" + reviewId).attr("hidden", false);
     } else {
       // e.preventDefault();
-      showCommentToast(reviewId, "Please login first before submitting the comment");
+      showCommentToast(
+        reviewId,
+        "Please login first before submitting the comment"
+      );
       // return false;
     }
     // return;
   };
-
 });
 
 function showCommentToast(reviewId, text) {
   const toastDivComment = $("#toast-div-" + reviewId);
   const toastDivText = $("#toast-div-text-" + reviewId);
-    toastDivComment.removeClass("bg-success");
-    toastDivComment.addClass("bg-danger");
-    toastDivText.text(text);
-    toastDivComment.attr("hidden", false);
-    setTimeout(function () {
-      toastDivComment.attr("hidden", true);
-    }, 5000);
+  toastDivComment.removeClass("bg-success");
+  toastDivComment.addClass("bg-danger");
+  toastDivText.text(text);
+  toastDivComment.attr("hidden", false);
+  setTimeout(function () {
+    toastDivComment.attr("hidden", true);
+  }, 5000);
 }
 
 function showCommentForm(reviewId) {
-  if ($('#userId-' + reviewId).length > 0 && $('#userId-' + reviewId).val().length > 0) {
-    $('#comment-form-' + reviewId).attr("hidden", false);
+  if (
+    $("#userId-" + reviewId).length > 0 &&
+    $("#userId-" + reviewId).val().length > 0
+  ) {
+    $("#comment-form-" + reviewId).attr("hidden", false);
   } else {
     // e.preventDefault();
-    showCommentToast(reviewId, "Please login first before submitting the reply");
+    showCommentToast(
+      reviewId,
+      "Please login first before submitting the reply"
+    );
     // return false;
   }
 }
 
 function hideCommentForm(reviewId) {
-  $('#comment-form-' + reviewId).attr("hidden", true);
+  $("#comment-form-" + reviewId).attr("hidden", true);
   return false;
 }

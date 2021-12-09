@@ -1,16 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const reviews = require('../data/reviews');
-const recipes = require('../data/recipes');
+const reviews = require("../data/reviews");
+const recipes = require("../data/recipes");
 
-
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   if (req.session.user) {
     const userData = req.session.user;
     // console.log("userData")
     // console.log(userData)
     // console.log("userData")
-
 
     // Get list of myFavoriteRecipe
     let myFavRecipe = [];
@@ -18,7 +16,7 @@ router.get('/', async (req, res) => {
       let FRec = await recipes.get(RecipeId); //add getrecipes id function
       myFavRecipe.push({
         id: RecipeId,
-        name: FRec.name
+        name: FRec.name,
       });
     }
     let hasFRecipe = false;
@@ -31,7 +29,7 @@ router.get('/', async (req, res) => {
       let mRec = await recipes.get(RecipeId); //add getrecipes id function, need check
       myReclist.push({
         id: RecipeId,
-        name: mRec.name
+        name: mRec.name,
       });
     }
     let hasMRecipe = false;
@@ -47,7 +45,7 @@ router.get('/', async (req, res) => {
         id: reviewId,
         recipename: recipename,
         rating: mRev.rating,
-        reviewTest: mRev.reviewTest
+        reviewTest: mRev.reviewTest,
       });
     }
     let hasReview = false;
@@ -55,9 +53,7 @@ router.get('/', async (req, res) => {
       hasReview = true;
     }
 
-
-
-    res.render('users/private', {
+    res.render("users/private", {
       username: req.session.user.username,
       firstname: userData.firstname,
       lastname: userData.lastname,
@@ -71,11 +67,8 @@ router.get('/', async (req, res) => {
       hasReview: hasReview,
     });
   } else {
-    res.redirect('/login');
-
+    res.redirect("users/login");
   }
-
-
 });
 
 module.exports = router;

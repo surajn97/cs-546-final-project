@@ -165,22 +165,27 @@ router.post("/", async (req, res) => {
     res.status(400).json({ error: e });
     return;
   }
+  const ing = recipeInfo.ingredients;
   const ctime = parseInt(recipeInfo.cookingTime);
   const serv = parseInt(recipeInfo.servings);
-  let ingarray = [];
-  const ing = `${recipeInfo.ingredients}`;
+
+  let ingarray = JSON.parse(ing);
 
   let curentuser = req.session.user;
 
   try {
     helper.checkAndGetID(curentuser._id);
-    helper.checkProperString(ing, "Individual ingredient String");
-    ingarray = ing.split(",");
+    // helper.checkProperString(ing, "Individual ingredient String");
     helper.checkProperString(recipeInfo.name, "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach((element) => {
-      helper.checkProperString(element, "Individual ingredient");
+    ingarray.forEach(element => {
+      const quant = parseInt(element.quantity);
+      element.quantity = quant;
+      helper.checkProperObject(element, "Individual ingredient");
+      helper.checkAndGetID(element.id, "Id of ingredient");
+      helper.checkProperNumber(element.quantity, "Quantity of ingredient");
+      helper.checkProperString(element.quantityMeasure, "Quantity Measure");
     });
     helper.checkProperString(recipeInfo.mealType, "Meal Type");
     helper.checkProperString(recipeInfo.cuisine, "Cuisine");
@@ -203,10 +208,12 @@ router.post("/", async (req, res) => {
       recipeInfo.instructions,
       serv
     );
-    // res.json(newRecipe);
+    let recipe = await recipeData.getWithOnlineData(newRecipe._id);
+    let reviews = await reviewData.getAll(newRecipe._id);
     res.render("recipe", {
-      data: newRecipe,
+      data: recipe,
       reviews: reviews,
+      title: recipe.name,
     });
     return;
   } catch (e) {
@@ -233,7 +240,7 @@ router.put("/:id", async (req, res) => {
     helper.checkProperString(updatedData.name, "Name");
     helper.checkProperNumber(updatedData.cookingTime, "Cooking Time");
     helper.checkProperArray(updatedData.ingredients, "Ingredients");
-    updatedData.ingredients.forEach((element) => {
+    updatedData.ingredients.forEach(element => {
       helper.checkProperString(element, "Individual ingredient");
     });
     helper.checkProperString(updatedData.mealType, "Meal Type");
@@ -300,7 +307,7 @@ router.patch("/:id", async (req, res) => {
       updatedData.ingredients !== oldRecipe.ingredients
     ) {
       helper.checkProperArray(updatedData.ingredients, "Ingredients");
-      updatedData.ingredients.forEach((element) => {
+      updatedData.ingredients.forEach(element => {
         helper.checkProperString(element, "Individual ingredient");
       });
       newUpdatedDataObj.cookingTime = updatedData.cookingTime;
