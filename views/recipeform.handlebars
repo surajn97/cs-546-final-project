@@ -1,65 +1,74 @@
 <h1>{{title}}</h1>
 <form method="POST" id="recipe-form" action="/recipes">
-<i class="material-icons" id="fav">favorite_border</i>
 <div class="input-group">
     <div class="input-group-prepend">
         <label class="input-group-text" for="name">Recipe Name</label>
     </div>
-    <input type="text" name="name" id="name" class="form-control" aria-label="Text input with dropdown button" placeholder="Recipe Name">
+    <input type="text" name="name" id="name" class="form-control" placeholder="Recipe Name" required>
 </div>
 </br>  
+
 <div class="input-group">
     <div class="input-group-prepend">
         <label class="input-group-text" for="cookingTime">Cooking Time</label>
     </div>
-    <input type="number" name="cookingTime" id="cookingTime" class="form-control" aria-label="Text input with dropdown button" placeholder="Cooking Time">
+    <input type="number" name="cookingTime" id="cookingTime" class="form-control" placeholder="Cooking Time" required>
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="servings">Servings</label>
+    </div>
+    <input class="form-control" type="text" name="servings" id="servings" placeholder="servings" required/>
 </div>
+
 </br>
-{{!-- <label for="ingredients"> Ingredients: </label> --}}
-<div id="showDiv">
-    <input type="text" class="form-control" name="ingredients" id="ingredients" placeholder="Just to store object value" val=[] disabled/>
-</div>
+
 <div class="input-group">
-  <input type="text" class="form-control" id="ingName" name="ingName" placeholder="Ingredient">
+    <input type="text" class="form-control" id="ingName" name="ingName" placeholder="Ingredient">
     <div class="input-group-append">
-        <input type="Number" class="form-control" id="quantity" name="quantity" placeholder="Quantity">
+        
+        <input type="Number" class="form-control" id="quantity" name="quantity" placeholder="Quantity" required>
     </div>
-     
+
     <div class="input-group-append">
-    <select class="form-control" name="qMeasure" id="qMeasure" >
-    <option value="grams" selected>Grams</option>
-    <option value="teaspoon">Teaspoons</option>
-    <option value="tablespoon">Tablespoons</option>
-    <option value="bowl">Bowl</option>
-    <option value="pieces">Pieces</option>
-  </select>
+        <select class="form-control" name="qMeasure" id="qMeasure" required>
+            <option value="grams">Grams</option>
+            <option value="teaspoon">Teaspoons</option>
+            <option value="tablespoon">Tablespoons</option>
+            <option value="bowl">Bowl</option>
+            <option value="pieces" selected>Pieces</option>
+        </select>
     </div>
+
     <div class="input-group-append">
         <button class="btn btn-outline-secondary" id="addIng" name="addIng" type="button">Add</button>
     </div>
 </div>
 </br>
 
-<div class="input-group">
-    <select class="form-control" name="mealType" id="mealType" >
-    <option selected>Mealtype</option>
-    <option value="1">Breakfast</option>
-    <option value="2">Brunch</option>
-    <option value="3">Lunch</option>
-    <option value="4">Snacks</option>
-    <option value="5">Dinner</option>
-  </select>
-    <input class="form-control" type="number" name="servings" id="servings" placeholder="servings"/>
-    <input class="form-control" type="number" name="cookingTime" id="cookingTime" class="form-control" placeholder="Cooking Time">
+<div id="showDiv">
+    <input type="text" class="form-control" name="ingredients" id="ingredients" placeholder="Just to store object value"  value=[] hidden/>
+    <p>Ingredients:</p>
 </div>
 </br>
+
 <div class="input-group">
+
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="Mealtype">Meal type</label>
+    </div>
+    <select class="form-control" name="mealType" id="mealType" required>
+    <option value="breakfast" selected>Breakfast</option>
+    <option value="brunch">Brunch</option>
+    <option value="lunch">Lunch</option>
+    <option value="snacks">Snacks</option>
+    <option value="dinner">Dinner</option>
+    </select>
     <div class="input-group-prepend">
         <label class="input-group-text" for="cuisine">Cuisine</label>
     </div>
     <input class="form-control" type="text" name="cuisine" id="cuisine" placeholder="cuisine"/>
 </div>
 </br>
+
 <div class="input-group">
     <div class="input-group-prepend">
         <label class="input-group-text" for="instructions">Instructions</label>

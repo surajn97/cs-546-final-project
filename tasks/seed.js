@@ -33,7 +33,7 @@ const main = async () => {
         for (const ingredient of keys) {
           igList.push(
             await ingredientsData.create(
-              ingredient,
+              ingredient.toLowerCase(),
               ig,
               testData.ingredientObjs[ig][ingredient].p,
               testData.ingredientObjs[ig][ingredient].c,
@@ -55,32 +55,32 @@ const main = async () => {
           cuisine: "French",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
-                ._id,
+              id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
               quantity: 1,
-              quantityMeasure: "qty",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
-              quantity: 3,
-              quantityMeasure: "tablespoon",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
-              quantity: 1,
-              quantityMeasure: "qty",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "parsley")._id,
-              quantity: 2,
-              quantityMeasure: "tablespoon",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "lemon")._id,
-              quantity: 0.5,
               quantityMeasure: "qty",
             },
           ],
+          //   {
+          //     id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
+          //     quantity: 3,
+          //     quantityMeasure: "tablespoon",
+          //   },
+          //   {
+          //     id: igList.find(x => x.name.toLowerCase() == "onion")._id,
+          //     quantity: 1,
+          //     quantityMeasure: "qty",
+          //   },
+          //   {
+          //     id: igList.find(x => x.name.toLowerCase() == "parsley")._id,
+          //     quantity: 2,
+          //     quantityMeasure: "tablespoon",
+          //   },
+          //   {
+          //     id: igList.find(x => x.name.toLowerCase() == "lemon")._id,
+          //     quantity: 0.5,
+          //     quantityMeasure: "qty",
+          //   },
+          // ],
           instructions:
             "Easy rice-like side dish that's much lower GI and ready in just 10 minutes. Trim the cauliflower florets, cutting away as much stem as possible. In 3 batches, break up the florets into a food processor and pulse until the mixture resembles couscous.Heat the oil in a large skillet over medium-high heat. At the first wisp of smoke from the oil, add the onions, and stir to coat. Continue cooking, stirring frequently, until the onions are golden brown at the edges and have softened, about 8 minutes. Add the cauliflower, and stir to combine. Add 1 teaspoon salt, and continue to cook, stirring frequently, until the cauliflower has softened, 3 to 5 minutes. Remove from the heat. Spoon the cauliflower into a large serving bowl, garnish with the parsley, sprinkle with the lemon juice and season to taste with salt. Serve warm.",
           reviews: [
@@ -98,28 +98,27 @@ const main = async () => {
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "butter")._id,
+              id: igList.find(x => x.name.toLowerCase() == "butter")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
-                ._id,
+              id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
               quantity: 3,
               quantityMeasure: "cups",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "milk")._id,
+              id: igList.find(x => x.name.toLowerCase() == "milk")._id,
               quantity: 3,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "mustard")._id,
+              id: igList.find(x => x.name.toLowerCase() == "mustard")._id,
               quantity: 0.5,
               quantityMeasure: "teaspoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "parmesan")._id,
+              id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
               quantity: 0.25,
               quantityMeasure: "cup",
             },
@@ -141,32 +140,32 @@ const main = async () => {
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "artichoke")._id,
+              id: igList.find(x => x.name.toLowerCase() == "artichoke")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "lemon")._id,
+              id: igList.find(x => x.name.toLowerCase() == "lemon")._id,
               quantity: 0.5,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
+              id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
+              id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "parsley")._id,
+              id: igList.find(x => x.name.toLowerCase() == "parsley")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "parmesan")._id,
+              id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
@@ -256,6 +255,6 @@ const main = async () => {
   // console.log("Done seeding database");
 };
 
-main().catch((error) => {
+main().catch(error => {
   console.log(error);
 });

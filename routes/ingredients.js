@@ -19,6 +19,34 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  let ingreInfo = req.body;
+
+  if (!ingreInfo) {
+    e = "You must provide data to add ingredient";
+    res.status(400).json({ error: e });
+    return;
+  }
+  let name = ingreInfo.name;
+  let category = ingreInfo.category;
+
+  try {
+    helper.checkProperString(name, "Ingredient Name");
+    helper.checkProperString(category, "Ingredient Category");
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
+
+  try {
+    const newIngredient = await ingredientsData.createByUser(name, category);
+    return;
+  } catch (e) {
+    res.status(500).json({ error: e });
+    return;
+  }
+});
+
 router.get("/name/:name", async (req, res) => {
   try {
     helper.checkProperString(req.params.name);
