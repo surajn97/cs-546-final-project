@@ -1,12 +1,76 @@
 {{#if recipeList.length}}
   <div>
-    <div class="mt-4">
+    <div class="d-flex flex-row justify-content-between mt-4">
       {{! prettier-ignore }}
       {{#if recipeList.[1]}}
         <h3>You can make {{recipeList.length}} recipes</h3>
       {{else}}
         <h3>You can make {{recipeList.length}} recipe</h3>
       {{/if}}
+  <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="filterSortDropDown" data-bs-toggle="dropdown" aria-expanded="false">
+ <i class="fas fa-bars"></i>  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li><h6 class="dropdown-header">Sort</h6></li>
+    <li><hr class="dropdown-divider"></li>
+    <li>
+      {{#if currentSort.name.current}}
+        {{#if currentSort.name.up}}
+          <div id="sortByNameDiv" class="dropdown-item text-primary" name="up">
+          Sort by Name<span class="fas fa-arrow-up ms-2"></span> </div>
+        {{else}}
+          <div id="sortByNameDiv" class="dropdown-item text-primary" name="down">
+           Sort by Name<span class="fas fa-arrow-down ms-2"></span></div>
+        {{/if}}
+      {{else}}
+        <div id="sortByNameDiv" class="dropdown-item" name="up">
+        Sort by Name</div>
+      {{/if}}
+    </li>
+    <li>
+      {{#if currentSort.rating.current}}
+        {{#if currentSort.rating.up}}
+          <div id="sortByRatingDiv" class="dropdown-item text-primary" name="up">
+           Sort by Rating<span class="fas fa-arrow-up ms-2"></span></div>
+        {{else}}
+          <div id="sortByRatingDiv" class="dropdown-item text-primary" name="down">
+          Sort by Rating<span class="fas fa-arrow-down ms-2"></span> </div>
+        {{/if}}
+      {{else}}
+        <div id="sortByRatingDiv" class="dropdown-item" name="up">
+        Sort by Rating</div>
+      {{/if}}
+    </li>  
+    <li>
+      {{#if currentSort.time.current}}
+        {{#if currentSort.time.up}}
+          <div id="sortByTimeDiv" class="dropdown-item text-primary" name="up">
+          Sort by Prep Time<span class="fas fa-arrow-up ms-2"></span> </div>
+        {{else}}
+          <div id="sortByTimeDiv" class="dropdown-item text-primary" name="down">
+           Sort by Prep Time<span class="fas fa-arrow-down ms-2"></span></div>
+        {{/if}}
+      {{else}}
+        <div id="sortByTimeDiv" class="dropdown-item" name="up">
+        Sort by Prep Time</div>
+      {{/if}}
+    </li> 
+    <li>
+      {{#if currentSort.ingredient.current}}
+        {{#if currentSort.ingredient.up}}
+          <div id="sortByIngredientDiv" class="dropdown-item text-primary" name="up">
+           Sort by Ingredient count<span class="fas fa-arrow-up ms-2"></span></div>
+        {{else}}
+          <div id="sortByIngredientDiv" class="dropdown-item text-primary" name="down">
+           Sort by Ingredient count<span class="fas fa-arrow-down ms-2"></span></div>
+        {{/if}}
+      {{else}}
+        <div id="sortByIngredientDiv" class="dropdown-item" name="up">
+        Sort by Ingredient count</div>
+      {{/if}}
+    </li> 
+  </ul>
+</div>
     </div>
       {{#if ingredientSuggestions.length}}
    {{>ingredientSuggestions}}

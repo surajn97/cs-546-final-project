@@ -16,31 +16,25 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a
-            class="nav-link {{#if ingredients_page}}active{{/if}}"
-            {{#if ingredients_page}} aria-current="page" {{/if}} 
-            href="ingredients"
-          >Ingredients</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{#if recipes_page}}active{{/if}}" {{#if recipes_page}} aria-current="page" {{/if}} href="/recipes">Recipes</a>
+          <a class="nav-link {{#if recipes_page}}active{{/if}}" {{#if recipes_page}} aria-current="page" {{/if}} href="/recipes/all">Recipes</a>
         </li>
       </ul>
-      <form class="d-flex">
+      <form id="navRecipeSearch" class="d-flex" method="POST" action="/recipes/all">
+        <label for="navRecipeSearchInput"></label>
         <input
+           id="navRecipeSearchInput"
           class="form-control me-2"
           type="search"
           placeholder="Search Recipes"
           aria-label="Search Recipes"
+          name="search"
         />
         <button
           class="btn btn-outline-light me-3" 
           type="submit"
         >Search</button>
-        {{!-- <button class="btn btn-primary">Login</button> --}}
-        <a href="/users/login" class="btn btn-primary" role="button">Login</a>
-
       </form>
+      <a href="/users/login" class="btn btn-primary" role="button">Login</a>
     </div>
   </div>
 </nav>

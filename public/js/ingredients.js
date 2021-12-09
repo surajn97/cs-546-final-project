@@ -4,11 +4,13 @@
   const ingredientSuggestionCheckBox = $(".ingredient-check-suggestion");
   const allIngredientsDiv = $("#all-ingredients-div");
   const selectedIngredientsDiv = $("#selected-ingredients-div");
-  const selectedIngredientsModal = $("#selectedIngredientsModal");
   const ingredientToggleButtons = $("#ingredients-toggle-button");
   const url = "http://localhost:3000/";
   const toastDiv = $("#toast-div");
   const toastDivText = $("#toast-div-text");
+  const loadingSpinner = $(
+    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+  );
 
   /* #region  Helper Functions */
   const checkProperString = (string, parameter) => {
@@ -182,47 +184,59 @@
     });
 
     $("#all-recipe").on("click", function (e) {
+      $(this).html(loadingSpinner);
       let data = getAllSelectedIngredients();
       if (data.ingredients.length == 0) {
         showToast(true, "Please select atleast One ingredient");
         return;
       }
       data.random = false;
-      $(document).ready(function () {
-        $(`<form method="POST" action="${url}"></form>`)
-          .append(
-            $("<input>", {
-              name: "ingredientsList",
-              value: JSON.stringify(data),
-              type: "hidden",
-            })
-          )
-          .appendTo("body")
-          .submit();
-      });
+
+      $(`<form method="POST" action="${url}"></form>`)
+        .append(
+          $("<input>", {
+            name: "ingredientsList",
+            value: JSON.stringify(data),
+            type: "hidden",
+          })
+        )
+        .appendTo("body")
+        .submit();
     });
 
+    //Suggested Search Button
     $("#suggested-ingredients").on("click", function (e) {
+      $(this).html(loadingSpinner);
       let data = getAllSelectedIngredients();
       if (data.ingredients.length == 0) {
         showToast(true, "Please select atleast One ingredient");
         return;
       }
       data.random = false;
-      $(document).ready(function () {
-        $(`<form method="POST" action="${url}"></form>`)
-          .append(
-            $("<input>", {
-              name: "ingredientsList",
-              value: JSON.stringify(data),
-              type: "hidden",
-            })
-          )
-          .appendTo("body")
-          .submit();
-      });
+
+      $(`<form method="POST" action="${url}"></form>`)
+        .append(
+          $("<input>", {
+            name: "ingredientsList",
+            value: JSON.stringify(data),
+            type: "hidden",
+          })
+        )
+        .appendTo("body")
+        .submit();
     });
 
+    //Select all suggestions
+    $("#select-suggested-ingredients").on("click", function (e) {
+      $(ingredientSuggestionCheckBox).each(function () {
+        const id = $(this).attr("name");
+        $(this).prop("checked", true);
+        $(`#check-${id}`).prop("checked", true);
+      });
+      getAllSelectedIngredients();
+    });
+
+    //Random Recipe button click
     $("#random-recipe").on("click", function (e) {
       let data = getAllSelectedIngredients();
       if (data.ingredients.length == 0) {
@@ -230,18 +244,149 @@
         return;
       }
       data.random = true;
-      $(document).ready(function () {
-        $(`<form method="POST" action="${url}"></form>`)
-          .append(
-            $("<input>", {
-              name: "ingredientsList",
-              value: JSON.stringify(data),
-              type: "hidden",
-            })
-          )
-          .appendTo("body")
-          .submit();
-      });
+
+      $(`<form method="POST" action="${url}" target="_blank"></form>`)
+        .append(
+          $("<input>", {
+            name: "ingredientsList",
+            value: JSON.stringify(data),
+            type: "hidden",
+          })
+        )
+        .appendTo("body")
+        .submit();
+    });
+
+    //Sort By Name
+    $("#sortByNameDiv").on("click", function (e) {
+      let isUp = $(this).attr("name") == "up";
+      const data = {
+        name: {
+          current: true,
+          up: isUp,
+        },
+        rating: {
+          current: false,
+          up: true,
+        },
+        time: {
+          current: false,
+          up: true,
+        },
+        ingredient: {
+          current: false,
+          up: true,
+        },
+      };
+      $(`<form method="POST" action="/filter"></form>`)
+        .append(
+          $("<input>", {
+            name: "sort",
+            value: JSON.stringify(data),
+            type: "hidden",
+          })
+        )
+        .appendTo("body")
+        .submit();
+    });
+
+    //Sort By Rating
+    $("#sortByRatingDiv").on("click", function (e) {
+      const isUp = $(this).attr("name") == "up";
+      const data = {
+        name: {
+          current: false,
+          up: true,
+        },
+        rating: {
+          current: true,
+          up: isUp,
+        },
+        time: {
+          current: false,
+          up: true,
+        },
+        ingredient: {
+          current: false,
+          up: true,
+        },
+      };
+      $(`<form method="POST" action="/filter"></form>`)
+        .append(
+          $("<input>", {
+            name: "sort",
+            value: JSON.stringify(data),
+            type: "hidden",
+          })
+        )
+        .appendTo("body")
+        .submit();
+    });
+
+    //Sort By Time
+    $("#sortByTimeDiv").on("click", function (e) {
+      const isUp = $(this).attr("name") == "up";
+      const data = {
+        name: {
+          current: false,
+          up: true,
+        },
+        rating: {
+          current: false,
+          up: true,
+        },
+        time: {
+          current: true,
+          up: isUp,
+        },
+        ingredient: {
+          current: false,
+          up: true,
+        },
+      };
+      $(`<form method="POST" action="/filter"></form>`)
+        .append(
+          $("<input>", {
+            name: "sort",
+            value: JSON.stringify(data),
+            type: "hidden",
+          })
+        )
+        .appendTo("body")
+        .submit();
+    });
+
+    //Sort By Ingredients
+    $("#sortByIngredientDiv").on("click", function (e) {
+      const isUp = $(this).attr("name") == "up";
+      const data = {
+        name: {
+          current: false,
+          up: true,
+        },
+        rating: {
+          current: false,
+          up: true,
+        },
+        time: {
+          current: false,
+          up: true,
+        },
+        ingredient: {
+          current: true,
+          up: isUp,
+        },
+      };
+      $(`<form method="POST" action="/filter"></form>`)
+        .append(
+          $("<input>", {
+            name: "sort",
+            value: JSON.stringify(data),
+            type: "hidden",
+          })
+        )
+        .appendTo("body")
+        .submit();
     });
 
     //search modal on open

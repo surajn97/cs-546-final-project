@@ -6,6 +6,133 @@ const ingredientsData = data.ingredients;
 const userData = data.users;
 const reviewData = data.reviews;
 const helper = data.helper;
+let prevSentData;
+let currentSort = {
+  name: {
+    current: true,
+    up: true,
+  },
+  rating: {
+    current: false,
+    up: true,
+  },
+  time: {
+    current: false,
+    up: true,
+  },
+  ingredient: {
+    current: false,
+    up: true,
+  },
+};
+
+let currentFilter = {};
+
+function sort(list, prevCurr) {
+  if (currentSort.name.current) {
+    if (prevCurr && prevCurr.name.current == true)
+      currentSort.name.up = !currentSort.name.up;
+    if (currentSort.name.up) list.sort((a, b) => (a.name > b.name ? 1 : -1));
+    else list.sort((a, b) => (a.name > b.name ? -1 : 1));
+  } else if (currentSort.rating.current) {
+    if (prevCurr && prevCurr.rating.current == true)
+      currentSort.rating.up = !currentSort.rating.up;
+    if (currentSort.rating.up)
+      list.sort((a, b) => (a.overallRating > b.overallRating ? 1 : -1));
+    else list.sort((a, b) => (a.overallRating > b.overallRating ? -1 : 1));
+  } else if (currentSort.time.current) {
+    if (prevCurr && prevCurr.time.current == true)
+      currentSort.time.up = !currentSort.time.up;
+    if (currentSort.time.up)
+      list.sort((a, b) => (a.cookingTime > b.cookingTime ? 1 : -1));
+    else list.sort((a, b) => (a.cookingTime > b.cookingTime ? -1 : 1));
+  } else if (currentSort.ingredient.current) {
+    if (prevCurr && prevCurr.ingredient.current == true)
+      currentSort.ingredient.up = !currentSort.ingredient.up;
+    if (currentSort.ingredient.up)
+      list.sort((a, b) =>
+        a.ingredients.length > b.ingredients.length ? 1 : -1
+      );
+    else
+      list.sort((a, b) =>
+        a.ingredients.length > b.ingredients.length ? -1 : 1
+      );
+  }
+}
+
+router.get("/all", async (req, res) => {
+  try {
+    const recipeList = await recipeData.getAllWithSearch("");
+    sort(recipeList);
+    const filter = recipeData.getFilterFields(recipeList);
+    prevSentData = recipeList;
+    res.status(200).render("allRecipes", {
+      recipeList: recipeList,
+      currentSort: currentSort,
+      title: "What's Cooking?",
+      error: false,
+    });
+  } catch (e) {
+    res.status(400).render("allRecipes", {
+      recipeList: [],
+      currentSort: currentSort,
+      title: "What's Cooking?",
+      error: true,
+    });
+    return;
+  }
+});
+
+router.post("/all", async (req, res) => {
+  try {
+    let search = req.body.search;
+    if (!search) search = "";
+    if (typeof search !== "string") search = "";
+    const recipeList = await recipeData.getAllWithSearch(search.trim());
+    sort(recipeList);
+    prevSentData = recipeList;
+    res.status(200).render("allRecipes", {
+      recipeList: recipeList,
+      currentSort: currentSort,
+      title: "What's Cooking?",
+      error: false,
+    });
+  } catch (e) {
+    res.status(400).render("allRecipes", {
+      recipeList: [],
+      currentSort: currentSort,
+      title: "What's Cooking?",
+      error: true,
+    });
+    return;
+  }
+});
+
+router.post("/all/filter", async (req, res) => {
+  try {
+    if (prevSentData === null) {
+      res.status(200).redirect("/");
+    } else {
+      filterData = req.body.sort;
+      if (!filterData) {
+        res.status(200).redirect("/");
+        return;
+      }
+      const filterObj = JSON.parse(filterData);
+      const prevCurr = currentSort;
+      currentSort = filterObj;
+      sort(prevSentData, prevCurr);
+      res.status(200).render("allRecipes", {
+        recipeList: prevSentData,
+        currentSort: currentSort,
+        title: "What's Cooking?",
+        error: false,
+      });
+    }
+  } catch (e) {
+    res.status(400).json({ error: e.toString() });
+  }
+});
 
 router.get("/:id", async (req, res) => {
   try {

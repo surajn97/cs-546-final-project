@@ -9,6 +9,7 @@ const userData = require("./users");
 const { ingredients } = require("../config/mongoCollections");
 const defaultRecipeImage = "/public/img/product/product-2.jpg";
 const youtube = require("scrape-youtube");
+const data = require(".");
 
 const getYoutubeLinkScraped = async (title) => {
   const results = await youtube.search(`${title} Recipe`);
@@ -118,14 +119,37 @@ module.exports = {
       carb += ig.carb;
       fat += ig.fat;
     }
-    recipe.calories = calories;
-    recipe.protien = protien;
-    recipe.carb = carb;
-    recipe.fat = fat;
+    recipe.calories = Math.round(calories * 100) / 100;
+    recipe.protien = Math.round(protien * 100) / 100;
+    recipe.carb = Math.round(carb * 100) / 100;
+    recipe.fat = Math.round(fat * 100) / 100;
     const recipeImageUrl = await getgisRecipeImageLink(recipe.name);
     recipe.youtubeURL = youtubeUrl;
     recipe.recipeImageURL = recipeImageUrl;
     return recipe;
+  },
+
+  getFilterFields(recipeList) {
+    try {
+      let meals = [...new Set(recipeList.map((item) => item.mealType))];
+      meals = [
+        ...meals.map(function (item) {
+          return { [item]: false };
+        }),
+      ];
+      let cuisines = [...new Set(recipeList.map((item) => item.cuisine))];
+      cuisines = [
+        ...cuisines.map(function (item) {
+          return { [item]: false };
+        }),
+      ];
+      return {
+        mealType: meals,
+        cuisine: cuisines,
+      };
+    } catch (e) {
+      return { mealType: [], cuisine: [] };
+    }
   },
 
   async get(id) {
@@ -188,6 +212,27 @@ module.exports = {
       recipeList: rstList,
       ingredientSuggestions: ingredientSuggestion,
     };
+  },
+
+  async getAllWithSearch(searchText) {
+    const recipeCollection = await recipes();
+    let recipeList;
+
+    if (!searchText) {
+      recipeList = await recipeCollection.find({}).toArray();
+    } else {
+      if (typeof searchText !== "string") throw "Invalid Search Type";
+      recipeList = await recipeCollection
+        .find({ name: { $regex: searchText.trim(), $options: "i" } })
+        .toArray();
+    }
+    for (let item of recipeList) {
+      item._id = item._id.toString();
+      const url = await getgisRecipeImageLink(item.name);
+      item.recipeImageURL = url;
+      item.postedBy = await userData.get(item.postedBy);
+    }
+    return recipeList;
   },
 
   async remove(id) {
