@@ -430,6 +430,28 @@ module.exports = {
     return await this.get(recipeId);
   },
 
+  async replaceReviewInRecipe(recipeId, reviewobj) {
+    if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";
+    let ID = ObjectId(recipeId);
+    if (!ObjectId.isValid(reviewobj._id)) throw "Error: Not a valid ObjectId";
+    let reviewID = ObjectId(reviewobj._id); 
+    const recipeCollection = await recipes();
+    const updateInfo = await recipeCollection.findOneAndUpdate(
+      {
+        "reviews._id": reviewID
+      },
+      {
+        $set: {
+          "reviews.$": reviewobj // Update with new object
+        }
+      }
+    );
+    // if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+    //   throw "Update failed at replacing review to recipe";
+
+    // return await this.get(recipeId);
+  },
+
   async removeReviewFromRecipe(recipeId, reviewId) {
     if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(recipeId);

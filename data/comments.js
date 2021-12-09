@@ -1,5 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const reviewFunctions = require("./reviews");
+const recipeFunctions = require("./recipes.js");
+const userFunctions = require("./users");
 const reviews = mongoCollections.reviews;
 const comments = mongoCollections.comments;
 const util = require("./util");
@@ -21,10 +23,13 @@ module.exports = {
       throw "Error: No review with that id";
     }
 
+    const user = await userFunctions.get(userId);
+
     const commentCollection = await comments();
     let newComment = {
       reviewId: ObjectId(reviewId),
       userId: ObjectId(userId),
+      userName: user.firstname + " " + user.lastname, 
       comment: comment,
       dateOfComment: new Date()
     };
@@ -35,7 +40,8 @@ module.exports = {
     const newId = insertInfo.insertedId.toString();
 
     const commentobj = await this.get(newId);
-    await reviewFunctions.addCommentToReview(reviewId, newId, commentobj);
+    const updatedReview = await reviewFunctions.addCommentToReview(reviewId, newId, commentobj);
+    await recipeFunctions.replaceReviewInRecipe(review._id, updatedReview);
     return commentobj;
   },
 

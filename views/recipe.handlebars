@@ -94,12 +94,43 @@
       <dl class="row mt-3 border-start border-4">
         <dt class="col-sm-3">Reviewer</dt>
         <dd class="col-sm-9">{{user.firstname}} {{user.lastname}}</dd>
-        <dt class="col-sm-3">Comments</dt>
+        <dt class="col-sm-3">Review</dt>
         <dd class="col-sm-9">{{reviewText}}</dd>
         <dt class="col-sm-3">Rating</dt>
         <dd class="col-sm-9"><div class="rating">{{rating}}</div></dd>
         <dt class="col-sm-3">Reviewed on</dt>
         <dd class="col-sm-9">{{dateOfReview}}</dd>
+        <dt class="col-sm-3"><button class="btn btn-sm btn-primary" onclick="showCommentForm('{{_id}}')">Reply ></button></dt>
+        <dd class="col-sm-9">
+          <div class="row text-white" id="toast-div-{{_id}}" hidden>
+            <p class="text-center mt-3" id="toast-div-text-{{_id}}"></p>
+          </div>
+          <form action="/comments/{{_id}}" method="POST" id="comment-form-{{_id}}" class="comment-form" hidden>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Leave a comment here" id="comment-{{_id}}" name="comment" required></textarea>
+              <label for="comment-{{_id}}">Comments</label>
+            </div>
+            <div class="form-floating mt-2">
+              <input type="hidden" name="userId" class="userId" id="userId-{{_id}}" value="{{#if ../session.user}}{{ ../session.user._id }}{{/if}}">
+              <button class="btn btn-sm btn-primary" type="submit">Comment</button>
+              <button class="btn btn-sm btn-secondary" onclick="return hideCommentForm('{{_id}}');">Cancel</button>
+            </div>
+          </form>
+        </dd>
+        {{#if comments.length}}
+        <dt class="col-sm-3">Comments</dt>
+        <dd class="col-sm-9">
+          {{#each comments}}
+            <dl class="row mt-1 border-start border-4">
+              <dt class="col-sm-3">{{userName}}</dt>
+              <dd class="col-sm-9">
+                <p>{{comment}}</p>
+                <p><small class="text-muted">{{dateOfComment}}</small></p>
+              </dd>
+            </dl>
+          {{/each}}
+        </dd>
+        {{/if}}
       </dl>
       {{/each}}
     </div>
