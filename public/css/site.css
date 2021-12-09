@@ -176,3 +176,14 @@ span.stars > * {
   max-width: 80px;
   background-position: 0 0;
 }
+
+#div404 div {
+  text-align: center;
+}
+
+#div404 img {
+  height: 60vh;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
