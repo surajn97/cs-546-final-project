@@ -1,22 +1,29 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const reviews = require("../data/reviews");
-const recipes = require("../data/recipes");
+const reviews = require('../data/reviews');
+const recipes = require('../data/recipes');
+const users = require('../data/users');
 
-router.get("/", async (req, res) => {
+
+
+router.get('/', async (req, res) => {
   if (req.session.user) {
-    const userData = req.session.user;
+    const userSess = req.session.user;
+
+
+    let userData = await users.get(userSess._id)
     // console.log("userData")
     // console.log(userData)
     // console.log("userData")
-
     // Get list of myFavoriteRecipe
+    // const userReviews = await reviews.getAllReviewsOfUser(userData._id);
+
     let myFavRecipe = [];
     for (let RecipeId of userData.myFavoriteRecipe) {
       let FRec = await recipes.get(RecipeId); //add getrecipes id function
       myFavRecipe.push({
         id: RecipeId,
-        name: FRec.name,
+        name: FRec.name
       });
     }
     let hasFRecipe = false;
@@ -29,7 +36,7 @@ router.get("/", async (req, res) => {
       let mRec = await recipes.get(RecipeId); //add getrecipes id function, need check
       myReclist.push({
         id: RecipeId,
-        name: mRec.name,
+        name: mRec.name
       });
     }
     let hasMRecipe = false;
@@ -40,20 +47,40 @@ router.get("/", async (req, res) => {
     let myReviewsList = [];
     for (let ReviewsId of userData.myReviews) {
       let mRev = await reviews.get(ReviewsId); //add getrecipes id function  ,need check
-      let recipename = await recipes.get(mRev.RecipeId);
+
+      // console.log("Reviews Obj")
+      // console.log(mRev)
+
+      let recipeobj = await recipes.get(String(mRev.recipeId));
+
+      // console.log("recipe Obj")
+      // console.log(recipeobj)
+
       myReviewsList.push({
-        id: reviewId,
-        recipename: recipename,
+        id: ReviewsId,
+        recipename: recipeobj.name,
+        recipeid: recipeobj._id,
         rating: mRev.rating,
-        reviewTest: mRev.reviewTest,
+        reviewText: mRev.reviewText
       });
+      // console.log("push Obj")
+      // console.log(
+      //   {
+      //     id: ReviewsId,
+      //     recipename: recipeobj.name,
+      //     recipeid: recipeobj._id,
+      //     rating: mRev.rating,
+      //     reviewText: mRev.reviewText
+      //   })
     }
     let hasReview = false;
     if (myReviewsList.length > 0) {
       hasReview = true;
     }
 
-    res.render("users/private", {
+
+
+    res.render('users/private', {
       username: req.session.user.username,
       firstname: userData.firstname,
       lastname: userData.lastname,
@@ -65,10 +92,14 @@ router.get("/", async (req, res) => {
       hasFRecipe: hasFRecipe,
       hasMRecipe: hasMRecipe,
       hasReview: hasReview,
+      authenticated: true,
     });
   } else {
-    res.redirect("users/login");
+    res.redirect('/login');
+
   }
+
+
 });
 
 module.exports = router;

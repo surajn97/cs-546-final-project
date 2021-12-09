@@ -67,6 +67,8 @@ router.get("/", async (req, res) => {
       ingredientsSelected: false,
       currentSort: currentSort,
       title: "What's Cooking?",
+      authenticated: req.session.user ? true : false,
+
     });
   } catch (e) {
     res.status(500).json({ error: e });
@@ -102,6 +104,8 @@ router.post("/filter", async (req, res) => {
         ingredientsSelected: true,
         currentSort: currentSort,
         title: "What's Cooking?",
+        authenticated: req.session.user ? true : false,
+
       });
     }
   } catch (e) {
@@ -157,6 +161,8 @@ router.post("/", async (req, res) => {
         ingredientsSelected: true,
         currentSort: currentSort,
         title: "What's Cooking?",
+        authenticated: req.session.user ? true : false,
+
       });
     }
   } catch (e) {

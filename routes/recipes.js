@@ -71,6 +71,8 @@ router.get("/all", async (req, res) => {
       currentSort: currentSort,
       title: "What's Cooking?",
       error: false,
+      authenticated: req.session.user ? true : false,
+
     });
   } catch (e) {
     res.status(400).render("allRecipes", {
@@ -78,6 +80,8 @@ router.get("/all", async (req, res) => {
       currentSort: currentSort,
       title: "What's Cooking?",
       error: true,
+      authenticated: req.session.user ? true : false,
+
     });
     return;
   }
@@ -96,6 +100,8 @@ router.post("/all", async (req, res) => {
       currentSort: currentSort,
       title: "What's Cooking?",
       error: false,
+      authenticated: req.session.user ? true : false,
+
     });
   } catch (e) {
     res.status(400).render("allRecipes", {
@@ -103,6 +109,8 @@ router.post("/all", async (req, res) => {
       currentSort: currentSort,
       title: "What's Cooking?",
       error: true,
+      authenticated: req.session.user ? true : false,
+
     });
     return;
   }
@@ -127,6 +135,8 @@ router.post("/all/filter", async (req, res) => {
         currentSort: currentSort,
         title: "What's Cooking?",
         error: false,
+        authenticated: req.session.user ? true : false,
+
       });
     }
   } catch (e) {
@@ -148,6 +158,8 @@ router.get("/:id", async (req, res) => {
       data: recipe,
       reviews: reviews,
       title: recipe.name,
+      authenticated: req.session.user ? true : false,
+
     });
 
     return;
@@ -214,6 +226,8 @@ router.post("/", async (req, res) => {
       data: recipe,
       reviews: reviews,
       title: recipe.name,
+      authenticated: req.session.user ? true : false,
+
     });
     return;
   } catch (e) {
@@ -350,6 +364,8 @@ router.patch("/:id", async (req, res) => {
       res.render("recipe", {
         data: newUpdatedData,
         reviews: reviews,
+        authenticated: req.session.user ? true : false,
+
       });
     } catch (e) {
       res.status(500).json({ error: e });
