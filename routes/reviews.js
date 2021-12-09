@@ -128,7 +128,7 @@ router.post("/:id", async (req, res) => {
       ReviewData.rating,
       ReviewData.reviewText,
       // should be logged in user id
-      ReviewData.userId
+      req.session.user._id.toString()
     );
     res.redirect("/recipes/" + req.params.id);
     // res.status(200);
@@ -138,6 +138,91 @@ router.post("/:id", async (req, res) => {
       error: e
     });
     // res.status(500);
+    return;
+  }
+});
+
+router.post("/like/:id", async (req, res) => {
+  if (!req.session.user) {
+    res.status(401).json({
+      status: "fail",
+      error: "Please login first to like the review"
+    });
+  }
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({
+      status: "fail",
+      error: e
+    });
+    return;
+  }
+  if (!req.params.id) {
+    res.status(400).json({
+      status: "fail",
+      error: "You must provide a review id"
+    });
+    // res.status(400);
+    return;
+  }
+
+  try {
+    const review = await reviewData.addLikeToReview(req.params.id, req.session.user._id.toString());
+    res.json({
+      status: "success",
+      likes: (review.likes.length - review.dislikes.length),
+      message: "successfully liked the review"
+    });
+  } catch (e) {
+    res.status(404).json({
+      status: "fail",
+      error: e
+    });
+    // res.status(404);
+    return;
+  }
+
+});
+
+router.post("/dislike/:id", async (req, res) => {
+  if (!req.session.user) {
+    res.status(401).json({
+      status: "fail",
+      error: "Please login first to dislike the review"
+    });
+  }
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({
+      status: "fail",
+      error: e
+    });
+    return;
+  }
+  if (!req.params.id) {
+    res.status(400).json({
+      status: "fail",
+      error: "You must provide a review id"
+    });
+    // res.status(400);
+    return;
+  }
+
+  try {
+    const review = await reviewData.addDislikeToReview(req.params.id, req.session.user._id.toString());
+    res.json({
+      status: "success",
+      likes: (review.likes.length - review.dislikes.length),
+      message: "successfully disliked the review"
+    });
+  } catch (e) {
+    res.status(404).json({
+      status: "fail",
+      error: e
+    });
+    // res.status(404);
     return;
   }
 });

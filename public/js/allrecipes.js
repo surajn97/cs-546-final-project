@@ -131,3 +131,18 @@
       .submit();
   });
 })(window.jQuery);
+
+$.fn.stars = function() {
+  // return this.each(function(i,e){$(e).html($('<span/>').width($(e).text()*16));});
+  this.each(function (i, e) {
+      var score = $(e).text();
+      $(e).html("");
+      $(e).raty({
+        path: '/public/images',
+        halfShow: true,
+        readOnly: true,
+        score: score
+      });
+    });
+};
+$('.star-ratings').stars();

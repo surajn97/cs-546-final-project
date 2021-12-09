@@ -9,4 +9,7 @@ module.exports = {
     var theString = passedString.substring(startstring, endstring);
     return theString;
   },
+  isGEZero: function (passedString) {
+    return parseInt(passedString) >= 0;
+  },
 };

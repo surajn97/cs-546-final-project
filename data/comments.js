@@ -29,7 +29,7 @@ module.exports = {
     let newComment = {
       reviewId: ObjectId(reviewId),
       userId: ObjectId(userId),
-      userName: user.firstname + " " + user.lastname, 
+      name: user.firstname + " " + user.lastname, 
       comment: comment,
       dateOfComment: new Date()
     };
@@ -41,7 +41,7 @@ module.exports = {
 
     const commentobj = await this.get(newId);
     const updatedReview = await reviewFunctions.addCommentToReview(reviewId, newId, commentobj);
-    await recipeFunctions.replaceReviewInRecipe(review._id, updatedReview);
+    await recipeFunctions.replaceReviewInRecipe(updatedReview.recipeId.toString(), updatedReview);
     return commentobj;
   },
 
