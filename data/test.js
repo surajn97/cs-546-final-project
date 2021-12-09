@@ -36,13 +36,13 @@ const commentObj = {
 const ingredientObjs = {
   Vegetables: {
     Beetroot: { p: 2.2, c: 13, f: 0.2 },
-    Cabbage: { p: 2.2, c: 13, f: 0.2 },
+    Cabbage: { p: 0.9, c: 4.1, f: 0.1 },
     Artichoke: { p: 2.2, c: 13, f: 0.2 },
-    Asparagus: { p: 2.2, c: 13, f: 0.2 },
-    Avocado: { p: 2.2, c: 13, f: 0.2 },
-    Beans: { p: 2.2, c: 13, f: 0.2 },
+    Asparagus: { p: 2.9, c: 5, f: 0.2 },
+    Avocado: { p: 2.9, c: 12, f: 21 },
+    Beans: { p: 21, c: 63, f: 1.2 },
     Beetroot: { p: 2.2, c: 13, f: 0.2 },
-    "Bell Pepper": { p: 2.2, c: 13, f: 0.2 },
+    "Bell Pepper": { p: 1.2, c: 9.1, f: 0.3 },
     "Bitter Gourd": { p: 2.2, c: 13, f: 0.2 },
     Broccoli: { p: 2.2, c: 13, f: 0.2 },
     "Brussels Sprouts": { p: 2.2, c: 13, f: 0.2 },

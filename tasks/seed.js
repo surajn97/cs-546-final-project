@@ -8,6 +8,7 @@ const recipes = mongoCollections.recipes;
 const reviews = mongoCollections.reviews;
 const comments = mongoCollections.comments;
 const ingredientsData = data.ingredients;
+const recipesData = data.recipes;
 
 // const reviews = data.reviews;
 
@@ -23,7 +24,7 @@ const main = async () => {
       const commentsCollection = await comments();
       const userInfo = await usersCollection.insertOne(testData.userobj);
       let igList = [];
-
+      console.log("Creating Ingredients:");
       for (const ig in testData.ingredientObjs) {
         let keys = Object.keys(testData.ingredientObjs[ig]),
           i,
@@ -41,7 +42,11 @@ const main = async () => {
           );
         }
       }
-      const recipeobj = [
+      console.log("Completed Adding Ingredients!");
+      console.log(
+        "Creating Recipes... This might take a while as it is fetching images from google"
+      );
+      const recipeArr = [
         {
           name: "Cauliflower Rice",
           postedBy: userInfo.insertedId.toString(),
@@ -175,9 +180,67 @@ const main = async () => {
           overallRating: 4.3,
           servings: 4,
         },
+        {
+          name: "Guacamole",
+          postedBy: userInfo.insertedId.toString(),
+          cookingTime: "10",
+          mealType: "Snack",
+          cuisine: "Mexican",
+          ingredients: [
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "avocado")._id,
+              quantity: 3,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "lime")._id,
+              quantity: 1,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
+              quantity: 0.5,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "cilantro")._id,
+              quantity: 3,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "tomato")._id,
+              quantity: 2,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "parmesan")._id,
+              quantity: 0.5,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
+              quantity: 1,
+              quantityMeasure: "teaspoon",
+            },
+          ],
+          instructions:
+            "In a medium bowl, mash together the avocados, lime juice, and salt. Mix in onion, cilantro, tomatoes, and garlic. Stir in cayenne pepper. Refrigerate 1 hour for best flavor, or serve immediately.",
+          reviews: [
+            "9vd99ce2-c0d2-4f8c-b27a-6a1d4b5b5063",
+            "695d97a2-c0d2-4f8c-b27a-6a1d4b5b6927",
+          ],
+          overallRating: 4.7,
+          servings: 4,
+        },
       ];
-
-      await recipesCollection.insertMany(recipeobj);
+      for (let i = 0; i < recipeArr.length; i++) {
+        recipeArr[i].recipeImageURL = await recipesData.getGoogleImageForRecipe(
+          recipeArr[i].name
+        );
+        console.log(`Recipes created: ${i + 1}/${recipeArr.length}`);
+      }
+      await recipesCollection.insertMany(recipeArr);
+      console.log("Completed Adding Recipes!");
       await reviewsCollection.insertOne(testData.reviewObj);
       await commentsCollection.insertOne(testData.commentObj);
     } catch (err) {
