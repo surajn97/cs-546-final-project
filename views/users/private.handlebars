@@ -20,7 +20,7 @@
                     <ul class = "list-group list-group-flush">  
                         {{#each myFavRecipe}}
                             <li class = "list-group-item">
-                                <a href = "/recipe/{{this.id}}"><span class="mr-2">&starf;</span>{{this.name}}</a>
+                                <a href = "/recipes/{{this.id}}"><span class="mr-2">&starf;</span>{{this.name}}</a>
                             </li>
                         {{/each}}
                         </ul>
@@ -35,7 +35,7 @@
                     <ul class = "list-group list-group-flush">  
                         {{#each myRecipes}}
                             <li class = "list-group-item">
-                                <a href = "/recipe/{{this.id}}"><span class="mr-2">&starf;</span>{{this.name}}</a>
+                                <a href = "/recipes/{{this.id}}"><span class="mr-2">&starf;</span>{{this.name}}</a>
                             </li>
                         {{/each}}
                         </ul>
@@ -50,7 +50,8 @@
                     <ul class = "list-group list-group-flush">  
                         {{#each myReviews}}
                             <li class = "list-group-item">
-                                <a href = "/recipe/{{this.id}}"><span class="mr-2">&starf;</span>{{this.recipename}}</a>
+                                <a href = "/recipes/{{this.recipeid}}"><span class="mr-2">&starf;</span>{{this.recipename}} </a>
+                                <p>rate: {{this.rating}}   Your review: {{this.reviewText}} </p>
                             </li>
                         {{/each}}
                         </ul>
