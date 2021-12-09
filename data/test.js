@@ -1,6 +1,6 @@
 const userobj = {
-  firstName: "What's",
-  lastName: "Cooking?",
+  firstname: "What's",
+  lastname: "Cooking?",
   email: "team@whatscooking.com",
   username: "whatscooking",
   age: 32,
@@ -18,19 +18,19 @@ const userobj = {
 
 const reviewObj = {
   // _id: "9vd99ce2-c0d2-4f8c-b27a-6a1d4b5b5063",
-  recipeId: "c0d27a2-c0d2-4f8c-b27a-6a1d4b5b6310",
   rating: 4,
   reviewText: "First time trying this.",
-  likes: ["c0d27a2-c0d2-4f8c-b27a-6ad9v9wb6310"],
-  dislikes: ["c0d27a2-c0d2-4f8c-b27a-6ad9v9wb6322"],
-  comments: ["c0o27m2-m0e2-4n8t-b27a-6ad9v9wb9471"],
-  userID: "c0d27a2-c0d2-4f8c-b27a-6ad9v9wb6310",
+  likes: [],
+  dislikes: [],
+  comments: [],
+  dateOfReview: new Date(),
 };
 
 const commentObj = {
   // _id: "c0o27m2-m0e2-4n8t-b27a-6ad9v9wb9471",
   name: "John_D",
   comment: "Nice try.",
+  dateOfComment: new Date(),
 };
 
 const ingredientObjs = {

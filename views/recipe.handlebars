@@ -102,6 +102,12 @@
         <dd class="col-sm-9"><div class="rating">{{rating}}</div></dd>
         <dt class="col-sm-3">Reviewed on</dt>
         <dd class="col-sm-9">{{dateOfReview}}</dd>
+        <dt class="col-sm-3"></dt>
+        <dd class="col-sm-9">
+          <button class="btn btn-sm btn-success" onclick="likeReview('{{_id}}');"><i class="fas fa-thumbs-up"></i></button>
+          <button class="btn btn-sm btn-danger" onclick="dislikeReview('{{_id}}');"><i class="fas fa-thumbs-down"></i></button>
+          <span class="ms-3" id="likes-{{_id}}"><span class="badge {{#if (isGEZero total_likes)}}bg-success{{else}}bg-danger{{/if}}">{{total_likes}}</span></span>
+        </dd>
         <dt class="col-sm-3"><button class="btn btn-sm btn-primary" onclick="showCommentForm('{{_id}}')">Reply ></button></dt>
         <dd class="col-sm-9">
           <div class="row text-white" id="toast-div-{{_id}}" hidden>
@@ -124,7 +130,7 @@
         <dd class="col-sm-9">
           {{#each comments}}
             <dl class="row mt-1 border-start border-4">
-              <dt class="col-sm-3">{{userName}}</dt>
+              <dt class="col-sm-3">{{name}}</dt>
               <dd class="col-sm-9">
                 <p>{{comment}}</p>
                 <p><small class="text-muted">{{dateOfComment}}</small></p>

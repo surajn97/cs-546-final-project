@@ -60,6 +60,11 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/:id", async (req, res) => {
+    if (!req.session.user) {
+        res.status(401).json({
+          error: "Unauthorized!"
+        });
+      }
     try {
         helper.checkAndGetID(req.params.id);
     } catch (e) {
@@ -103,7 +108,7 @@ router.post("/:id", async (req, res) => {
         const newComment = await commentsData.create(
             req.params.id,
             // add logged in user id
-            commentBody.userId,
+            req.session.user._id.toString(),
             commentBody.comment,
         );
         // res.json(newComment);

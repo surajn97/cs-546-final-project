@@ -160,6 +160,7 @@ $(document).ready(function () {
 });
 
 function showCommentToast(reviewId, text) {
+  // alert("text:" + text);
   const toastDivComment = $("#toast-div-" + reviewId);
   const toastDivText = $("#toast-div-text-" + reviewId);
   toastDivComment.removeClass("bg-success");
@@ -190,4 +191,56 @@ function showCommentForm(reviewId) {
 function hideCommentForm(reviewId) {
   $("#comment-form-" + reviewId).attr("hidden", true);
   return false;
+}
+
+function likeReview(reviewId) {
+  $.ajax({
+    type: "POST",
+    url: "/reviews/like/" + reviewId,
+    // data: frm.serialize(),
+    beforeSend: function () {
+        
+    },
+    success: function (response) {
+        var resp = '';
+        // alert(JSON.stringify(response));
+        var total_likes = parseInt(response['likes']);
+        if(total_likes >= 0)
+          $('#likes-' + reviewId).html('<span class="badge bg-success">' + total_likes + '</span>');
+        else
+          $('#likes-' + reviewId).html('<span class="badge bg-danger">' + total_likes + '</span>');
+        
+    },
+    error: function (error) {
+      showCommentToast(reviewId, error['responseJSON']['error']);
+        // alert("Error:" + JSON.stringify(error));
+    }
+  });
+}
+
+function dislikeReview(reviewId) {
+  $.ajax({
+    type: "POST",
+    url: "/reviews/dislike/" + reviewId,
+    // data: frm.serialize(),
+    beforeSend: function () {
+        
+    },
+    success: function (response) {
+        var resp = '';
+        // $('likes-' + reviewId).html(response.likes);
+        // alert(JSON.stringify(response));
+        var total_likes = parseInt(response['likes']);
+        if(total_likes >= 0)
+          $('#likes-' + reviewId).html('<span class="badge bg-success">' + total_likes + '</span>');
+        else
+          $('#likes-' + reviewId).html('<span class="badge bg-danger">' + total_likes + '</span>');
+        // alert(response);
+        
+    },
+    error: function (error) {
+      showCommentToast(reviewId, error['responseJSON']['error']);
+      // alert("Error:" + JSON.stringify(error));
+    }
+  });
 }
