@@ -30,6 +30,7 @@ const main = async () => {
       testData.reviewObj["comments"] = [commentObj];
       testData.reviewObj["likes"] = [userObj._id.toString()];
       testData.reviewObj["dislikes"] = [userObj._id.toString()];
+      userObj._id = userObj._id.toString();
       testData.reviewObj["user"] = userObj;
       const reviewInfo = await reviewsCollection.insertOne(testData.reviewObj);
       const reviewObj = await reviewsCollection.findOne({_id: reviewInfo.insertedId});
@@ -243,7 +244,7 @@ const main = async () => {
       await recipesCollection.insertMany(recipeArr);
       console.log("Completed Adding Recipes!");
 
-      await recipesCollection.insertMany(recipeobj);
+      // await recipesCollection.insertMany(recipeobj);
       const recipe = await recipesCollection.findOne({name: "Cauliflower Rice"});
       await reviewsCollection.findOneAndUpdate({_id: reviewObj._id}, {$set : {"recipeId": recipe._id}});
       const reviewObj2 = await reviewsCollection.findOne({_id: reviewObj._id});

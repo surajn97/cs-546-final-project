@@ -91,6 +91,21 @@ module.exports = {
     return review;
   },
 
+  async getAllByUser(id) {
+    helper.checkProperString(id, "User ID");
+    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
+    let ID = ObjectId(id);
+    const reviewCollection = await reviews();
+
+    const reviewsList = await reviewCollection.find({
+      "user._id": id,
+    }).toArray();
+    if (!reviewsList) {
+      throw "Error: No review with that user id";
+    }
+    return reviewsList;
+  },
+
   async remove(id) {
     helper.checkProperString(id, "Review ID");
     if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
