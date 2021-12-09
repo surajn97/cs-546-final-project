@@ -34,7 +34,12 @@
           type="submit"
         >Search</button>
       </form>
+      {{#if authenticated}}
+      <a href="/private" class="btn btn-primary" role="button">user profile</a>  
+      {{else}}
       <a href="/users/login" class="btn btn-primary" role="button">Login</a>
+      {{/if}}
+
     </div>
   </div>
 </nav>
