@@ -45,7 +45,7 @@ const main = async () => {
         for (const ingredient of keys) {
           igList.push(
             await ingredientsData.create(
-              ingredient.toLowerCase(),
+              ingredient,
               ig,
               testData.ingredientObjs[ig][ingredient].p,
               testData.ingredientObjs[ig][ingredient].c,
@@ -190,37 +190,37 @@ const main = async () => {
           cuisine: "Mexican",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "avocado")._id,
+              id: igList.find(x => x.name.toLowerCase() == "avocado")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "lime")._id,
+              id: igList.find(x => x.name.toLowerCase() == "lime")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
+              id: igList.find(x => x.name.toLowerCase() == "onion")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cilantro")._id,
+              id: igList.find(x => x.name.toLowerCase() == "cilantro")._id,
               quantity: 3,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "tomato")._id,
+              id: igList.find(x => x.name.toLowerCase() == "tomato")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "parmesan")._id,
+              id: igList.find(x => x.name.toLowerCase() == "parmesan").id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
+              id: igList.find(x => x.name.toLowerCase() == "garlic").id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },

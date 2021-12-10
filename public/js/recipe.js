@@ -11,10 +11,7 @@ $(".raty").raty({
   path: "/public/images",
   scoreName: "rating",
 });
-// $('input[name="rating"]').attr('required', true);
-// $('input[name="rating"]').attr('value', 5);
 
-// $('.rating').raty({ readOnly: true, score: 3 });
 $.fn.ratings = function () {
   // return this.each(function(i,e){$(e).html($('<span/>').width($(e).text()*16));});
   this.each(function (i, e) {
@@ -34,68 +31,88 @@ const toastDiv = $("#toast-div");
 const toastDivText = $("#toast-div-text");
 
 $(document).ready(function () {
+  let tablenbody = $(`<table class="table" id="table"><tbody id='tbody'>`);
+  let tablenbodyend = $(`</tbody></table>`);
+
   ingAddButton.on("click", function (event) {
     let q = quantity.val().trim();
     let qm = qMeasure.val().trim();
     let iName = ingName.val().trim();
+    let ingArray = JSON.parse(ingreInput.val());
 
-    let endpoint = url + iName;
-    var configReq = {
-      method: "GET",
-      url: endpoint,
-    };
-    $.ajax(configReq).then(function (responseMessage) {
-      r = responseMessage;
-      let ingArray = JSON.parse(ingreInput.val());
-      let table = $("#table");
-      if (ingArray.length == 0) {
-        table = $(`<table class="table" id="table"><tbody>`);
-      }
-      ingObj = {};
-      console.log(r);
-      ingObj["id"] = r._id.toString();
-      ingObj["quantity"] = q;
-      ingObj["quantityMeasure"] = qm;
-      let tr = $(`<tr id="tr${ingArray.length}">`);
-      tr.append(
-        `<td>${iName}</td>
+    ingObj = {};
+    ingObj["name"] = iName;
+    ingObj["quantity"] = q;
+    ingObj["quantityMeasure"] = qm;
+
+    let tr = $(`<tr id="tr${ingArray.length}">`);
+    tr.append(
+      `<td>${iName}</td>
         <td> ${q} ${qm}</td>
         <td>`
-      );
+    );
 
-      let removeicon = $(
-        `<i class="fas fa-lg fa-trash" id="remove${ingArray.length}">`
-      );
-      tr.append(removeicon);
-
-      removeicon.on("click", function (event) {
-        var id = $(this).attr("id");
-        let arrid = id.split("remove")[1];
-        let trid = "tr" + arrid;
-        let trele = $(`#${trid}`);
-        trele.remove();
-        let ingArray = JSON.parse(ingreInput.val());
-        ingArray.splice(id, 1);
-        $("#ingredients").val(JSON.stringify(ingArray));
-        console.log(`ingArray.length: ${ingArray.length}`);
-        if (ingArray.length == 0) {
-          table.remove();
-        }
-
-        console.log(arrid);
-      });
-
-      tr.append(
-        `</i></td>
+    let removeicon = $(
+      `<i class="fas fa-lg fa-trash" id="remove${ingArray.length}">`
+    );
+    tr.append(removeicon);
+    tr.append(
+      `</i></td>
         </tr>`
-      );
-      table.append(tr);
-      showdiv.append(table);
-      ingArray.push(ingObj);
-      let inputIngFInalValue = JSON.stringify(ingArray);
-      $("#ingredients").val(inputIngFInalValue);
-      console.log(ingreInput);
+    );
+    tablenbody.append(tr);
+    showdiv.append(tablenbody);
+    showdiv.append(tablenbodyend);
+
+    ingArray.push(ingObj);
+    let inputIngFInalValue = JSON.stringify(ingArray);
+    $("#ingredients").val(inputIngFInalValue);
+
+    removeicon.on("click", function (event) {
+      var id = $(this).attr("id");
+      let arrid = id.split("remove")[1];
+      let trid = "tr" + arrid;
+      let trele = $(`#${trid}`);
+      trele.remove();
+
+      let ingArray = JSON.parse(ingreInput.val());
+      ingArray.splice(id, 1);
+
+      $("#ingredients").val(JSON.stringify(ingArray));
     });
+
+    // let endpoint = url + iName;
+    // var configReq = {
+    //   method: "GET",
+    //   url: endpoint,
+    // };
+    // $.ajax(configReq)
+    //   .done(function (responseMessage) {
+    //     callings(responseMessage);
+    //   })
+    //   .fail(function () {
+    //     let data = {};
+    //     data.name = iName;
+    //     data.category = "UserGenerated";
+    //     $.ajax({
+    //       method: "POST",
+    //       url: "http://localhost:3000/ingredients/",
+    //       data: data,
+    //     })
+    //       .done(function (responseMessage) {
+    //         alert(responseMessage);
+    //         let b = responseMessage;
+    //         callings(b);
+    //       })
+    //       .fail(function (responseMessage) {
+    //         alert(`responseMessage: ${responseMessage}`);
+    //       });
+    //   });
+
+    // function callings(r) {
+
+    //   console.log(ingreInput);
+    // }
   });
 
   const showToast = (isError, text) => {

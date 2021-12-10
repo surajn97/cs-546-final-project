@@ -36,7 +36,7 @@ module.exports = {
     helper.checkProperArray(ingredients, "Ingredients");
     ingredients.forEach(element => {
       helper.checkProperObject(element, "Individual ingredient");
-      helper.checkProperString(element.id, "Id of ingredient");
+      helper.checkProperString(element.name, "Name of ingredient");
       helper.checkProperNumber(element.quantity, "Quantity of ingredient");
       helper.checkProperString(element.quantityMeasure, "Quantity Measure");
     });
@@ -45,12 +45,35 @@ module.exports = {
     helper.checkProperString(cuisine, "Cuisine");
     helper.checkProperString(instructions);
     helper.checkProperNumber(servings, "Servings");
+    let ingredientArray = [];
+    for (element of ingredients) {
+      let ingObj = {};
+      ingObj["quantity"] = element.quantity;
+      ingObj["quantityMeasure"] = element.quantityMeasure;
+      const ing = await ingredientsData.getByName(element.name);
+      if (ing != "Not found") {
+        ingObj["_id"] = ing._id.toString();
+      } else {
+        try {
+          const newIng = await ingredientsData.createByUser(
+            element.name,
+            "UserGenerated"
+          );
+          ingObj["_id"] = newIng._id.toString();
+        } catch (e) {
+          res.status(400).json({ error: e });
+          return;
+        }
+      }
+      ingredientArray.push(ingObj);
+    }
+
     const recipeCollection = await recipes();
     let newRecipe = {
       name: name,
       postedBy: postedBy,
       cookingTime: cookingTime,
-      ingredients: ingredients,
+      ingredients: ingredientArray,
       mealType: mealType,
       cuisine: cuisine,
       overallRating: 0,
@@ -108,13 +131,13 @@ module.exports = {
 
   getFilterFields(recipeList) {
     try {
-      let meals = [...new Set(recipeList.map((item) => item.mealType))];
+      let meals = [...new Set(recipeList.map(item => item.mealType))];
       meals = [
         ...meals.map(function (item) {
           return { [item]: false };
         }),
       ];
-      let cuisines = [...new Set(recipeList.map((item) => item.cuisine))];
+      let cuisines = [...new Set(recipeList.map(item => item.cuisine))];
       cuisines = [
         ...cuisines.map(function (item) {
           return { [item]: false };
@@ -233,27 +256,49 @@ module.exports = {
     instructions,
     servings
   ) {
+    helper.checkAndGetID(id, "Recipe ID");
     helper.checkProperString(name, "Name");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
     ingredients.forEach(element => {
-      helper.checkProperString(element, "Individual ingredient");
-    }); //************* Store Ing ID or Name??? */
+      helper.checkProperObject(element, "Individual ingredient");
+      helper.checkProperString(element.name, "Name of ingredient");
+      helper.checkProperNumber(element.quantity, "Quantity of ingredient");
+      helper.checkProperString(element.quantityMeasure, "Quantity Measure");
+    });
     helper.checkProperString(mealType, "Meal Type");
     helper.checkProperString(cuisine, "Cuisine");
     helper.checkProperString(instructions);
     helper.checkProperNumber(servings, "Servings");
-    helper.checkProperString(id, "Recipe ID");
-    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
 
-    let ID = ObjectId(id);
-    const recipe = await this.get(id);
+    let ingredientArray = [];
+    for (element of ingredients) {
+      let ingObj = {};
+      ingObj["quantity"] = element.quantity;
+      ingObj["quantityMeasure"] = element.quantityMeasure;
+      const ing = await ingredientsData.getByName(element.name);
+      if (ing != "Not found") {
+        ingObj["_id"] = ing._id.toString();
+      } else {
+        try {
+          const newIng = await ingredientsData.createByUser(
+            element.name,
+            "UserGenerated"
+          );
+          ingObj["_id"] = newIng._id.toString();
+        } catch (e) {
+          res.status(400).json({ error: e });
+          return;
+        }
+      }
+      ingredientArray.push(ingObj);
+    }
 
     let updatedRecipe = {
       name: name,
       postedBy: recipe.postedBy,
       cookingTime: cookingTime,
-      ingredients: ingredients,
+      ingredients: ingredientArray,
       mealType: mealType,
       cuisine: cuisine,
       overallRating: recipe.overallRating,
@@ -261,7 +306,6 @@ module.exports = {
       reviews: recipe.reviews,
       servings: servings,
     };
-
     const recipeCollection = await recipes();
     const updateInfo = await recipeCollection.updateOne(
       { _id: ID },
@@ -275,9 +319,8 @@ module.exports = {
   },
 
   async patch(id, updatedData) {
-    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
+    helper.checkAndGetID(id);
 
-    let ID = ObjectId(id);
     let newUpdatedDataObj = await this.get(id);
     const oldRecipe = await this.get(id);
 
@@ -298,16 +341,42 @@ module.exports = {
       updatedData.ingredients &&
       updatedData.ingredients !== oldRecipe.ingredients
     ) {
-      helper.checkProperArray(updatedData.ingredients, "Ingredients");
-      updatedData.ingredients.forEach(element => {
-        helper.checkProperString(element, "Individual ingredient");
-      });
-      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+    }
+    helper.checkProperArray(ingredients, "Ingredients");
+    ingredients.forEach(element => {
+      helper.checkProperObject(element, "Individual ingredient");
+      helper.checkProperString(element.name, "Name of ingredient");
+      helper.checkProperNumber(element.quantity, "Quantity of ingredient");
+      helper.checkProperString(element.quantityMeasure, "Quantity Measure");
+    });
+    let ingredientArray = [];
+    for (element of ingredients) {
+      let ingObj = {};
+      ingObj["quantity"] = element.quantity;
+      ingObj["quantityMeasure"] = element.quantityMeasure;
+      const ing = await ingredientsData.getByName(element.name);
+      if (ing != "Not found") {
+        ingObj["_id"] = ing._id.toString();
+      } else {
+        try {
+          const newIng = await ingredientsData.createByUser(
+            element.name,
+            "UserGenerated"
+          );
+          ingObj["_id"] = newIng._id.toString();
+        } catch (e) {
+          res.status(400).json({ error: e });
+          return;
+        }
+      }
+      ingredientArray.push(ingObj);
+
+      newUpdatedDataObj.ingredients = ingredientArray;
     }
 
     if (updatedData.mealType && updatedData.mealType !== oldRecipe.mealType) {
       helper.checkProperString(updatedData.mealType, "Meal Type");
-      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+      newUpdatedDataObj.cookingTime = updatedData.mealType;
     }
 
     if (updatedData.cuisine && updatedData.cuisine !== oldRecipe.cuisine) {
@@ -407,16 +476,16 @@ module.exports = {
     if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";
     let ID = ObjectId(recipeId);
     if (!ObjectId.isValid(reviewobj._id)) throw "Error: Not a valid ObjectId";
-    let reviewID = ObjectId(reviewobj._id); 
+    let reviewID = ObjectId(reviewobj._id);
     const recipeCollection = await recipes();
     const updateInfo = await recipeCollection.findOneAndUpdate(
       {
-        "reviews._id": reviewID
+        "reviews._id": reviewID,
       },
       {
         $set: {
-          "reviews.$": reviewobj // Update with new object
-        }
+          "reviews.$": reviewobj, // Update with new object
+        },
       }
     );
     // if (!updateInfo.matchedCount && !updateInfo.modifiedCount)

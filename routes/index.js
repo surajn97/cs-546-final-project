@@ -8,7 +8,7 @@ const commentRoutes = require("./comments");
 const privateRoutes = require("./private");
 const homeRoutes = require("./home");
 
-const constructorMethod = (app) => {
+const constructorMethod = app => {
   app.use("/recipes/form", (req, res) => {
     if (req.session.user) {
       res.render("recipeform", { title: "Add Recipe" });
@@ -16,6 +16,7 @@ const constructorMethod = (app) => {
       res.render("users/login", { error: "Please Login to add a recipe" });
     }
   });
+
   app.use("/recipes/page", (req, res) => {
     res.render("recipe", { title: "Recipe" });
   });

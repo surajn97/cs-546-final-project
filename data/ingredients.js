@@ -104,12 +104,15 @@ module.exports = {
       .toArray();
     return convertIngredientsToCategories(result);
   },
+
   async getByName(name) {
     helper.checkProperString(name);
     const ingredientCollection = await ingredients();
-    const ingredient = await ingredientCollection.findOne({ name: name });
+    const ingredient = await ingredientCollection.findOne({
+      name: { $regex: name, $options: "i" },
+    });
     if (ingredient === null) {
-      throw "Error: No ingredient with that name";
+      return "Not found";
     }
     ingredient._id = ingredient._id.toString();
     ingredient.calories = getCalories(
