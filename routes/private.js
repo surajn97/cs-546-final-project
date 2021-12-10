@@ -92,11 +92,11 @@ router.get('/', async (req, res) => {
       hasFRecipe: hasFRecipe,
       hasMRecipe: hasMRecipe,
       hasReview: hasReview,
+      private_page: true,
       authenticated: true,
     });
   } else {
     res.redirect('/login');
-
   }
 
 
