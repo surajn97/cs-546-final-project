@@ -90,7 +90,7 @@ module.exports = {
       carb = 0,
       fat = 0;
     for (let ingredient of recipe.ingredients) {
-      const ig = await ingredientsData.get(ingredient.id);
+      const ig = await ingredientsData.get(ingredient._id);
       ingredient.name = ig.name;
       ingredient.text = `${ingredient.quantity} ${ingredient.quantityMeasure} ${ig.name}`;
       calories += ig.calories;
