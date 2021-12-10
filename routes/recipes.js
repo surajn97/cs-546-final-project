@@ -162,9 +162,13 @@ router.get("/:id", async (req, res) => {
   try {
     let recipe = await recipeData.getWithOnlineData(req.params.id);
     let reviews = await reviewData.getAll(req.params.id);
+    let user;
+    if(req.session.user)
+      user = await userData.get(req.session.user._id.toString());
     res.render("recipe", {
       data: recipe,
       reviews: reviews,
+      user: user,
       title: recipe.name,
       authenticated: req.session.user ? true : false,
 

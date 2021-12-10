@@ -35,8 +35,10 @@ function favoriteRecipe(recipeId) {
         },
         error: function (error) {
             if(error['responseJSON']['error'] == "Unauthorized") {
-                alert("Please login first to favorite the review");
+                // alert("Please login first to favorite the review");
                 // alert("isChecked: " + isChecked);
+                var myModal = new bootstrap.Modal(document.getElementById('loginAlertModal'));
+                myModal.show();
             }
             document.getElementById("favorite_" + recipeId).checked = !isChecked;            
         }
