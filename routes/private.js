@@ -1,12 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const reviews = require("../data/reviews");
-const recipes = require("../data/recipes");
-const users = require("../data/users");
+const reviews = require('../data/reviews');
+const recipes = require('../data/recipes');
+const users = require('../data/users');
+const {
+  ensureAuthenticated
+} = require('../config/auth');
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   if (req.session.user) {
     const userSess = req.session.user;
+
 
     let userData = await users.get(userSess._id);
     // console.log("userData")
@@ -88,11 +92,90 @@ router.get("/", async (req, res) => {
       hasMRecipe: hasMRecipe,
       hasReview: hasReview,
       private_page: true,
+      user_page: true,
       authenticated: true,
     });
   } else {
     res.redirect("users/login");
   }
+});
+
+router.get('/favorite-recipes', ensureAuthenticated, async (req, res) => {
+  const userSess = req.session.user;
+  let userData = await users.get(userSess._id);
+  let myFavRecipe = [];
+    for (let RecipeId of userData.myFavoriteRecipe) {
+      let FRec = await recipes.get(RecipeId); //add getrecipes id function
+      myFavRecipe.push({
+        id: RecipeId,
+        name: FRec.name
+      });
+    }
+    let hasFRecipe = false;
+    if (myFavRecipe.length > 0) {
+      hasFRecipe = true;
+    }
+  res.render('users/favoriterecipes', {
+    myFavRecipe: myFavRecipe,      
+    hasFRecipe: hasFRecipe,
+    favorite_recipe_page: true,
+    user_page: true,
+    authenticated: true,
+  });
+});
+
+router.get('/my-recipes', ensureAuthenticated, async (req, res) => {
+  const userSess = req.session.user;
+  let userData = await users.get(userSess._id);
+  // Get list of myRecipes
+  let myReclist = [];
+  for (let RecipeId of userData.myRecipes) {
+    let mRec = await recipes.get(RecipeId); //add getrecipes id function, need check
+    myReclist.push({
+      id: RecipeId,
+      name: mRec.name
+    });
+  }
+  let hasMRecipe = false;
+  if (myReclist.length > 0) {
+    hasMRecipe = true;
+  }
+  res.render('users/myrecipes', {
+    myRecipes: myReclist,      
+    hasMRecipe: hasMRecipe,
+    user_page: true,
+    my_recipe_page: true,
+    authenticated: true,
+  });
+});
+
+router.get('/my-reviews', ensureAuthenticated, async (req, res) => {
+  const userSess = req.session.user;
+  let userData = await users.get(userSess._id);
+  // Get list of myReviews
+  let myReviewsList = [];
+  for (let ReviewsId of userData.myReviews) {
+    let mRev = await reviews.get(ReviewsId); //add getrecipes id function  ,need check
+    let recipeobj = await recipes.get(String(mRev.recipeId));
+    myReviewsList.push({
+      id: ReviewsId,
+      recipename: recipeobj.name,
+      recipeid: recipeobj._id,
+      rating: mRev.rating,
+      reviewText: mRev.reviewText
+    });
+  }
+  let hasReview = false;
+  if (myReviewsList.length > 0) {
+    hasReview = true;
+  }
+  res.render('users/myreviews', {
+    myReviews: myReviewsList,
+    hasReview: hasReview,
+    user_page: true,
+    my_reviews_page: true,
+    authenticated: true,
+  });
 });
 
 module.exports = router;
