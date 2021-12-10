@@ -35,7 +35,8 @@
         >Search</button>
       </form>
       {{#if authenticated}}
-      <a href="/private" class="btn btn-primary" role="button">user profile</a>  
+      <a href="/private" class="btn btn-primary me-3" role="button"><i class="fas fa-user"></i> {{session.user.firstname}}</a>
+      <a href="/users/logout" class="btn btn-danger" role="button">Logout</a> 
       {{else}}
       <a href="/users/login" class="btn btn-primary" role="button">Login</a>
       {{/if}}
