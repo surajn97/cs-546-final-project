@@ -12,4 +12,7 @@ module.exports = {
   isGEZero: function (passedString) {
     return parseInt(passedString) >= 0;
   },
+  arrayContains: function (array, item) {
+    return array !== undefined ? array.includes(item) : false;
+  },
 };
