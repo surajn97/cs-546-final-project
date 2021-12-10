@@ -181,6 +181,39 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/editform/:id", async (req, res) => {
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
+  try {
+    let ids = req.params.id;
+    let recipe = await recipeData.get(req.params.id);
+    let ingArr = [];
+    for (element of recipe.ingredients) {
+      let ingObj = {};
+      let ing = await ingredientsData.get(element.id);
+      ingObj.name = ing.name;
+      ingObj.quantity = element.quantity;
+      ingObj.quantityMeasure = element.quantityMeasure;
+      ingArr.push(ingObj);
+    }
+    console.log(`id: ${ids}`);
+    res.render("editrecipeform", {
+      ids: ids,
+      title: "Edit Recipe",
+      data: recipe,
+      ingArr: JSON.stringify(ingArr),
+    });
+    return;
+  } catch (e) {
+    res.status(404).json({ error: e });
+    return;
+  }
+});
+
 router.post("/", async (req, res) => {
   let recipeInfo = req.body;
 
@@ -207,7 +240,7 @@ router.post("/", async (req, res) => {
       const quant = parseInt(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
-      helper.checkAndGetID(element.id, "Id of ingredient");
+      helper.checkProperString(element.name, "Name of ingredient");
       helper.checkProperNumber(element.quantity, "Quantity of ingredient");
       helper.checkProperString(element.quantityMeasure, "Quantity Measure");
     });
@@ -248,6 +281,78 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.post("/submit/:id", async (req, res) => {
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
+  const updatedData = req.body;
+
+  if (!updatedData) {
+    e = "You must provide data to update a recipe";
+    res.status(400).json({ error: e });
+    return;
+  }
+  const ing = updatedData.ingredients;
+  const ctime = parseInt(updatedData.cookingTime);
+  const serv = parseInt(updatedData.servings);
+  let ingarray = JSON.parse(ing);
+  let curentuser = req.session.user;
+
+  try {
+    const oldRecipe = await recipeData.get(req.params.id);
+    if (curentuser._id != oldRecipe.postedBy)
+      throw "Cannot edit the recipe which you didnt create";
+    helper.checkProperString(updatedData.name, "Name");
+    helper.checkProperNumber(ctime, "Cooking Time");
+    helper.checkProperArray(ingarray, "Ingredients");
+    ingarray.forEach(element => {
+      const quant = parseInt(element.quantity);
+      element.quantity = quant;
+      helper.checkProperObject(element, "Individual ingredient");
+      helper.checkProperString(element.name, "Name of ingredient");
+      helper.checkProperNumber(element.quantity, "Quantity of ingredient");
+      helper.checkProperString(element.quantityMeasure, "Quantity Measure");
+    });
+    helper.checkProperString(updatedData.mealType, "Meal Type");
+    helper.checkProperString(updatedData.cuisine, "Cuisine");
+    helper.checkProperString(updatedData.instructions, "Instructions");
+    helper.checkProperNumber(serv, "Servings");
+  } catch (e) {
+    res.status(400);
+    res.redirect(`recipes/${req.params.id}`, { error: e });
+    return;
+  }
+
+  try {
+    const updatedRecipe = await recipeData.update(
+      req.params.id,
+      updatedData.name,
+      ctime,
+      ingarray,
+      updatedData.mealType,
+      updatedData.cuisine,
+      updatedData.instructions,
+      serv
+    );
+
+    let recipe = await recipeData.getWithOnlineData(updatedRecipe._id);
+    let reviews = await reviewData.getAll(newRecipe._id);
+    res.render("recipe", {
+      data: recipe,
+      reviews: reviews,
+      title: recipe.name,
+    });
+    return;
+  } catch (e) {
+    res.status(500);
+    res.redirect(`recipes/${req.params.id}`, { error: e });
+    return;
+  }
+});
+
 router.put("/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
@@ -256,25 +361,40 @@ router.put("/:id", async (req, res) => {
     return;
   }
   const updatedData = req.body;
+
   if (!updatedData) {
     e = "You must provide data to update a recipe";
     res.status(400).json({ error: e });
     return;
   }
+  const ing = updatedData.ingredients;
+  const ctime = parseInt(updatedData.cookingTime);
+  const serv = parseInt(updatedData.servings);
+  let ingarray = JSON.parse(ing);
+  let curentuser = req.session.user;
 
   try {
+    const oldRecipe = await recipeData.get(req.params.id);
+    if (curentuser._id != oldRecipe.postedBy)
+      throw "Cannot edit the recipe which you didnt create";
     helper.checkProperString(updatedData.name, "Name");
-    helper.checkProperNumber(updatedData.cookingTime, "Cooking Time");
-    helper.checkProperArray(updatedData.ingredients, "Ingredients");
-    updatedData.ingredients.forEach(element => {
-      helper.checkProperString(element, "Individual ingredient");
+    helper.checkProperNumber(ctime, "Cooking Time");
+    helper.checkProperArray(ingarray, "Ingredients");
+    ingarray.forEach(element => {
+      const quant = parseInt(element.quantity);
+      element.quantity = quant;
+      helper.checkProperObject(element, "Individual ingredient");
+      helper.checkProperString(element.name, "Name of ingredient");
+      helper.checkProperNumber(element.quantity, "Quantity of ingredient");
+      helper.checkProperString(element.quantityMeasure, "Quantity Measure");
     });
     helper.checkProperString(updatedData.mealType, "Meal Type");
     helper.checkProperString(updatedData.cuisine, "Cuisine");
     helper.checkProperString(updatedData.instructions, "Instructions");
-    helper.checkProperNumber(updatedData.servings, "Servings");
+    helper.checkProperNumber(serv, "Servings");
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400);
+    res.redirect(`recipes/${req.params.id}`, { error: e });
     return;
   }
 
@@ -282,31 +402,32 @@ router.put("/:id", async (req, res) => {
     const updatedRecipe = await recipeData.update(
       req.params.id,
       updatedData.name,
-      updatedData.cookingTime,
-      updatedData.ingredients,
+      ctime,
+      ingarray,
       updatedData.mealType,
       updatedData.cuisine,
       updatedData.instructions,
-      updatedData.servings
+      serv
     );
-    res.json(updatedRecipe);
 
+    let recipe = await recipeData.getWithOnlineData(updatedRecipe._id);
+    let reviews = await reviewData.getAll(newRecipe._id);
+    res.render("recipe", {
+      data: recipe,
+      reviews: reviews,
+      title: recipe.name,
+    });
     return;
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(500);
+    res.redirect(`recipes/${req.params.id}`, { error: e });
     return;
   }
 });
 
 router.patch("/:id", async (req, res) => {
-  try {
-    helper.checkAndGetID(req.params.id);
-  } catch (e) {
-    res.status(400).json({ error: e });
-    return;
-  }
   const updatedData = req.body;
-  let newUpdatedDataObj = {};
+
   if (!updatedData) {
     e = "You must provide data to update a recipe";
     res.status(400).json({ error: e });
@@ -314,7 +435,25 @@ router.patch("/:id", async (req, res) => {
   }
 
   try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
+
+  let newUpdatedDataObj = {};
+  const ing = updatedData.ingredients;
+  const ctime = parseInt(updatedData.cookingTime);
+  const serv = parseInt(updatedData.servings);
+  let ingarray = JSON.parse(ing);
+
+  try {
     const oldRecipe = await recipeData.get(req.params.id);
+
+    let curentuser = req.session.user;
+    if (curentuser._id != oldRecipe.postedBy)
+      throw "You cannot edit a recipe which you didnt create";
+
     if (updatedData.name && updatedData.name !== oldRecipe.name) {
       helper.checkProperString(updatedData.name, "Name");
       newUpdatedDataObj.name = updatedData.name;
@@ -324,24 +463,29 @@ router.patch("/:id", async (req, res) => {
       updatedData.cookingTime &&
       updatedData.cookingTime !== oldRecipe.cookingTime
     ) {
-      helper.checkProperNumber(updatedData.cookingTime, "Cooking Time");
-      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+      helper.checkProperNumber(ctime, "Cooking Time");
+      newUpdatedDataObj.cookingTime = ctime;
     }
 
     if (
       updatedData.ingredients &&
       updatedData.ingredients !== oldRecipe.ingredients
     ) {
-      helper.checkProperArray(updatedData.ingredients, "Ingredients");
-      updatedData.ingredients.forEach(element => {
-        helper.checkProperString(element, "Individual ingredient");
+      helper.checkProperArray(ingarray, "Ingredients");
+      ingarray.forEach(element => {
+        const quant = parseInt(element.quantity);
+        element.quantity = quant;
+        helper.checkProperObject(element, "Individual ingredient");
+        helper.checkProperString(element.name, "Name of ingredient");
+        helper.checkProperNumber(element.quantity, "Quantity of ingredient");
+        helper.checkProperString(element.quantityMeasure, "Quantity Measure");
       });
-      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+      newUpdatedDataObj.cookingTime = ingarray;
     }
 
     if (updatedData.mealType && updatedData.mealType !== oldRecipe.mealType) {
       helper.checkProperString(updatedData.mealType, "Meal Type");
-      newUpdatedDataObj.cookingTime = updatedData.cookingTime;
+      newUpdatedDataObj.cookingTime = updatedData.mealType;
     }
 
     if (updatedData.cuisine && updatedData.cuisine !== oldRecipe.cuisine) {

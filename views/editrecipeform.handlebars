@@ -1,10 +1,10 @@
 <h1>{{title}}</h1>
-<form method="POST" id="recipe-form" action="/recipes">
+<form method="POST" id="recipe-form" action="/recipes/submit/{{ids}}"></form>
 <div class="input-group">
     <div class="input-group-prepend">
         <label class="input-group-text" for="name">Recipe Name</label>
     </div>
-    <input type="text" name="name" id="name" class="form-control" placeholder="Recipe Name" required>
+    <input type="text" name="name" id="name" class="form-control" placeholder="Recipe Name" value={{data.name}} required>
 </div>
 </br>  
 
@@ -12,11 +12,11 @@
     <div class="input-group-prepend">
         <label class="input-group-text" for="cookingTime">Cooking Time</label>
     </div>
-    <input type="number" name="cookingTime" id="cookingTime" class="form-control" placeholder="Cooking Time" required>
+    <input type="number" name="cookingTime" id="cookingTime" class="form-control" placeholder="Cooking Time" value={{data.cookingTime}} required>
     <div class="input-group-prepend">
         <label class="input-group-text" for="servings">Servings</label>
     </div>
-    <input class="form-control" type="text" name="servings" id="servings" placeholder="servings" required/>
+    <input class="form-control" type="text" name="servings" id="servings" placeholder="servings" value={{data.servings}} required/>
 </div>
 
 </br>
@@ -26,18 +26,19 @@
         <label class="input-group-text" for="ingName">Add Ingredients:</label>
     </div>
     <input type="text" class="form-control" id="ingName" name="ingName" placeholder="Ingredient Name">
-    <div class="input-group-append">
-        
+    <div class="input-group-append">    
         <input type="Number" class="form-control" id="quantity" name="quantity" placeholder="Quantity" required>
     </div>
 
     <div class="input-group-append">
         <select class="form-control" name="qMeasure" id="qMeasure" required>
+            
+            <option value="teaspoon" selected>Teaspoons</option>
             <option value="grams">Grams</option>
-            <option value="teaspoon">Teaspoons</option>
+            <option value="cup">Cup</option>
             <option value="tablespoon">Tablespoons</option>
             <option value="bowl">Bowl</option>
-            <option value="pieces" selected>Pieces</option>
+            <option value="pieces">Pieces</option>
         </select>
     </div>
 
@@ -48,9 +49,9 @@
 </br>
 
 <div id="showDiv">
-    <input type="text" class="form-control" name="ingredients" id="ingredients" placeholder="Just to store object value"  value=[] hidden/>
-    <p>Ingredients:</p>
-    
+    <input type="text" class="form-control" name="mealtypestore" id="mealtypestore" value={{data.mealType}} hidden/>
+    <input type="text" class="form-control" name="ingredients" id="ingredients" placeholder="Just to store object value"  value={{ingArr}} hidden/>
+    <p>Ingredients Added:</p>
 </div>
 </br>
 
@@ -59,17 +60,17 @@
     <div class="input-group-prepend">
         <label class="input-group-text" for="Mealtype">Meal type</label>
     </div>
-    <select class="form-control" name="mealType" id="mealType" required>
-    <option value="breakfast" selected>Breakfast</option>
-    <option value="brunch">Brunch</option>
-    <option value="lunch">Lunch</option>
-    <option value="snacks">Snacks</option>
-    <option value="dinner">Dinner</option>
+    <select class="form-control" name="mealType" id="mealType" value={{data.mealType}} required>
+    <option value="Breakfast">Breakfast</option>
+    <option value="Brunch">Brunch</option>
+    <option value="Lunch">Lunch</option>
+    <option value="Snack">Snack</option>
+    <option value="Dinner">Dinner</option>
     </select>
     <div class="input-group-prepend">
         <label class="input-group-text" for="cuisine">Cuisine</label>
     </div>
-    <input class="form-control" type="text" name="cuisine" id="cuisine" placeholder="cuisine"/>
+    <input class="form-control" type="text" name="cuisine" id="cuisine" value={{data.cuisine}} placeholder="cuisine"/>
 </div>
 </br>
 
@@ -77,12 +78,12 @@
     <div class="input-group-prepend">
         <label class="input-group-text" for="instructions">Instructions</label>
     </div>
-    <textarea class="form-control" name="instructions" id="instructions"placeholder="Instructions"></textarea>
+    <textarea class="form-control" name="instructions" id="instructions" placeholder="Instructions">{{data.instructions}}</textarea>
 </div>
 </br>
 
 <div class="input-group">
-    <button class="btn btn-outline-secondary" id="button" type="submit">Submit </button>
+    <button class="btn btn-outline-secondary" id="button" type="submit">Submit</button>
 </div>
     
 
@@ -90,4 +91,4 @@
 {{#if error}}
     <p id="errors">{{error}}</p>
 {{/if}}
-<script src="/public/js/recipe.js"></script>
+<script src="/public/js/editrecipe.js"></script>
