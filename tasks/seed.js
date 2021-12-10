@@ -227,10 +227,7 @@ const main = async () => {
           ],
           instructions:
             "In a medium bowl, mash together the avocados, lime juice, and salt. Mix in onion, cilantro, tomatoes, and garlic. Stir in cayenne pepper. Refrigerate 1 hour for best flavor, or serve immediately.",
-          reviews: [
-            "9vd99ce2-c0d2-4f8c-b27a-6a1d4b5b5063",
-            "695d97a2-c0d2-4f8c-b27a-6a1d4b5b6927",
-          ],
+          reviews: [],
           overallRating: 4.7,
           servings: 4,
         },

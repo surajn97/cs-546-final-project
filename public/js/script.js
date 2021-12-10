@@ -20,3 +20,25 @@ $('.ratings').stars();
 (function ($) {
     
 })(window.jQuery);
+
+function favoriteRecipe(recipeId) {
+    var checkbox = $("#favorite_" + recipeId);
+    var isChecked = checkbox.is(':checked');
+    $.ajax({
+        type: "POST",
+        url: "/recipes/favorite/" + recipeId,
+        // data: frm.serialize(),
+        beforeSend: function () {
+            
+        },
+        success: function (response) {            
+        },
+        error: function (error) {
+            if(error['responseJSON']['error'] == "Unauthorized") {
+                alert("Please login first to favorite the review");
+                // alert("isChecked: " + isChecked);
+            }
+            document.getElementById("favorite_" + recipeId).checked = !isChecked;            
+        }
+      });
+}

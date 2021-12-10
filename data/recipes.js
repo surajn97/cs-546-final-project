@@ -464,4 +464,28 @@ module.exports = {
       }
     });
   },
+
+  async favorite(userId, recipeId) {
+    if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";
+    // let ID = ObjectId(recipeId);
+    if (!ObjectId.isValid(userId)) throw "Error: Not a valid ObjectId";
+    let ID = ObjectId(userId);
+
+    let recipe = await this.get(recipeId);
+    if (!recipe) {
+      throw "Error: No recipe with that id";
+    }
+    const users = mongoCollections.users;
+    const usersCollection = await users();
+    const recipeFromFavorite = await usersCollection.findOne({_id: ID, myFavoriteRecipe: recipeId});
+    let updatedInfo;
+    if(!recipeFromFavorite) {
+      updatedInfo = await usersCollection.updateOne({ _id: ID }, { $push: { myFavoriteRecipe: recipeId } });
+    } else {
+      updatedInfo = await usersCollection.updateOne({ _id: ID }, { $pull: { myFavoriteRecipe: recipeId } });
+    }
+    if (updatedInfo.modifiedCount === 0) {
+      throw 'Could not update Users Collection with Favorite recipe Data!';
+    }
+  },
 };

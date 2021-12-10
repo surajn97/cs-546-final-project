@@ -65,12 +65,16 @@ router.get("/all", async (req, res) => {
     const recipeList = await recipeData.getAllWithSearch("");
     sort(recipeList);
     const filter = recipeData.getFilterFields(recipeList);
+    let user;
+    if(req.session.user)
+      user = await userData.get(req.session.user._id.toString());
     prevSentData = recipeList;
     res.status(200).render("allRecipes", {
       recipeList: recipeList,
       currentSort: currentSort,
       title: "What's Cooking?",
       error: false,
+      user: user,
       authenticated: req.session.user ? true : false,
 
     });
@@ -95,10 +99,14 @@ router.post("/all", async (req, res) => {
     const recipeList = await recipeData.getAllWithSearch(search.trim());
     sort(recipeList);
     prevSentData = recipeList;
+    let user;
+    if(req.session.user)
+      user = await userData.get(req.session.user._id.toString());
     res.status(200).render("allRecipes", {
       recipeList: recipeList,
       currentSort: currentSort,
       title: "What's Cooking?",
+      user: user,
       error: false,
       authenticated: req.session.user ? true : false,
 
@@ -393,6 +401,47 @@ router.delete("/:id", async (req, res) => {
   } catch (e) {
     res.json({ error: e });
     res.status(500);
+    return;
+  }
+});
+
+router.post("/favorite/:id", async (req, res) => {
+  if (!req.session.user) {
+    res.status(401).json({
+      status: "fail",
+      error: "Unauthorized"
+    });
+    return;
+  }
+  try {
+    helper.checkAndGetID(req.params.id);
+  } catch (e) {
+    res.status(400).json({
+      status: "fail",
+      error: e
+    });
+    return;
+  }
+  if (!req.params.id) {
+    res.status(400).json({
+      status: "fail",
+      error: "You must provide a recipe id"
+    });
+    return;
+  }
+
+  try {
+    const review = await recipeData.favorite(req.session.user._id.toString(), req.params.id);
+    res.json({
+      status: "success",
+      message: "successfully added recipe to favorites"
+    });
+  } catch (e) {
+    res.status(404).json({
+      status: "fail",
+      error: e
+    });
+    // res.status(404);
     return;
   }
 });

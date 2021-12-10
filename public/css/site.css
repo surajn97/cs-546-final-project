@@ -187,3 +187,55 @@ span.stars > * {
   margin-left: auto;
   margin-right: auto;
 }
+
+#recipe-card-favorite {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  padding: 5px;
+}
+
+.add-fav {
+  display: inline-block;
+  padding: 5px 8px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: -webkit-linear-gradient(top, #fff, #ddd) #ddd;
+  position: relative;
+  transition: all 0.5s ease;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 1px #eee;
+}
+.add-fav:hover {
+  background: -webkit-linear-gradient(top, #fff, #ccc) #ddd;
+}
+.add-fav .icon-heart {
+  /* font-size: 24px; */
+  color: #666;
+  position: relative;
+  transition: all 0.5s ease-in-out;
+}
+.add-fav .icon-plus-sign {
+  font-size: 10px;
+  color: #333;
+  background: #fff;
+  border-radius: 100%;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  height: 11px;
+  width: 11px;
+  line-height: 11px;
+  text-align: center;
+  transition: all 1s ease-in-out;
+}
+.add-fav input[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+}
+.add-fav input[type=checkbox]:checked + .icon-heart {
+  color: #f52755;
+}
+.add-fav input[type=checkbox]:checked + .icon-heart .icon-plus-sign {
+  color: green;
+}

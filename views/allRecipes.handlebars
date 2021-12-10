@@ -129,6 +129,13 @@
               class="card-img-top recipe-card-img"
               alt="{{name}} Recipe"
             />
+            <div id="recipe-card-favorite">            
+              <label class="add-fav">
+                <input id="favorite_{{_id}}" type="checkbox" onclick="favoriteRecipe('{{_id}}')" {{#if ../user}}{{#if (arrayContains ../user.myFavoriteRecipe _id)}}checked{{/if}}{{/if}}>
+                <i class="icon-heart"></i>
+              </label>            
+            </div>
+            
             <div class="card-body">
               <h5 class="card-title"><a
                   href="/recipes/{{_id}}"

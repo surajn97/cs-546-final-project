@@ -109,8 +109,6 @@ module.exports = {
     return user;
   },
 
-
-
 };
 
 // //Helper Functions
