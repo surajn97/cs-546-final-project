@@ -10,6 +10,12 @@
       </div>
     </div>
     <img class="center-block" id="recipe-detail-image" src="{{data.recipeImageURL}}" alt="{{data.name}} Recipe" />
+    <div id="recipe-card-favorite">            
+      <label class="add-fav">
+        <input id="favorite_{{data._id}}" type="checkbox" onclick="favoriteRecipe('{{data._id}}')" {{#if user}}{{#if (arrayContains user.myFavoriteRecipe data._id)}}checked{{/if}}{{/if}}>
+        <i class="icon-heart"></i>
+      </label>            
+    </div>
   </div>
   <div class="row align-start p-3 m-0" id="recipe-page-title-info">
     <div class="col d-flex flex-row">
