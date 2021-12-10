@@ -239,6 +239,7 @@ const ingredientObjs = {
     Water: { p: 2.2, c: 13, f: 0.2 },
     "Rose Water": { p: 2.2, c: 13, f: 0.2 },
     "Groundnut Oil": { p: 2.2, c: 13, f: 0.2 },
+    "Coconut Oil": { p: 2.2, c: 13, f: 0.2 },
   },
 };
 

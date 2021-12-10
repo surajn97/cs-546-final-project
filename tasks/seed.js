@@ -67,7 +67,7 @@ const main = async () => {
           cuisine: "French",
           ingredients: [
             {
-              id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
@@ -107,27 +107,27 @@ const main = async () => {
           cuisine: "American",
           ingredients: [
             {
-              id: igList.find(x => x.name.toLowerCase() == "butter")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "butter")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
               quantity: 3,
               quantityMeasure: "cups",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "milk")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "milk")._id,
               quantity: 3,
               quantityMeasure: "cup",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "mustard")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "mustard")._id,
               quantity: 0.5,
               quantityMeasure: "teaspoon",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
               quantity: 0.25,
               quantityMeasure: "cup",
             },
@@ -146,32 +146,32 @@ const main = async () => {
           cuisine: "American",
           ingredients: [
             {
-              id: igList.find(x => x.name.toLowerCase() == "artichoke")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "artichoke")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "lemon")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "lemon")._id,
               quantity: 0.5,
               quantityMeasure: "qty",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "parsley")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "parsley")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
@@ -578,7 +578,7 @@ const main = async () => {
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "red chilli")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "red chilli powder")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
@@ -593,7 +593,7 @@ const main = async () => {
               quantityMeasure: "tablespoon",
             },
 			      {
-              _id: igList.find(x => x.name.toLowerCase() == "ground turmeric")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "turmeric")._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
@@ -626,17 +626,17 @@ const main = async () => {
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "Cauliflower")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
               quantity: 0.5,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "Garlic powder")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "garlic powder")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
 			      {
-              _id: igList.find(x => x.name.toLowerCase() == "Coconut oil")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "coconut oil")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
