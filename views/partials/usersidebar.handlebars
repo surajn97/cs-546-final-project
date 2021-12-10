@@ -7,25 +7,25 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a href="#" class="nav-link active link-dark" aria-current="page">
+            <a href="#" class="nav-link link-dark {{#if private_page}}active{{/if}}" aria-current="page">
                 <i class="fas fa-user-shield"></i>
                 Personal Information
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link link-dark">
+            <a href="#" class="nav-link link-dark {{#if favorite_recipe_page}}active{{/if}}">
                 <i class="fas fa-heart"></i>
                 Favorite Recipes
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link link-dark">
+            <a href="#" class="nav-link link-dark {{#if my_recipe_page}}active{{/if}}">
                 <i class="fas fa-utensils"></i>
                 My Recipes
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link link-dark">
+            <a href="#" class="nav-link link-dark {{#if my_reviews_page}}active{{/if}}">
                 <i class="fas fa-star"></i>
                 My Reviews
             </a>
