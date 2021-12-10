@@ -271,6 +271,7 @@ module.exports = {
     helper.checkProperString(instructions);
     helper.checkProperNumber(servings, "Servings");
 
+    ID = ObjectId(id);
     let ingredientArray = [];
     for (element of ingredients) {
       let ingObj = {};
@@ -293,6 +294,7 @@ module.exports = {
       }
       ingredientArray.push(ingObj);
     }
+    let recipe = await this.get(id);
 
     let updatedRecipe = {
       name: name,
@@ -546,15 +548,24 @@ module.exports = {
     }
     const users = mongoCollections.users;
     const usersCollection = await users();
-    const recipeFromFavorite = await usersCollection.findOne({_id: ID, myFavoriteRecipe: recipeId});
+    const recipeFromFavorite = await usersCollection.findOne({
+      _id: ID,
+      myFavoriteRecipe: recipeId,
+    });
     let updatedInfo;
-    if(!recipeFromFavorite) {
-      updatedInfo = await usersCollection.updateOne({ _id: ID }, { $push: { myFavoriteRecipe: recipeId } });
+    if (!recipeFromFavorite) {
+      updatedInfo = await usersCollection.updateOne(
+        { _id: ID },
+        { $push: { myFavoriteRecipe: recipeId } }
+      );
     } else {
-      updatedInfo = await usersCollection.updateOne({ _id: ID }, { $pull: { myFavoriteRecipe: recipeId } });
+      updatedInfo = await usersCollection.updateOne(
+        { _id: ID },
+        { $pull: { myFavoriteRecipe: recipeId } }
+      );
     }
     if (updatedInfo.modifiedCount === 0) {
-      throw 'Could not update Users Collection with Favorite recipe Data!';
+      throw "Could not update Users Collection with Favorite recipe Data!";
     }
   },
 };

@@ -66,7 +66,7 @@ router.get("/all", async (req, res) => {
     sort(recipeList);
     const filter = recipeData.getFilterFields(recipeList);
     let user;
-    if(req.session.user)
+    if (req.session.user)
       user = await userData.get(req.session.user._id.toString());
     prevSentData = recipeList;
     res.status(200).render("allRecipes", {
@@ -76,7 +76,6 @@ router.get("/all", async (req, res) => {
       error: false,
       user: user,
       authenticated: req.session.user ? true : false,
-
     });
   } catch (e) {
     res.status(400).render("allRecipes", {
@@ -85,7 +84,6 @@ router.get("/all", async (req, res) => {
       title: "What's Cooking?",
       error: true,
       authenticated: req.session.user ? true : false,
-
     });
     return;
   }
@@ -100,7 +98,7 @@ router.post("/all", async (req, res) => {
     sort(recipeList);
     prevSentData = recipeList;
     let user;
-    if(req.session.user)
+    if (req.session.user)
       user = await userData.get(req.session.user._id.toString());
     res.status(200).render("allRecipes", {
       recipeList: recipeList,
@@ -109,7 +107,6 @@ router.post("/all", async (req, res) => {
       user: user,
       error: false,
       authenticated: req.session.user ? true : false,
-
     });
   } catch (e) {
     res.status(400).render("allRecipes", {
@@ -118,7 +115,6 @@ router.post("/all", async (req, res) => {
       title: "What's Cooking?",
       error: true,
       authenticated: req.session.user ? true : false,
-
     });
     return;
   }
@@ -144,7 +140,6 @@ router.post("/all/filter", async (req, res) => {
         title: "What's Cooking?",
         error: false,
         authenticated: req.session.user ? true : false,
-
       });
     }
   } catch (e) {
@@ -163,7 +158,7 @@ router.get("/:id", async (req, res) => {
     let recipe = await recipeData.getWithOnlineData(req.params.id);
     let reviews = await reviewData.getAll(req.params.id);
     let user;
-    if(req.session.user)
+    if (req.session.user)
       user = await userData.get(req.session.user._id.toString());
     res.render("recipe", {
       data: recipe,
@@ -171,7 +166,6 @@ router.get("/:id", async (req, res) => {
       user: user,
       title: recipe.name,
       authenticated: req.session.user ? true : false,
-
     });
 
     return;
@@ -194,7 +188,7 @@ router.get("/editform/:id", async (req, res) => {
     let ingArr = [];
     for (element of recipe.ingredients) {
       let ingObj = {};
-      let ing = await ingredientsData.get(element.id);
+      let ing = await ingredientsData.get(element._id);
       ingObj.name = ing.name;
       ingObj.quantity = element.quantity;
       ingObj.quantityMeasure = element.quantityMeasure;
@@ -272,7 +266,6 @@ router.post("/", async (req, res) => {
       reviews: reviews,
       title: recipe.name,
       authenticated: req.session.user ? true : false,
-
     });
     return;
   } catch (e) {
@@ -339,15 +332,15 @@ router.post("/submit/:id", async (req, res) => {
     );
 
     let recipe = await recipeData.getWithOnlineData(updatedRecipe._id);
-    let reviews = await reviewData.getAll(newRecipe._id);
+    let reviews = await reviewData.getAll(updatedRecipe._id);
     res.render("recipe", {
       data: recipe,
       reviews: reviews,
       title: recipe.name,
+      authenticated: req.session.user ? true : false,
     });
-    return;
   } catch (e) {
-    res.status(500);
+    res.status(400);
     res.redirect(`recipes/${req.params.id}`, { error: e });
     return;
   }
@@ -521,7 +514,6 @@ router.patch("/:id", async (req, res) => {
         data: newUpdatedData,
         reviews: reviews,
         authenticated: req.session.user ? true : false,
-
       });
     } catch (e) {
       res.status(500).json({ error: e });
@@ -557,7 +549,7 @@ router.post("/favorite/:id", async (req, res) => {
   if (!req.session.user) {
     res.status(401).json({
       status: "fail",
-      error: "Unauthorized"
+      error: "Unauthorized",
     });
     return;
   }
@@ -566,28 +558,31 @@ router.post("/favorite/:id", async (req, res) => {
   } catch (e) {
     res.status(400).json({
       status: "fail",
-      error: e
+      error: e,
     });
     return;
   }
   if (!req.params.id) {
     res.status(400).json({
       status: "fail",
-      error: "You must provide a recipe id"
+      error: "You must provide a recipe id",
     });
     return;
   }
 
   try {
-    const review = await recipeData.favorite(req.session.user._id.toString(), req.params.id);
+    const review = await recipeData.favorite(
+      req.session.user._id.toString(),
+      req.params.id
+    );
     res.json({
       status: "success",
-      message: "successfully added recipe to favorites"
+      message: "successfully added recipe to favorites",
     });
   } catch (e) {
     res.status(404).json({
       status: "fail",
-      error: e
+      error: e,
     });
     // res.status(404);
     return;
