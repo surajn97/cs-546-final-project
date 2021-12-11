@@ -119,6 +119,7 @@ router.get("/favorite-recipes", ensureAuthenticated, async (req, res) => {
   res.render("users/favoriterecipes", {
     myFavRecipe: myFavRecipe,
     hasFRecipe: hasFRecipe,
+    firstname: userData.firstname,
     favorite_recipe_page: true,
     user_page: true,
     authenticated: true,
@@ -144,6 +145,7 @@ router.get("/my-recipes", ensureAuthenticated, async (req, res) => {
   res.render("users/myrecipes", {
     myRecipes: myReclist,
     hasMRecipe: hasMRecipe,
+    firstname: userData.firstname,
     user_page: true,
     my_recipe_page: true,
     authenticated: true,
@@ -173,6 +175,7 @@ router.get("/my-reviews", ensureAuthenticated, async (req, res) => {
   res.render("users/myreviews", {
     myReviews: myReviewsList,
     hasReview: hasReview,
+    firstname: userData.firstname,
     user_page: true,
     my_reviews_page: true,
     authenticated: true,
