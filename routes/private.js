@@ -95,6 +95,7 @@ router.get("/", async (req, res) => {
       private_page: true,
       user_page: true,
       authenticated: true,
+      title: "Profile",
     });
   } else {
     res.redirect("/users/login");
@@ -123,6 +124,7 @@ router.get("/favorite-recipes", ensureAuthenticated, async (req, res) => {
     favorite_recipe_page: true,
     user_page: true,
     authenticated: true,
+    title: "Profile",
   });
 });
 
@@ -149,6 +151,7 @@ router.get("/my-recipes", ensureAuthenticated, async (req, res) => {
     user_page: true,
     my_recipe_page: true,
     authenticated: true,
+    title: "Profile",
   });
 });
 
@@ -179,6 +182,7 @@ router.get("/my-reviews", ensureAuthenticated, async (req, res) => {
     user_page: true,
     my_reviews_page: true,
     authenticated: true,
+    title: "Profile",
   });
 });
 

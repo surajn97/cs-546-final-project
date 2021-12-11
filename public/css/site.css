@@ -177,18 +177,18 @@ span.stars > * {
   background-position: 0 0;
 }
 
-#div404 div {
+.div404 div {
   text-align: center;
 }
 
-#div404 img {
+.div404 img {
   height: 60vh;
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-#recipe-card-favorite {
+.recipe-card-favorite {
   position: absolute;
   right: 15px;
   top: 15px;

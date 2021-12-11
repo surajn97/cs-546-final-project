@@ -13,7 +13,7 @@ const defaultRecipeImage = "/public/img/product/product-2.jpg";
 // for add to user
 const users = mongoCollections.users;
 
-const getYoutubeLinkScraped = async title => {
+const getYoutubeLinkScraped = async (title) => {
   const results = await youtube.search(`${title} Recipe`);
   if (!results || !results.videos || results.videos.length == 0) {
     throw "Could not retrieve youtube URL";
@@ -37,7 +37,7 @@ module.exports = {
     helper.checkProperString(postedBy, "User");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach(element => {
+    ingredients.forEach((element) => {
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.name, "Name of ingredient");
       // helper.checkProperString(element._id, "Id of ingredient");
@@ -167,13 +167,13 @@ module.exports = {
 
   getFilterFields(recipeList) {
     try {
-      let meals = [...new Set(recipeList.map(item => item.mealType))];
+      let meals = [...new Set(recipeList.map((item) => item.mealType))];
       meals = [
         ...meals.map(function (item) {
           return { [item]: false };
         }),
       ];
-      let cuisines = [...new Set(recipeList.map(item => item.cuisine))];
+      let cuisines = [...new Set(recipeList.map((item) => item.cuisine))];
       cuisines = [
         ...cuisines.map(function (item) {
           return { [item]: false };
@@ -217,13 +217,14 @@ module.exports = {
       for (const rec_ing of rec.ingredients) {
         if (
           !selectedIngredients.includes(rec_ing._id) &&
-          !ingredientSuggestion.some(e => e._id === rec_ing._id)
+          !ingredientSuggestion.some((e) => e._id === rec_ing._id)
         ) {
           ingredientSuggestion.push(await ingredientsData.get(rec_ing._id));
         }
       }
     }
-    recipeList.forEach(item => {
+    ingredientSuggestion.length = Math.min(ingredientSuggestion.length, 10);
+    recipeList.forEach((item) => {
       if (item.ingredients.length <= selectedIngredients.length) {
         let flag = false;
         for (element of item.ingredients) {
@@ -296,7 +297,7 @@ module.exports = {
     helper.checkProperString(name, "Name");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach(element => {
+    ingredients.forEach((element) => {
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.name, "Name of ingredient");
       helper.checkProperNumber(element.quantity, "Quantity of ingredient");
@@ -383,7 +384,7 @@ module.exports = {
     ) {
     }
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach(element => {
+    ingredients.forEach((element) => {
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.name, "Name of ingredient");
       helper.checkProperNumber(element.quantity, "Quantity of ingredient");
@@ -463,7 +464,7 @@ module.exports = {
       let currentRecipe = await this.get(recipeId);
       const reviewsarray = currentRecipe.reviews;
       let sumRating = reviewsarray
-        .map(s => s.rating)
+        .map((s) => s.rating)
         .reduce((a, b) => a + b, 0);
       newRating = sumRating / len;
     }

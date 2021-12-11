@@ -1,7 +1,7 @@
 (function ($) {
   //Sort By Name
   $("#sortByNameDiv").on("click", function (e) {
-    let isUp = $(this).attr("name") == "up";
+    let isUp = $(this).attr("data-name") == "up";
     const data = {
       name: {
         current: true,
@@ -34,7 +34,7 @@
 
   //Sort By Rating
   $("#sortByRatingDiv").on("click", function (e) {
-    const isUp = $(this).attr("name") == "up";
+    const isUp = $(this).attr("data-name") == "up";
     const data = {
       name: {
         current: false,
@@ -67,7 +67,7 @@
 
   //Sort By Time
   $("#sortByTimeDiv").on("click", function (e) {
-    const isUp = $(this).attr("name") == "up";
+    const isUp = $(this).attr("data-name") == "up";
     const data = {
       name: {
         current: false,
@@ -100,7 +100,7 @@
 
   //Sort By Ingredients
   $("#sortByIngredientDiv").on("click", function (e) {
-    const isUp = $(this).attr("name") == "up";
+    const isUp = $(this).attr("data-name") == "up";
     const data = {
       name: {
         current: false,
@@ -132,17 +132,17 @@
   });
 })(window.jQuery);
 
-$.fn.stars = function() {
+$.fn.stars = function () {
   // return this.each(function(i,e){$(e).html($('<span/>').width($(e).text()*16));});
   this.each(function (i, e) {
-      var score = $(e).text();
-      $(e).html("");
-      $(e).raty({
-        path: '/public/images',
-        halfShow: true,
-        readOnly: true,
-        score: score
-      });
+    var score = $(e).text();
+    $(e).html("");
+    $(e).raty({
+      path: "/public/images",
+      halfShow: true,
+      readOnly: true,
+      score: score,
     });
+  });
 };
-$('.star-ratings').stars();
+$(".star-ratings").stars();
