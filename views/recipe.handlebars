@@ -131,7 +131,7 @@
             </div>
             <div class="form-floating mt-2">
               <input type="hidden" name="userId" class="userId" id="userId-{{_id}}" value="{{#if ../session.user}}{{ ../session.user._id }}{{/if}}">
-              <button class="btn btn-sm btn-primary" type="submit">Comment</button>
+              <button class="btn btn-sm btn-primary" type="submit" onclick="return checkCommentInput('{{_id}}');">Comment</button>
               <button class="btn btn-sm btn-secondary" onclick="return hideCommentForm('{{_id}}');">Cancel</button>
             </div>
           </form>
