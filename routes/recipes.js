@@ -203,9 +203,11 @@ router.get("/editform/:id", async (req, res) => {
     console.log(`id: ${ids}`);
     res.render("editrecipeform", {
       ids: ids,
+      name: recipe.name,
       title: "Edit Recipe",
       data: recipe,
       ingArr: JSON.stringify(ingArr),
+      authenticated: req.session.user ? true : false,
     });
     return;
   } catch (e) {
@@ -236,7 +238,7 @@ router.post("/", async (req, res) => {
     helper.checkProperString(recipeInfo.name, "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach((element) => {
+    ingarray.forEach(element => {
       const quant = parseInt(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
@@ -309,7 +311,7 @@ router.post("/submit/:id", async (req, res) => {
     helper.checkProperString(updatedData.name, "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach((element) => {
+    ingarray.forEach(element => {
       const quant = parseInt(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
@@ -381,7 +383,7 @@ router.put("/:id", async (req, res) => {
     helper.checkProperString(updatedData.name, "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach((element) => {
+    ingarray.forEach(element => {
       const quant = parseInt(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
@@ -473,7 +475,7 @@ router.patch("/:id", async (req, res) => {
       updatedData.ingredients !== oldRecipe.ingredients
     ) {
       helper.checkProperArray(ingarray, "Ingredients");
-      ingarray.forEach((element) => {
+      ingarray.forEach(element => {
         const quant = parseInt(element.quantity);
         element.quantity = quant;
         helper.checkProperObject(element, "Individual ingredient");
