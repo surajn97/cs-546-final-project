@@ -7,7 +7,7 @@
       {{else}}
         <p class="fs-1 fw-bold">{{recipeList.length}} recipe found</p>
       {{/if}}
-      <div class="dropdown">
+      <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="left" title="Sort">
         <button
           class="btn btn-secondary dropdown-toggle"
           type="button"
@@ -149,8 +149,8 @@
                 <span class="star-ratings">{{overallRating}}</span></p>
               <p class="card-text">{{trimString instructions 0 50}}...</p>
               <p class="card-text"><small class="text-muted">Posted By:
-                  {{postedBy.firstName}}
-                  {{postedBy.lastName}}</small></p>
+                  {{postedBy.firstname}}
+                  {{postedBy.lastname}}</small></p>
             </div>
           </div>
         </div>

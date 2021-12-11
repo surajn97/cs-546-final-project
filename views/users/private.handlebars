@@ -1,19 +1,12 @@
-{{!-- 
+<div class="profile">
+{{>usersidebar}}
+<div class="ms-4 p-2">
+    <h1>User Profile:</h1>
+    <p>Username: {{username}}</p>
+    <p>First Name: {{firstname}}</p>
+    <p>Last Name: {{lastname}}</p>
+    <p>Email: {{email}}</p>
+    <p>Age: {{age}}</p>
+</div>
+</div>
 
-
-<head>
-    <meta charset="utf-8">
-    <title>User Profile:</title>
-    <link rel="stylesheet" href="/public/css/main.css">
-</head> --}}
-    {{>usersidebar}}
-
-
-    <div class="text-center p-2">
-        <h1>User Profile:</h1>
-        <p>username: {{username}}</p>
-        <p>first name: {{firstname}}</p>
-        <p>last name: {{lastname}}</p>
-        <p>email: {{email}}</p>
-        <p>age: {{age}}</p>
-    </div>

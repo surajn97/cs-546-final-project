@@ -1,28 +1,39 @@
-{{!-- 
-
-
-<head>
-    <meta charset="utf-8">
-    <title>User Profile:</title>
-    <link rel="stylesheet" href="/public/css/main.css">
-</head> --}}
+<div class="profile">
     {{>usersidebar}}
-
-    <div class="p-2">
+    <div class="p-2 ms-4 container-fluid">
         <h1>My Recipes:</h1>
-        <a href="/recipes/form" class="nav-link link-dark active"> <i class="fas fa-utensils"></i> Add Recipes</a>    
+        <a href="/recipes/form" class="btn btn-primary" role="button" class="nav-link link-dark active"> <i class="fas fa-utensils"></i> Add Recipes</a>    
         <div class="container">
             {{#if hasMRecipe}}
-            <ul class="list-group list-group-flush">
-                {{#each myRecipes}}
-                <li class="list-group-item">
-                    <a href="/recipes/{{this.id}}"><span class="mr-2">&starf;</span>{{this.name}}</a>
-                </li>
-                {{/each}}
-            </ul>
-
+    <div class="row row-cols-1 row-cols-md-3 g-3 g-md-3 g-lg-3 mt-3">
+      {{#each myRecipes}}
+      {{log "recipe" myRecipes}}
+        <div class="col">
+          <div class="card">
+            <img
+              src="{{recipeImageURL}}"
+              class="card-img-top recipe-card-img"
+              alt="{{name}} Recipe"
+            />
+            <div class="card-body">
+              <p class="card-title fs-5 fw-bolder"><a
+                  href="/recipes/{{_id}}"
+                  target="_blank"
+                >{{name}}</a>
+                <small class="text-muted"><i
+                    class="bi bi-box-arrow-up-right"
+                  ></i></small></p>
+              <p class="card-text">Rating:
+                <span class="ratings">{{overallRating}}</span></p>
+              <p class="card-text">{{trimString instructions 0 50}}...</p>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
             {{else}}
             <p class="font-italic">No recipes posted yet.</p>
             {{/if}}
         </div>
     </div>
+</div>
