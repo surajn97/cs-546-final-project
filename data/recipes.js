@@ -10,6 +10,8 @@ const { ingredients } = require("../config/mongoCollections");
 const youtube = require("scrape-youtube");
 const data = require(".");
 const defaultRecipeImage = "/public/img/product/product-2.jpg";
+// for add to user
+const users = mongoCollections.users;
 
 const getYoutubeLinkScraped = async (title) => {
   const results = await youtube.search(`${title} Recipe`);
@@ -28,7 +30,8 @@ module.exports = {
     mealType,
     cuisine,
     instructions,
-    servings
+    servings,
+    userId
   ) {
     helper.checkProperString(name, "Name");
     helper.checkProperString(postedBy, "User");
@@ -37,7 +40,7 @@ module.exports = {
     ingredients.forEach((element) => {
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.name, "Name of ingredient");
-      helper.checkProperString(element._id, "Id of ingredient");
+      // helper.checkProperString(element._id, "Id of ingredient");
       helper.checkProperNumber(element.quantity, "Quantity of ingredient");
       helper.checkProperString(element.quantityMeasure, "Quantity Measure");
     });
@@ -87,6 +90,15 @@ module.exports = {
     if (insertInfo.insertedCount === 0) throw "Could not create a Recipe";
 
     const newId = insertInfo.insertedId.toString();
+    //Add the recipe id to the user
+    const objIdForUser = ObjectId.createFromHexString(userId);
+    const usersCollection = await users();
+    const updatedInfo2 = await usersCollection.updateOne({ _id: objIdForUser }, { $push: { myRecipes: newId } });
+
+    if (updatedInfo2.modifiedCount === 0) {
+      throw 'Could not update Users Collection with Review Data!';
+    }
+    /////////
     const recipe = await this.get(newId);
     return recipe;
   },
@@ -498,8 +510,8 @@ module.exports = {
     const updateInfo = await recipeCollection.findOneAndUpdate(
       {
         $or: [
-        {"reviews._id": reviewID},
-        {"reviews._id": reviewobj._id},
+          { "reviews._id": reviewID },
+          { "reviews._id": reviewobj._id },
         ]
       },
       {
