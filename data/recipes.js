@@ -85,6 +85,7 @@ module.exports = {
       reviews: [],
       servings: servings,
     };
+    // console.log(newRecipe);
 
     const insertInfo = await recipeCollection.insertOne(newRecipe);
     if (insertInfo.insertedCount === 0) throw "Could not create a Recipe";
