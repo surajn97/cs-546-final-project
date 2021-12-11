@@ -259,7 +259,7 @@
 
     //Sort By Name
     $("#sortByNameDiv").on("click", function (e) {
-      let isUp = $(this).attr("name") == "up";
+      let isUp = $(this).attr("data-name") == "up";
       const data = {
         name: {
           current: true,
@@ -292,7 +292,7 @@
 
     //Sort By Rating
     $("#sortByRatingDiv").on("click", function (e) {
-      const isUp = $(this).attr("name") == "up";
+      const isUp = $(this).attr("data-name") == "up";
       const data = {
         name: {
           current: false,
@@ -325,7 +325,7 @@
 
     //Sort By Time
     $("#sortByTimeDiv").on("click", function (e) {
-      const isUp = $(this).attr("name") == "up";
+      const isUp = $(this).attr("data-name") == "up";
       const data = {
         name: {
           current: false,
@@ -358,7 +358,7 @@
 
     //Sort By Ingredients
     $("#sortByIngredientDiv").on("click", function (e) {
-      const isUp = $(this).attr("name") == "up";
+      const isUp = $(this).attr("data-name") == "up";
       const data = {
         name: {
           current: false,

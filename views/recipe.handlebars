@@ -10,13 +10,13 @@
       </div>
     </div>
     <img class="center-block" id="recipe-detail-image" src="{{data.recipeImageURL}}" alt="{{data.name}} Recipe" />
-    <div id="recipe-card-favorite">            
+    <div class="recipe-card-favorite">            
       <label class="add-fav">
         <input id="favorite_{{data._id}}" type="checkbox" onclick="favoriteRecipe('{{data._id}}')" {{#if user}}{{#if (arrayContains user.myFavoriteRecipe data._id)}}checked{{/if}}{{/if}}>
         <i class="icon-heart"></i>
       </label>
       {{#if user}}
-      <form action="/recipes/editform/{{data._id}}"class="inline">
+      <form action="/recipes/editform/{{data._id}}" class="inline mt-2">
       <button class="btn btn-light" type="submit"><i class="far fa-edit"></i>Edit</button> 
       </form>  
       {{/if}}         
@@ -180,7 +180,7 @@
           <textarea class="form-control" id="reviewText" rows="3" name="reviewText" required></textarea>
         </div>
         <div class="mb-3">
-          <label for="raty" class="form-label">Rate this recipe</label>
+          <label class="form-label">Rate this recipe</label>
           <div class="raty" id="raty"></div>
         </div>
         <div class="mb-3">

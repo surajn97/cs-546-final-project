@@ -18,7 +18,7 @@
         >
           <i class="fas fa-bars"></i>
         </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <ul class="dropdown-menu" aria-labelledby="filterSortDropDown">
           <li><p class="dropdown-header">Sort</p></li>
           <li><hr class="dropdown-divider" /></li>
           <li>
@@ -27,7 +27,7 @@
                 <div
                   id="sortByNameDiv"
                   class="dropdown-item text-primary"
-                  name="up"
+                  data-name="up"
                 >
                   Sort by Name<span class="fas fa-arrow-up ms-2"></span>
                 </div>
@@ -40,7 +40,7 @@
                   Sort by Name<span class="fas fa-arrow-down ms-2"></span></div>
               {{/if}}
             {{else}}
-              <div id="sortByNameDiv" class="dropdown-item" name="up">
+              <div id="sortByNameDiv" class="dropdown-item" data-name="up">
                 Sort by Name</div>
             {{/if}}
           </li>
@@ -50,7 +50,7 @@
                 <div
                   id="sortByRatingDiv"
                   class="dropdown-item text-primary"
-                  name="up"
+                  data-name="up"
                 >
                   Sort by Rating<span class="fas fa-arrow-up ms-2"></span></div>
               {{else}}
@@ -63,7 +63,7 @@
                 </div>
               {{/if}}
             {{else}}
-              <div id="sortByRatingDiv" class="dropdown-item" name="up">
+              <div id="sortByRatingDiv" class="dropdown-item" data-name="up">
                 Sort by Rating</div>
             {{/if}}
           </li>
@@ -73,7 +73,7 @@
                 <div
                   id="sortByTimeDiv"
                   class="dropdown-item text-primary"
-                  name="up"
+                  data-name="up"
                 >
                   Sort by Prep Time<span class="fas fa-arrow-up ms-2"></span>
                 </div>
@@ -88,7 +88,7 @@
                   ></span></div>
               {{/if}}
             {{else}}
-              <div id="sortByTimeDiv" class="dropdown-item" name="up">
+              <div id="sortByTimeDiv" class="dropdown-item" data-name="up">
                 Sort by Prep Time</div>
             {{/if}}
           </li>
@@ -98,7 +98,7 @@
                 <div
                   id="sortByIngredientDiv"
                   class="dropdown-item text-primary"
-                  name="up"
+                  data-name="up"
                 >
                   Sort by Ingredient count<span
                     class="fas fa-arrow-up ms-2"
@@ -114,7 +114,7 @@
                   ></span></div>
               {{/if}}
             {{else}}
-              <div id="sortByIngredientDiv" class="dropdown-item" name="up">
+              <div id="sortByIngredientDiv" class="dropdown-item" data-name="up">
                 Sort by Ingredient count</div>
             {{/if}}
           </li>
@@ -130,7 +130,7 @@
               class="card-img-top recipe-card-img"
               alt="{{name}} Recipe"
             />
-            <div id="recipe-card-favorite">            
+            <div class="recipe-card-favorite">            
               <label class="add-fav">
                 <input id="favorite_{{_id}}" type="checkbox" onclick="favoriteRecipe('{{_id}}')" {{#if ../user}}{{#if (arrayContains ../user.myFavoriteRecipe _id)}}checked{{/if}}{{/if}}>
                 <i class="icon-heart"></i>
