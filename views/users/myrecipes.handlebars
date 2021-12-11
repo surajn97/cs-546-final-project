@@ -1,0 +1,29 @@
+{{!-- 
+
+
+<head>
+    <meta charset="utf-8">
+    <title>User Profile:</title>
+    <link rel="stylesheet" href="/public/css/main.css">
+</head> --}}
+<main>
+    {{>usersidebar}}
+
+    <div class="p-2">
+        <h2>My Recipes:</h2>
+        <div class="container">
+            {{#if hasMRecipe}}
+            <ul class="list-group list-group-flush">
+                {{#each myRecipes}}
+                <li class="list-group-item">
+                    <a href="/recipes/{{this.id}}"><span class="mr-2">&starf;</span>{{this.name}}</a>
+                </li>
+                {{/each}}
+            </ul>
+
+            {{else}}
+            <p class="font-italic">No recipes posted yet.</p>
+            {{/if}}
+        </div>
+    </div>
+</main>

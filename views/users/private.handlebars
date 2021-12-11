@@ -7,63 +7,15 @@
     <link rel="stylesheet" href="/public/css/main.css">
 </head> --}}
 <main>
-{{>usersidebar}}
+    {{>usersidebar}}
 
 
-<div class="text-center p-2">
-    <h1>User Profile:</h1>
-        <p>username:   {{username}}<p>
-        <p>first name: {{firstname}}<p>
-        <p>last name:  {{lastname}}<p>
-        <p>email:      {{email}}<p>
-        <p>age:      {{age}}<p>
-    <h2>Favorited Recipes:</h2>
-     <div class="container">
-                    {{#if hasFRecipe}}
-                    <ul class = "list-group list-group-flush">  
-                        {{#each myFavRecipe}}
-                            <li class = "list-group-item">
-                                <a href = "/recipes/{{this.id}}"><span class="mr-2">&starf;</span>{{this.name}}</a>
-                            </li>
-                        {{/each}}
-                        </ul>
-                       
-                    {{else}}
-                         <p class = "font-italic">No favorite recipes.</p>
-                    {{/if}}
-                </div>
-    <h2>My Recipes:</h2>
-     <div class="container">
-                    {{#if hasMRecipe}}
-                    <ul class = "list-group list-group-flush">  
-                        {{#each myRecipes}}
-                            <li class = "list-group-item">
-                                <a href = "/recipes/{{this.id}}"><span class="mr-2">&starf;</span>{{this.name}}</a>
-                            </li>
-                        {{/each}}
-                        </ul>
-                       
-                    {{else}}
-                         <p class = "font-italic">No recipes posted yet.</p>
-                    {{/if}}
-                </div>
-    <h2>My Reviews:</h2>
-     <div class="container">
-                    {{#if hasReview}}
-                    <ul class = "list-group list-group-flush">  
-                        {{#each myReviews}}
-                            <li class = "list-group-item">
-                                <a href = "/recipes/{{this.recipeid}}"><span class="mr-2">&starf;</span>{{this.recipename}} </a>
-                                <p>rate: {{this.rating}}   Your review: {{this.reviewText}} </p>
-                            </li>
-                        {{/each}}
-                        </ul>
-                       
-                    {{else}}
-                         <p class = "font-italic">No Reviews posted yet.</p>
-                    {{/if}}
-                </div>
-
-    <a href="users/logout">logout</a>
-</div>
+    <div class="text-center p-2">
+        <h1>User Profile:</h1>
+        <p>username: {{username}}</p>
+        <p>first name: {{firstname}}</p>
+        <p>last name: {{lastname}}</p>
+        <p>email: {{email}}</p>
+        <p>age: {{age}}</p>
+    </div>
 </main>

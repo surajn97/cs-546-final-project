@@ -41,6 +41,7 @@ module.exports = {
 
     const commentobj = await this.get(newId);
     const updatedReview = await reviewFunctions.addCommentToReview(reviewId, newId, commentobj);
+    // const updatedReviewWithComment = await reviewFunctions.get(reviewId);
     await recipeFunctions.replaceReviewInRecipe(updatedReview.recipeId.toString(), updatedReview);
     return commentobj;
   },

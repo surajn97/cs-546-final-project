@@ -482,7 +482,10 @@ module.exports = {
     const recipeCollection = await recipes();
     const updateInfo = await recipeCollection.findOneAndUpdate(
       {
-        "reviews._id": reviewID,
+        $or: [
+        {"reviews._id": reviewID},
+        {"reviews._id": reviewobj._id},
+        ]
       },
       {
         $set: {
@@ -490,6 +493,7 @@ module.exports = {
         },
       }
     );
+    return updateInfo;
     // if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
     //   throw "Update failed at replacing review to recipe";
 

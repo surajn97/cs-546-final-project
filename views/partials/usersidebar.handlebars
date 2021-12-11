@@ -7,36 +7,36 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a href="#" class="nav-link link-dark {{#if private_page}}active{{/if}}" aria-current="page">
+            <a href="/private" class="nav-link link-dark {{#if private_page}}active{{/if}}" aria-current="page">
                 <i class="fas fa-user-shield"></i>
                 Personal Information
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link link-dark {{#if favorite_recipe_page}}active{{/if}}">
+            <a href="/private/favorite-recipes" class="nav-link link-dark {{#if favorite_recipe_page}}active{{/if}}">
                 <i class="fas fa-heart"></i>
                 Favorite Recipes
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link link-dark {{#if my_recipe_page}}active{{/if}}">
+            <a href="/private/my-recipes" class="nav-link link-dark {{#if my_recipe_page}}active{{/if}}">
                 <i class="fas fa-utensils"></i>
                 My Recipes
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link link-dark {{#if my_reviews_page}}active{{/if}}">
+            <a href="/private/my-reviews" class="nav-link link-dark {{#if my_reviews_page}}active{{/if}}">
                 <i class="fas fa-star"></i>
                 My Reviews
             </a>
-        </li>        
+        </li>
     </ul>
     <hr>
     <div class="dropdown">
-        
+
         <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
             data-bs-toggle="dropdown" aria-expanded="false">
-             <i class="fas fa-user-circle fa-2x inline me-2"></i>
+            <i class="fas fa-user-circle fa-2x inline me-2"></i>
             {{!-- <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2"> --}}
             <strong>{{firstname}}</strong>
         </a>
