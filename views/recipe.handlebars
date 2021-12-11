@@ -15,8 +15,8 @@
         <input id="favorite_{{data._id}}" type="checkbox" onclick="favoriteRecipe('{{data._id}}')" {{#if user}}{{#if (arrayContains user.myFavoriteRecipe data._id)}}checked{{/if}}{{/if}}>
         <i class="icon-heart"></i>
       </label>
-      {{#if user}}
-      <form action="/recipes/editform/{{data._id}}" class="inline mt-2">
+      {{#if (isEquals user._id data.postedBy._id)}}
+      <form action="/recipes/editform/{{data._id}}"class="inline">
       <button class="btn btn-light" type="submit"><i class="far fa-edit"></i>Edit</button> 
       </form>  
       {{/if}}         

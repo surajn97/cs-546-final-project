@@ -15,4 +15,7 @@ module.exports = {
   arrayContains: function (array, item) {
     return array !== undefined ? array.includes(item) : false;
   },
+  isEquals: function (arg1, arg2) {
+    return arg1 == arg2 ? true : false;
+  },
 };
