@@ -262,7 +262,9 @@ router.post("/", async (req, res) => {
       recipeInfo.mealType,
       recipeInfo.cuisine,
       recipeInfo.instructions,
-      serv
+      serv,
+      // should be logged in user id
+      req.session.user._id.toString()
     );
     let recipe = await recipeData.getWithOnlineData(newRecipe._id);
     let reviews = await reviewData.getAll(newRecipe._id);
