@@ -6,11 +6,9 @@
     <title>User Profile:</title>
     <link rel="stylesheet" href="/public/css/main.css">
 </head> --}}
-<main>
     {{>usersidebar}}
-
     <div class="text-center p-2">
-        <h2>Favorited Recipes:</h2>
+        <h1>Favorited Recipes:</h1>
         <div class="container">
             {{#if hasFRecipe}}
             <ul class="list-group list-group-flush">
@@ -26,4 +24,3 @@
             {{/if}}
         </div>
     </div>
-</main>

@@ -3,15 +3,15 @@
     <div class="d-flex flex-row justify-content-between mt-4">
       {{! prettier-ignore }}
       {{#if recipeList.[1]}}
-        <h3>You can make {{recipeList.length}} recipes</h3>
+        <p class="fs-1 fw-bold">You can make {{recipeList.length}} recipes</p>
       {{else}}
-        <h3>You can make {{recipeList.length}} recipe</h3>
+        <p class="fs-1 fw-bold">You can make {{recipeList.length}} recipe</p>
       {{/if}}
   <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="filterSortDropDown" data-bs-toggle="dropdown" aria-expanded="false">
+  <button class="btn btn-secondary dropdown-toggle" aria-label="Sort" type="button" id="filterSortDropDown" data-bs-toggle="dropdown" aria-expanded="false">
  <i class="fas fa-bars"></i>  </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <li><h6 class="dropdown-header">Sort</h6></li>
+    <li><p class="dropdown-header">Sort</p></li>
     <li><hr class="dropdown-divider"></li>
     <li>
       {{#if currentSort.name.current}}
@@ -91,13 +91,13 @@
               </label>            
             </div>
             <div class="card-body">
-              <h5 class="card-title"><a
+              <p class="card-title fs-5 fw-bolder"><a
                   href="/recipes/{{_id}}"
                   target="_blank"
                 >{{name}}</a>
                 <small class="text-muted"><i
                     class="bi bi-box-arrow-up-right"
-                  ></i></small></h5>
+                  ></i></small></p>
               <p class="card-text">Rating:
                 <span class="ratings">{{overallRating}}</span></p>
               <p class="card-text">{{trimString instructions 0 50}}...</p>

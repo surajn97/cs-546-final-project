@@ -23,7 +23,7 @@ input.chk-btn + label {
 
 input.chk-btn + label:active,
 input.chk-btn:checked + label {
-  background: #f72585;
+  background: #e60078;
   color: #ffffff;
 }
 
