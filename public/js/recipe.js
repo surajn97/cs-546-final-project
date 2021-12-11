@@ -135,6 +135,11 @@ $(document).ready(function () {
       showToast(true, "Please login first before submitting the review");
       return false;
     }
+    if(!($("#reviewText").val().replace(/\s/g, '').length)){
+      e.preventDefault();
+      showToast(true, "Review contains only white spaces!");
+      return false;
+    }
     if (
       $('input[name="rating"]').length > 0 &&
       $('input[name="rating"]').val().length > 0
@@ -208,6 +213,16 @@ function showCommentForm(reviewId) {
 function hideCommentForm(reviewId) {
   $("#comment-form-" + reviewId).attr("hidden", true);
   return false;
+}
+
+function checkCommentInput(reviewId) {
+  if(!($("#comment-" + reviewId).val().replace(/\s/g, '').length)){
+    showCommentToast(
+      reviewId,
+      "Comment contains only white spaces!"
+    );
+    return false;
+  }
 }
 
 function likeReview(reviewId) {
