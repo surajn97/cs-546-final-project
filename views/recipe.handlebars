@@ -102,7 +102,7 @@
     <div class="col">
     </div>
     <div class="col-8">
-      <h4>{{reviews.length}} Responses to "{{data.name}}" recipe</h4>
+      <p class="fs-4 fw-bolder">{{reviews.length}} Responses to "{{data.name}}" recipe</p>
       {{#each reviews}}
       <dl class="row mt-3 border-start border-4">
         <dt class="col-sm-3">Reviewer</dt>
@@ -161,7 +161,7 @@
     <div class="col">
     </div>
     <div class="col-8">
-      <h4>Let us know what you think! Leave your review here:</h4>
+      <p class="fs-4 fw-bolder">Let us know what you think! Leave your review here:</p>
       {{#unless session.user}}
       <div class="alert alert-warning" role="alert">
         Please <a href="/users/login">login</a> first to review the recipe!

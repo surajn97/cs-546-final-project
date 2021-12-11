@@ -3,9 +3,9 @@
     <div class="d-flex flex-row justify-content-between mt-4">
       {{! prettier-ignore }}
       {{#if recipeList.[1]}}
-        <h3>{{recipeList.length}} recipes found</h3>
+        <p class="fs-1 fw-bold">{{recipeList.length}} recipes found</p>
       {{else}}
-        <h3>{{recipeList.length}} recipe found</h3>
+        <p class="fs-1 fw-bold">{{recipeList.length}} recipe found</p>
       {{/if}}
       <div class="dropdown">
         <button
@@ -14,11 +14,12 @@
           id="filterSortDropDown"
           data-bs-toggle="dropdown"
           aria-expanded="false"
+          aria-label="Sort"
         >
           <i class="fas fa-bars"></i>
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><h6 class="dropdown-header">Sort</h6></li>
+          <li><p class="dropdown-header">Sort</p></li>
           <li><hr class="dropdown-divider" /></li>
           <li>
             {{#if currentSort.name.current}}
@@ -137,13 +138,13 @@
             </div>
             
             <div class="card-body">
-              <h5 class="card-title"><a
+              <p class="card-title fs-5 fw-bolder"><a
                   href="/recipes/{{_id}}"
                   target="_blank"
                 >{{name}}</a>
                 <small class="text-muted"><i
                     class="bi bi-box-arrow-up-right"
-                  ></i></small></h5>
+                  ></i></small></p>
               <p class="card-text">Rating:
                 <span class="star-ratings">{{overallRating}}</span></p>
               <p class="card-text">{{trimString instructions 0 50}}...</p>
@@ -157,13 +158,13 @@
     </div>
   </div>
 {{else}}
-  <div class="container mx-auto d-block w-50 mt-4">
+  <div class="container mx-auto d-block w-25 mt-4">
     <img
       src="/public/images/not-found.png"
       class="img-fluid"
       alt="Select Ingredients"
     />
-    <p class="text-center mt-3">Could not find any recipes</p>
+    <p class="text-center mt-3 fs-3">Could not find any recipes</p>
     {{#if error}}
       <p class="text-center mt-3">Server Error</p>
     {{/if}}

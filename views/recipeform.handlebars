@@ -1,3 +1,4 @@
+<div class="container m-4 p-4">
 <h1>{{title}}</h1>
 <form method="POST" id="recipe-form" action="/recipes">
 <div class="input-group">
@@ -27,7 +28,7 @@
     </div>
     <input type="text" class="form-control" id="ingName" name="ingName" placeholder="Ingredient Name">
     <div class="input-group-append">
-        
+            <label  for="quantity" hidden>Quantity</label>
         <input type="Number" class="form-control" id="quantity" name="quantity" placeholder="Quantity" required>
     </div>
 
@@ -93,4 +94,5 @@
 {{#if error}}
     <p id="errors">{{error}}</p>
 {{/if}}
+</div>
 <script src="/public/js/recipe.js"></script>

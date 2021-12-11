@@ -1,4 +1,5 @@
-<h1>{{title}}</h1>
+<div class="container m-4 p4-4">
+    <h1>{{title}}</h1>
 <form method="POST" id="recipe-form" action="/recipes/submit/{{ids}}">
 <div class="input-group">
     <div class="input-group-prepend">
@@ -94,4 +95,5 @@
   {{error}}
 </div>
 {{/if}}
+</div>
 <script src="/public/js/editrecipe.js"></script>
