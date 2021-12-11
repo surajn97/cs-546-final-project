@@ -33,6 +33,7 @@ const main = async () => {
       const commentObj = await commentsCollection.findOne({
         _id: commentInfo.insertedId,
       });
+
       testData.reviewObj["comments"] = [commentObj];
       testData.reviewObj["likes"] = [userObj._id.toString()];
       testData.reviewObj["dislikes"] = [userObj._id.toString()];
@@ -68,13 +69,12 @@ const main = async () => {
         {
           name: "Cauliflower Rice",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "25",
+          cookingTime: 25,
           mealType: "Lunch",
           cuisine: "French",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
@@ -109,33 +109,32 @@ const main = async () => {
         {
           name: "Cauliflower Mac and Cheese",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "50",
+          cookingTime: 50,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "butter")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "butter")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
               quantity: 3,
               quantityMeasure: "cups",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "milk")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "milk")._id,
               quantity: 3,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "mustard")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "mustard")._id,
               quantity: 0.5,
               quantityMeasure: "teaspoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "parmesan")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
               quantity: 0.25,
               quantityMeasure: "cup",
             },
@@ -143,43 +142,43 @@ const main = async () => {
           instructions:
             "Bring a large pot of salted water to a boil. Preheat the oven to 375 degrees F. Grease a baking dish with butter. Cook the cauliflower in the boiling water until just crisp-tender, about 10 minutes. Drain well. In a large saucepan, heat the milk and butter over medium heat. Whisk in the dry mustard and add some hot sauce, salt and pepper. Just before the milk comes to a boil, turn off the heat and stir in the pepper jack and goat cheese. When melted and smooth, stir in the cauliflower. Spread the mixture into the prepared baking dish and sprinkle over the Parmesan. Bake until the top is golden brown and the mixture is bubbling, about 30 minutes. Let rest for a few minutes before serving.",
           reviews: [],
-          overallRating: 4.3,
+          overallRating: 0,
           servings: 4,
         },
         {
           name: "Baked Artichoke",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "90",
+          cookingTime: 90,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "artichoke")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "artichoke")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "lemon")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "lemon")._id,
               quantity: 0.5,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "parsley")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "parsley")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "parmesan")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
@@ -187,48 +186,48 @@ const main = async () => {
           instructions:
             "Remove the stem of the artichoke. Cut about 1 inch (2 cm) off the top of the artichoke. Take a pair of kitchen scissors and snip off the thorns on the tip of the artichoke petals. Take half a lemon and rub lemon juice over the cut portion of the artichoke to prevent it from browning. Drizzle with olive oil and season with salt and pepper. Spread open the petals and rub minced garlic all over. Add the parsley and Parmesan; make sure to get it in between the petals. Top with more pepper if desired. Wrap the artichoke in aluminum foil. Bake at 425°F (220°C) for 1 hour and 20 minutes. When done, serve with extra parsley, lemon wedge and your favorite dipping sauce.",
           reviews: [],
-          overallRating: 4.3,
+          overallRating: 0,
           servings: 4,
         },
         {
           name: "Guacamole",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "10",
+          cookingTime: 10,
           mealType: "Snack",
           cuisine: "Mexican",
           ingredients: [
             {
-              id: igList.find((x) => x.name.toLowerCase() == "avocado")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "avocado")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
             {
-              id: igList.find((x) => x.name.toLowerCase() == "lime")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "lime")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              id: igList.find((x) => x.name.toLowerCase() == "cilantro")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cilantro")._id,
               quantity: 3,
               quantityMeasure: "tablespoon",
             },
             {
-              id: igList.find((x) => x.name.toLowerCase() == "tomato")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "tomato")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
             {
-              id: igList.find((x) => x.name.toLowerCase() == "parmesan").id,
+              _id: igList.find(x => x.name.toLowerCase() == "parmesan").id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              id: igList.find((x) => x.name.toLowerCase() == "garlic").id,
+              _id: igList.find(x => x.name.toLowerCase() == "garlic").id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },
@@ -240,73 +239,213 @@ const main = async () => {
           servings: 4,
         },
         {
+          name: "Masala Rice",
+          postedBy: userInfo.insertedId.toString(),
+          cookingTime: 25,
+          ingredients: [
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "brown rice")._id,
+              quantity: 1,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "carrot")._id,
+              quantity: 1,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
+              quantity: 1,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
+              quantity: 1,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "peas")._id,
+              quantity: 0.5,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "egg")._id,
+              quantity: 2,
+              quantityMeasure: "qty",
+            },
+          ],
+          mealType: "lunch",
+          cuisine: "Indian",
+          overallRating: 0,
+          instructions:
+            "Firstly take ginger, garlic, and whole spices like cinnamon, cloves, cardamom in a mortar pestle and crush till you get a fine paste. Keep aside.\r\n" +
+            "\r\n" +
+            "Heat 1 tablespoon of oil/ghee in a kadai. Add mustard and cumin seeds.\r\n" +
+            "\r\n" +
+            "Once the mustard seeds start spluttering, add green chilies, curry leaves, hing (asafoetida), and ginger-garlic-spice mixture. Saute for a few seconds till the raw smell of the ginger garlic goes away.",
+          reviews: [],
+          servings: 2,
+        },
+        {
+          name: "Biryani",
+          postedBy: userInfo.insertedId.toString(),
+          cookingTime: 25,
+          ingredients: [
+            {
+              quantity: 2,
+              quantityMeasure: "bowl",
+              _id: "61b4456ba9c0ca7c90d121ce",
+            },
+            {
+              quantity: 2,
+              quantityMeasure: "teaspoon",
+              _id: "61b44a2846b2e8696265e1fc",
+            },
+            {
+              quantity: 1,
+              quantityMeasure: "teaspoon",
+              _id: "61b4456ba9c0ca7c90d12230",
+            },
+            {
+              quantity: 1,
+              quantityMeasure: "teaspoon",
+              _id: "61b4456ba9c0ca7c90d121da",
+            },
+            {
+              quantity: 1,
+              quantityMeasure: "teaspoon",
+              _id: "61b4456ba9c0ca7c90d121db",
+            },
+            {
+              quantity: 2,
+              quantityMeasure: "teaspoon",
+              _id: "61b4456ba9c0ca7c90d12238",
+            },
+          ],
+          mealType: "Dinner",
+          cuisine: "Indian",
+          overallRating: 0,
+          instructions:
+            "Firstly take ginger, garlic, and whole spices like cinnamon, cloves, cardamom in a mortar pestle and crush till you get a fine paste. Keep aside.\r\n" +
+            "\r\n" +
+            "Heat 1 tablespoon of oil/ghee in a kadai. Add mustard and cumin seeds.\r\n" +
+            "\r\n" +
+            "Once the mustard seeds start spluttering, add green chilies, curry leaves, hing (asafoetida), and ginger-garlic-spice mixture. Saute for a few seconds till the raw smell of the ginger garlic goes away.",
+          reviews: [],
+          servings: 2,
+        },
+        {
+          name: "Quickr Rice",
+          postedBy: userInfo.insertedId.toString(),
+          cookingTime: 25,
+          ingredients: [
+            {
+              quantity: 2,
+              quantityMeasure: "bowl",
+              _id: "61b4456ba9c0ca7c90d121ce",
+            },
+            {
+              quantity: 2,
+              quantityMeasure: "teaspoon",
+              _id: "61b44a2846b2e8696265e1fc",
+            },
+            {
+              quantity: 1,
+              quantityMeasure: "teaspoon",
+              _id: "61b4456ba9c0ca7c90d12230",
+            },
+            {
+              quantity: 1,
+              quantityMeasure: "teaspoon",
+              _id: "61b4456ba9c0ca7c90d121da",
+            },
+            {
+              quantity: 1,
+              quantityMeasure: "teaspoon",
+              _id: "61b4456ba9c0ca7c90d121db",
+            },
+            {
+              quantity: 2,
+              quantityMeasure: "teaspoon",
+              _id: "61b4456ba9c0ca7c90d12238",
+            },
+          ],
+          mealType: "lunch",
+          cuisine: "American",
+          overallRating: 0,
+          instructions:
+            "Firstly take ginger, garlic, and whole spices like cinnamon, cloves, cardamom in a mortar pestle and crush till you get a fine paste. Keep aside.\r\n" +
+            "Heat 1 tablespoon of oil/ghee in a kadai. Add mustard and cumin seeds.\r\n" +
+            "Once the mustard seeds start spluttering, add green chilies, curry leaves, hing (asafoetida), and ginger-garlic-spice mixture. Saute for a few seconds till the raw smell of the ginger garlic goes away.",
+          reviews: [],
+          servings: 2,
+        },
+        {
           name: "Sweet potato chilli",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "50",
+          cookingTime: 50,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "chilli powder")
+              _id: igList.find(x => x.name.toLowerCase() == "chilli powder")
                 ._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cumin")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cumin")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "sweet potato")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "sweet potato")._id,
               quantity: 750,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "quinoa")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "quinoa")._id,
               quantity: 100,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "tomato")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "tomato")._id,
               quantity: 400,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "vegetable stock")
+              _id: igList.find(x => x.name.toLowerCase() == "vegetable stock")
                 ._id,
               quantity: 600,
               quantityMeasure: "ml",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "black beans")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "black beans")._id,
               quantity: 400,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "coriander")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "coriander")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "yogurt")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "yogurt")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
@@ -320,76 +459,75 @@ const main = async () => {
         {
           name: "Vegetable dumplings (jiaozi)",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "150",
+          cookingTime: 150,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "vegetable oil")
+              _id: igList.find(x => x.name.toLowerCase() == "vegetable oil")
                 ._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "carrot")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "carrot")._id,
               quantity: 140,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "mooli")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "mooli")._id,
               quantity: 75,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "celery")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "celery")._id,
               quantity: 30,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "sweet corn")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "sweet corn")._id,
               quantity: 30,
               quantityMeasure: "g",
             },
             {
               _id: igList.find(
-                (x) => x.name.toLowerCase() == "chinese black fungus"
+                x => x.name.toLowerCase() == "chinese black fungus"
               )._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "noodles")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "noodles")._id,
               quantity: 25,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "chestnuts")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "chestnuts")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "bell pepper")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "bell pepper")._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "sesame oil")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "sesame oil")._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cornflour")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cornflour")._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
@@ -403,37 +541,37 @@ const main = async () => {
         {
           name: "Courgetti with pesto and balsamic tomatoes",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "15",
+          cookingTime: 15,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "pesto")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "pesto")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "pine nuts")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "pine nuts")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "vinegar")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "vinegar")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "courgette")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "courgette")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
@@ -447,64 +585,63 @@ const main = async () => {
         {
           name: "Veggie fajitas",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "30",
+          cookingTime: 30,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "oil")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "oil")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "red pepper")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "red pepper")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "paprika")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "paprika")._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "chilli powder")
+              _id: igList.find(x => x.name.toLowerCase() == "chilli powder")
                 ._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "black beans")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "black beans")._id,
               quantity: 400,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "tortillas")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "tortillas")._id,
               quantity: 4,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cheddar")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cheddar")._id,
               quantity: 50,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "sour cream")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "sour cream")._id,
               quantity: 4,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "avocado")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "avocado")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "tomato")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "tomato")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
@@ -518,62 +655,59 @@ const main = async () => {
         {
           name: "Spicy tomato soup",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "25",
+          cookingTime: 25,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "ginger")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "ginger")._id,
               quantity: 0.5,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "vegetable stock")
+              _id: igList.find(x => x.name.toLowerCase() == "vegetable stock")
                 ._id,
               quantity: 600,
               quantityMeasure: "ml",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "bell pepper")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "bell pepper")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "yogurt")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "yogurt")._id,
               quantity: 4,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "rice")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "rice")._id,
               quantity: 5,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "chipotle paste")
+              _id: igList.find(x => x.name.toLowerCase() == "chipotle paste")
                 ._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "green chilli")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "green chilli")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "tomato pure")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "tomato pure")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "tomato")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "tomato")._id,
               quantity: 400,
               quantityMeasure: "g",
             },
@@ -587,62 +721,59 @@ const main = async () => {
         {
           name: "Spiced grains with peas, spinach and jammy eggs",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "30",
+          cookingTime: 30,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "eggs")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "eggs")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "butter")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "butter")._id,
               quantity: 25,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(
-                (x) => x.name.toLowerCase() == "red chilli powder"
-              )._id,
+              _id: igList.find(x => x.name.toLowerCase() == "red chilli powder")
+                ._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cumin")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cumin")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(
-                (x) => x.name.toLowerCase() == "ground coriander"
-              )._id,
+              _id: igList.find(x => x.name.toLowerCase() == "ground coriander")
+                ._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "turmeric")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "turmeric")._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "grain")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "grain")._id,
               quantity: 250,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "peas")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "peas")._id,
               quantity: 200,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "baby spinach")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "baby spinach")._id,
               quantity: 100,
               quantityMeasure: "g",
             },
@@ -656,40 +787,38 @@ const main = async () => {
         {
           name: "Cauliflower Pizza Bites",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "50",
+          cookingTime: 50,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
               quantity: 0.5,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "garlic powder")
+              _id: igList.find(x => x.name.toLowerCase() == "garlic powder")
                 ._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "coconut oil")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "coconut oil")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "hot sauce")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "hot sauce")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "flaxseed")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "flaxseed")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "tofu")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "tofu")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
@@ -697,43 +826,43 @@ const main = async () => {
           instructions:
             "Use a food processor or grate the cauliflower to rice-sized chunks. Pre-heat oven (or toaster oven) to 450F. Spray muffin tin with cooking oil. mix flax with 3tbsp water and set aside to thicken. Stir-fry the cauliflower 6-8 minutes until translucent. Blend or whisk the flax, tofu, hot sauce, garlic powder and any herbs such as oregano or parsley. Combine cauliflower with mixture and press into muffin tin molds. Bake 30 minutes , then let cool for 10 minutes before removing from tin",
           reviews: [],
-          overallRating: 4.3,
+          overallRating: 0,
           servings: 2,
         },
         {
           name: "Vegetable Fried Rice",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "35",
+          cookingTime: 35,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "brown rice")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "brown rice")._id,
               quantity: 1,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "carrot")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "carrot")._id,
               quantity: 1,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "peas")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "peas")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "egg")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "egg")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
@@ -747,74 +876,70 @@ const main = async () => {
         {
           name: "Falafel",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "25",
+          cookingTime: 25,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "chickpeas")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "chickpeas")._id,
               quantity: 1,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "baking soda")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "baking soda")._id,
               quantity: 0.5,
               quantityMeasure: "teaspoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cilantro")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "cilantro")._id,
               quantity: 1,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "mint leaves")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "mint leaves")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
               quantity: 5,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(
-                (x) => x.name.toLowerCase() == "ground coriander"
-              )._id,
-              quantity: 1,
-              quantityMeasure: "teaspoon",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "chilli powder")
+              _id: igList.find(x => x.name.toLowerCase() == "ground coriander")
                 ._id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "salt")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "chilli powder")
+                ._id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "pepper")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "salt")._id,
+              quantity: 1,
+              quantityMeasure: "teaspoon",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "pepper")._id,
               quantity: 0.5,
               quantityMeasure: "teaspoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "sesame seeds")
+              _id: igList.find(x => x.name.toLowerCase() == "sesame seeds")._id,
+              quantity: 1,
+              quantityMeasure: "teaspoon",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "baking powder")
                 ._id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "baking powder")
-                ._id,
-              quantity: 1,
-              quantityMeasure: "teaspoon",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "oil")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "oil")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
@@ -828,40 +953,39 @@ const main = async () => {
         {
           name: "Rose Water Rice Pudding",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "55",
+          cookingTime: 55,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "water")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "water")._id,
               quantity: 4,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "grain rice")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "grain rice")._id,
               quantity: 2,
               quantityMeasure: "cup",
             },
             {
               _id: igList.find(
-                (x) => x.name.toLowerCase() == "half and half cream"
+                x => x.name.toLowerCase() == "half and half cream"
               )._id,
               quantity: 4,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "sugar")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "sugar")._id,
               quantity: 1.5,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "rose water")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "rose water")._id,
               quantity: 2,
               quantityMeasure: "teaspoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "pomegranate")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "pomegranate")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
@@ -875,65 +999,63 @@ const main = async () => {
         {
           name: "Buddha bowls with shredded sprouts and beets",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "20",
+          cookingTime: 20,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "lemon")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "lemon")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "mustard")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "mustard")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "quinoa")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "quinoa")._id,
               quantity: 400,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "mint leaves")
+              _id: igList.find(x => x.name.toLowerCase() == "mint leaves")._id,
+              quantity: 0.5,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "coriander")._id,
+              quantity: 0.5,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "carrot")._id,
+              quantity: 2,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "chickpeas")._id,
+              quantity: 400,
+              quantityMeasure: "g",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "brussels sprouts")
                 ._id,
-              quantity: 0.5,
-              quantityMeasure: "cup",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "coriander")._id,
-              quantity: 0.5,
-              quantityMeasure: "cup",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "carrot")._id,
-              quantity: 2,
-              quantityMeasure: "qty",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "chickpeas")._id,
-              quantity: 400,
-              quantityMeasure: "g",
-            },
-            {
-              _id: igList.find(
-                (x) => x.name.toLowerCase() == "brussels sprouts"
-              )._id,
               quantity: 12,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "beetroot")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "beetroot")._id,
               quantity: 12,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "red pepper")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "red pepper")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "pumpkin seeds")
+              _id: igList.find(x => x.name.toLowerCase() == "pumpkin seeds")
                 ._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
@@ -948,59 +1070,39 @@ const main = async () => {
         {
           name: "Spiced carrot and lentil soup",
           postedBy: userInfo.insertedId.toString(),
-          cookingTime: "50",
+          cookingTime: 50,
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "groundnut oil")
-                ._id,
-              quantity: 2,
-              quantityMeasure: "tablespoon",
+              _id: igList.find(x => x.name.toLowerCase() == "brown rice")._id,
+              quantity: 1,
+              quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
-              quantity: 2,
-              quantityMeasure: "qty",
+              _id: igList.find(x => x.name.toLowerCase() == "carrot")._id,
+              quantity: 1,
+              quantityMeasure: "cup",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "carrot")._id,
-              quantity: 500,
-              quantityMeasure: "g",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "curry powder")
-                ._id,
+              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "red lentils")
-                ._id,
-              quantity: 4,
-              quantityMeasure: "tablespoon",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "vegetable stock")
-                ._id,
-              quantity: 1.5,
+              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
+              quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find((x) => x.name.toLowerCase() == "cumin seeds")
-                ._id,
-              quantity: 1,
-              quantityMeasure: "tablespoon",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "yogurt")._id,
-              quantity: 4,
-              quantityMeasure: "tablespoon",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "coriander")._id,
+              _id: igList.find(x => x.name.toLowerCase() == "peas")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "egg")._id,
+              quantity: 2,
+              quantityMeasure: "qty",
             },
           ],
           instructions:
@@ -1009,14 +1111,167 @@ const main = async () => {
           overallRating: 4.4,
           servings: 4,
         },
+        {
+          name: "Pizza",
+          postedBy: userInfo.insertedId.toString(),
+          cookingTime: 35,
+          ingredients: [
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "brown rice")._id,
+              quantity: 1,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "carrot")._id,
+              quantity: 1,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
+              quantity: 1,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
+              quantity: 1,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "peas")._id,
+              quantity: 0.5,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find(x => x.name.toLowerCase() == "egg")._id,
+              quantity: 2,
+              quantityMeasure: "qty",
+            },
+          ],
+          mealType: "snacks",
+          cuisine: "American",
+          overallRating: 0,
+          instructions: `“Bloom” the yeast by sprinkling the sugar and yeast in the warm water. Let sit for 10 minutes, until bubbles form on the surface.     
+            'In a large bowl, combine the flour and salt. Make a well in the middle and add the olive oil and bloomed yeast mixture. Using a spoon, mix until a shaggy dough begins to form.
+            'Once the flour is mostly hydrated, turn the dough out onto a clean work surface and knead for 10-15 minutes. The dough should be soft, smooth, and bouncy. 
+        Form the dough into a taut round.
+            'Grease a clean, large bowl with olive oil and place the dough inside, turning to coat with the oil. Cover with plastic wrap. Let rise for at least an hour, or up to 24 hours.
+            'Punch down the dough and turn it out onto a lightly floured work surface. Knead for another minute or so, then cut into 4 equal portions and shape into rounds.
+            'Lightly flour the dough, then cover with a kitchen towel and let rest for another 30 minutes to an hour while you prepare the sauce and any other ingredients.
+            'Preheat the oven as high as your oven will allow, between 450-500˚F (230-260˚C). Place a pizza stone, heavy baking sheet (turn upside down so the surface is flat), or cast iron skillet in the oven.
+            'Meanwhile, make the tomato sauce: Add the salt to the can of tomatoes and puree with an immersion blender, or transfer to a blender or food processor, and 
+        puree until smooth.
+            'Once the dough has rested, take a portion and start by poking the surface with your fingertips, until bubbles form and do not deflate.
+            'Then, stretch and press the dough into a thin round. Make it thinner than you think it should be, as it will slightly shrink and puff up during baking.
+            'Sprinkle semolina onto an upside down baking sheet and place the stretched crust onto it. Add the sauce and ingredients of your choice.
+            'Slide the pizza onto the preheated pizza stone or pan. Bake for 15 minutes, or until the crust and cheese are golden brown.
+            'Add any garnish of your preference.`,
+          reviews: [],
+          servings: 2,
+        },
       ];
-      for (let i = 0; i < recipeArr.length; i++) {
-        recipeArr[i].recipeImageURL = await recipesData.getGoogleImageForRecipe(
-          recipeArr[i].name
-        );
-        console.log(`Recipes created: ${i + 1}/${recipeArr.length}`);
+
+      const dummyRecipeNames = [
+        "Pasta",
+        "Alaskan Amber Salmon Marinade",
+        "Alaskan Crab Roll",
+        "Alaskan Sea Scallops with Marsala Cream Sauce",
+        "Alcoholic Hot Chocolate",
+        "Alcoholic Hot Chocolate",
+        "Hot Chocolate",
+        "Halwa",
+        "Calamari on Pasta",
+        "Calas",
+        "Calcutta Mary",
+        "Caldillo de Congrio",
+        "Alcoholic Hot Chocolate",
+        "Pacoca",
+        "Pad Kee Mao",
+        "Sables",
+        "Pad Thai",
+        "Sabich",
+        "Olive Loaf",
+        "Olive Oil Braised Potatoes",
+        "Olive Oil Cake: Ladi Tourta",
+        "Olive Oil Coffee Cake",
+        "Olive Oil Gelato",
+        "Olive Oil Muffins",
+        "Egg White, Caramelized Onion and Fig Jam Sandwich",
+        "Egg and Avocado Toast",
+        "Egg and Bacon Salad",
+        "Egg and Goat Cheese Phyllo Tarts",
+        "Kale Chips",
+        "Kale Doughnuts",
+        "Kale Salad",
+        "Key Lime Pie",
+        "Key Lime Pie Ice Cream Sandwiches",
+        "Key Lime Sorbet",
+        "Key West Shrimp Ceviche",
+        "Fennel Spiced Prawns with Citrus Salad",
+        "Fennel Stuffed Chicken Breasts",
+        "Fennel and Apple Salad",
+      ];
+      const artic = {
+        name: "Baked Artichoke",
+        postedBy: userInfo.insertedId.toString(),
+        cookingTime: 90,
+        mealType: "Snack",
+        cuisine: "American",
+        ingredients: [
+          {
+            _id: igList.find(x => x.name.toLowerCase() == "artichoke")._id,
+            quantity: 1,
+            quantityMeasure: "qty",
+          },
+          {
+            _id: igList.find(x => x.name.toLowerCase() == "lemon")._id,
+            quantity: 0.5,
+            quantityMeasure: "qty",
+          },
+          {
+            _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
+            quantity: 2,
+            quantityMeasure: "tablespoon",
+          },
+          {
+            _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
+            quantity: 1,
+            quantityMeasure: "tablespoon",
+          },
+          {
+            _id: igList.find(x => x.name.toLowerCase() == "parsley")._id,
+            quantity: 2,
+            quantityMeasure: "tablespoon",
+          },
+          {
+            _id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
+            quantity: 0.5,
+            quantityMeasure: "cup",
+          },
+        ],
+        instructions:
+          "Remove the stem of the artichoke. Cut about 1 inch (2 cm) off the top of the artichoke. Take a pair of kitchen scissors and snip off the thorns on the tip of the artichoke petals. Take half a lemon and rub lemon juice over the cut portion of the artichoke to prevent it from browning. Drizzle with olive oil and season with salt and pepper. Spread open the petals and rub minced garlic all over. Add the parsley and Parmesan; make sure to get it in between the petals. Top with more pepper if desired. Wrap the artichoke in aluminum foil. Bake at 425°F (220°C) for 1 hour and 20 minutes. When done, serve with extra parsley, lemon wedge and your favorite dipping sauce.",
+        reviews: [],
+        overallRating: 0,
+        servings: 4,
+      };
+      const jarti = JSON.stringify(artic);
+      let dummyrecipearray = [];
+      for (let i = 0; i < dummyRecipeNames.length; i++) {
+        const arti = JSON.parse(jarti);
+        dummyrecipearray[i] = arti;
+        dummyrecipearray[i]["name"] = dummyRecipeNames[i];
       }
-      await recipesCollection.insertMany(recipeArr);
+
+      let finalarr = recipeArr.concat(dummyrecipearray);
+
+      for (let i = 0; i < finalarr.length; i++) {
+        finalarr[i].recipeImageURL = await recipesData.getGoogleImageForRecipe(
+          finalarr[i].name
+        );
+        console.log(`Recipes created: ${i + 1}/${finalarr.length}`);
+      }
+
+      await recipesCollection.insertMany(finalarr);
       console.log("Completed Adding Recipes!");
 
       // await recipesCollection.insertMany(recipeobj);
@@ -1055,6 +1310,6 @@ const main = async () => {
   // console.log("Done seeding database");
 };
 
-main().catch((error) => {
+main().catch(error => {
   console.log(error);
 });
