@@ -112,15 +112,29 @@ module.exports = {
       protien = 0,
       carb = 0,
       fat = 0;
+
+    const qMeasureintoGrams = {
+      grams: 1.0,
+      teaspoon: 4.2,
+      cup: 128.0,
+      tablespoon: 15.0,
+      bowl: 340.0,
+      pieces: 1.0,
+    };
+
     for (let ingredient of recipe.ingredients) {
       const ig = await ingredientsData.get(ingredient._id);
       ingredient.name = ig.name;
       ingredient.text = `${ingredient.quantity} ${ingredient.quantityMeasure} ${ig.name}`;
-      calories += ig.calories;
-      protien += ig.protien;
-      carb += ig.carb;
-      fat += ig.fat;
+
+      calories +=
+        (ig.calories * qMeasureintoGrams[ingredient.quantityMeasure]) / 100;
+      protien +=
+        (ig.protien * qMeasureintoGrams[ingredient.quantityMeasure]) / 100;
+      carb += (ig.carb * qMeasureintoGrams[ingredient.quantityMeasure]) / 100;
+      fat += (ig.fat * qMeasureintoGrams[ingredient.quantityMeasure]) / 100;
     }
+
     recipe.calories = Math.round(calories * 100) / 100;
     recipe.protien = Math.round(protien * 100) / 100;
     recipe.carb = Math.round(carb * 100) / 100;
