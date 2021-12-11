@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const ingredientsData = data.ingredients;
 const recipeData = data.recipes;
+const userData = data.users;
 const helper = data.helper;
 let prevSentData;
 let currentSort = {
@@ -97,10 +98,14 @@ router.post("/filter", async (req, res) => {
       const prevCurr = currentSort;
       currentSort = filterObj;
       sort(prevSentData.recipeList, prevCurr);
+      let user;
+      if (req.session.user)
+        user = await userData.get(req.session.user._id.toString());
       res.render("home", {
         categorizedIngredients: prevSentData.categorizedIngredients,
         recipeList: prevSentData.recipeList,
         ingredientSuggestions: prevSentData.ingredientSuggestions,
+        user: user,
         ingredientsSelected: true,
         currentSort: currentSort,
         title: "What's Cooking?",
@@ -147,6 +152,9 @@ router.post("/", async (req, res) => {
       recipeList: recipeObj.recipeList,
       ingredientSuggestions: recipeObj.ingredientSuggestions,
     };
+    let user;
+    if (req.session.user)
+      user = await userData.get(req.session.user._id.toString());
     //Redirect to a random recipe page
     if (dataObj.random && recipeObj.recipeList.length > 0) {
       const randomIndex = Math.floor(
@@ -160,6 +168,7 @@ router.post("/", async (req, res) => {
         ingredientSuggestions: recipeObj.ingredientSuggestions,
         ingredientsSelected: true,
         currentSort: currentSort,
+        user: user,
         title: "What's Cooking?",
         authenticated: req.session.user ? true : false,
 
