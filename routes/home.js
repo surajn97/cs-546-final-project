@@ -1,4 +1,5 @@
 const express = require("express");
+const xss = require("xss");
 const router = express.Router();
 const data = require("../data");
 const ingredientsData = data.ingredients;
@@ -69,7 +70,6 @@ router.get("/", async (req, res) => {
       currentSort: currentSort,
       title: "What's Cooking?",
       authenticated: req.session.user ? true : false,
-
     });
   } catch (e) {
     res.status(500).json({ error: e });
@@ -89,7 +89,7 @@ router.post("/filter", async (req, res) => {
     if (prevSentData === null) {
       res.status(200).redirect("/");
     } else {
-      filterData = req.body.sort;
+      filterData = xss(req.body.sort);
       if (!filterData) {
         res.status(200).redirect("/");
         return;
@@ -110,7 +110,6 @@ router.post("/filter", async (req, res) => {
         currentSort: currentSort,
         title: "What's Cooking?",
         authenticated: req.session.user ? true : false,
-
       });
     }
   } catch (e) {
@@ -125,7 +124,7 @@ router.post("/", async (req, res) => {
       res.status(200).redirect("/");
       return;
     }
-    const dataObj = JSON.parse(req.body.ingredientsList);
+    const dataObj = JSON.parse(xss(req.body.ingredientsList));
     if (
       !dataObj ||
       dataObj.random === undefined ||
@@ -171,7 +170,6 @@ router.post("/", async (req, res) => {
         user: user,
         title: "What's Cooking?",
         authenticated: req.session.user ? true : false,
-
       });
     }
   } catch (e) {
