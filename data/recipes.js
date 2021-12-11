@@ -13,7 +13,7 @@ const defaultRecipeImage = "/public/img/product/product-2.jpg";
 // for add to user
 const users = mongoCollections.users;
 
-const getYoutubeLinkScraped = async (title) => {
+const getYoutubeLinkScraped = async title => {
   const results = await youtube.search(`${title} Recipe`);
   if (!results || !results.videos || results.videos.length == 0) {
     throw "Could not retrieve youtube URL";
@@ -37,7 +37,7 @@ module.exports = {
     helper.checkProperString(postedBy, "User");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach((element) => {
+    ingredients.forEach(element => {
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.name, "Name of ingredient");
       // helper.checkProperString(element._id, "Id of ingredient");
@@ -93,10 +93,13 @@ module.exports = {
     //Add the recipe id to the user
     const objIdForUser = ObjectId.createFromHexString(userId);
     const usersCollection = await users();
-    const updatedInfo2 = await usersCollection.updateOne({ _id: objIdForUser }, { $push: { myRecipes: newId } });
+    const updatedInfo2 = await usersCollection.updateOne(
+      { _id: objIdForUser },
+      { $push: { myRecipes: newId } }
+    );
 
     if (updatedInfo2.modifiedCount === 0) {
-      throw 'Could not update Users Collection with Review Data!';
+      throw "Could not update Users Collection with Review Data!";
     }
     /////////
     const recipe = await this.get(newId);
@@ -128,24 +131,27 @@ module.exports = {
 
     const qMeasureintoGrams = {
       grams: 1.0,
+      g: 1.0,
       teaspoon: 4.2,
       cup: 128.0,
       tablespoon: 15.0,
       bowl: 340.0,
-      pieces: 1.0,
+      qty: 100.0,
+      ml: 1.03,
     };
 
     for (let ingredient of recipe.ingredients) {
       const ig = await ingredientsData.get(ingredient._id);
       ingredient.name = ig.name;
       ingredient.text = `${ingredient.quantity} ${ingredient.quantityMeasure} ${ig.name}`;
-
-      calories +=
-        (ig.calories * qMeasureintoGrams[ingredient.quantityMeasure]) / 100;
-      protien +=
-        (ig.protien * qMeasureintoGrams[ingredient.quantityMeasure]) / 100;
-      carb += (ig.carb * qMeasureintoGrams[ingredient.quantityMeasure]) / 100;
-      fat += (ig.fat * qMeasureintoGrams[ingredient.quantityMeasure]) / 100;
+      let totalGrams = qMeasureintoGrams[ingredient.quantityMeasure];
+      if (totalGrams == null || typeof totalGrams == undefined) {
+        totalGrams = 100;
+      }
+      calories += (ig.calories * totalGrams) / 100;
+      protien += (ig.protien * totalGrams) / 100;
+      carb += (ig.carb * totalGrams) / 100;
+      fat += (ig.fat * totalGrams) / 100;
     }
 
     recipe.calories = Math.round(calories * 100) / 100;
@@ -158,13 +164,13 @@ module.exports = {
 
   getFilterFields(recipeList) {
     try {
-      let meals = [...new Set(recipeList.map((item) => item.mealType))];
+      let meals = [...new Set(recipeList.map(item => item.mealType))];
       meals = [
         ...meals.map(function (item) {
           return { [item]: false };
         }),
       ];
-      let cuisines = [...new Set(recipeList.map((item) => item.cuisine))];
+      let cuisines = [...new Set(recipeList.map(item => item.cuisine))];
       cuisines = [
         ...cuisines.map(function (item) {
           return { [item]: false };
@@ -208,13 +214,13 @@ module.exports = {
       for (const rec_ing of rec.ingredients) {
         if (
           !selectedIngredients.includes(rec_ing._id) &&
-          !ingredientSuggestion.some((e) => e._id === rec_ing._id)
+          !ingredientSuggestion.some(e => e._id === rec_ing._id)
         ) {
           ingredientSuggestion.push(await ingredientsData.get(rec_ing._id));
         }
       }
     }
-    recipeList.forEach((item) => {
+    recipeList.forEach(item => {
       if (item.ingredients.length <= selectedIngredients.length) {
         let flag = false;
         for (element of item.ingredients) {
@@ -287,7 +293,7 @@ module.exports = {
     helper.checkProperString(name, "Name");
     helper.checkProperNumber(cookingTime, "Cooking Time");
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach((element) => {
+    ingredients.forEach(element => {
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.name, "Name of ingredient");
       helper.checkProperNumber(element.quantity, "Quantity of ingredient");
@@ -372,7 +378,7 @@ module.exports = {
     ) {
     }
     helper.checkProperArray(ingredients, "Ingredients");
-    ingredients.forEach((element) => {
+    ingredients.forEach(element => {
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.name, "Name of ingredient");
       helper.checkProperNumber(element.quantity, "Quantity of ingredient");
@@ -452,7 +458,7 @@ module.exports = {
       let currentRecipe = await this.get(recipeId);
       const reviewsarray = currentRecipe.reviews;
       let sumRating = reviewsarray
-        .map((s) => s.rating)
+        .map(s => s.rating)
         .reduce((a, b) => a + b, 0);
       newRating = sumRating / len;
     }
@@ -509,10 +515,7 @@ module.exports = {
     const recipeCollection = await recipes();
     const updateInfo = await recipeCollection.findOneAndUpdate(
       {
-        $or: [
-          { "reviews._id": reviewID },
-          { "reviews._id": reviewobj._id },
-        ]
+        $or: [{ "reviews._id": reviewID }, { "reviews._id": reviewobj._id }],
       },
       {
         $set: {
