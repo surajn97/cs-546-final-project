@@ -135,9 +135,13 @@ router.post("/all/filter", async (req, res) => {
       const prevCurr = currentSort;
       currentSort = filterObj;
       sort(prevSentData, prevCurr);
+      let user;
+      if (req.session.user)
+        user = await userData.get(req.session.user._id.toString());
       res.status(200).render("allRecipes", {
         recipeList: prevSentData,
         currentSort: currentSort,
+        user: user,
         title: "What's Cooking?",
         error: false,
         authenticated: req.session.user ? true : false,
