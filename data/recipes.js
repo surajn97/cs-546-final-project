@@ -71,6 +71,7 @@ module.exports = {
       }
       ingredientArray.push(ingObj);
     }
+    const recipeImageURL = await this.getGoogleImageForRecipe(name);
 
     const recipeCollection = await recipes();
     let newRecipe = {
@@ -84,6 +85,7 @@ module.exports = {
       instructions: instructions,
       reviews: [],
       servings: servings,
+      recipeImageURL: recipeImageURL,
     };
     // console.log(newRecipe);
 
@@ -328,6 +330,7 @@ module.exports = {
       }
       ingredientArray.push(ingObj);
     }
+    const recipeImageURL = await this.getGoogleImageForRecipe(name);
     let recipe = await this.get(id);
 
     let updatedRecipe = {
@@ -341,6 +344,7 @@ module.exports = {
       instructions: instructions,
       reviews: recipe.reviews,
       servings: servings,
+      recipeImageURL: recipeImageURL,
     };
     const recipeCollection = await recipes();
     const updateInfo = await recipeCollection.updateOne(
