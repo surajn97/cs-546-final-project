@@ -5,12 +5,12 @@ const helper = require("./helper");
 
 function convertIngredientsToCategories(ingredientList) {
   helper.checkProperArrayAllowEmpty(ingredientList);
-  const categories = [...new Set(ingredientList.map(item => item.category))];
+  const categories = [...new Set(ingredientList.map((item) => item.category))];
   let categorizedIngredients = {};
   for (const category of categories) {
     categorizedIngredients[category] = ingredientList
-      .filter(x => x.category === category)
-      .map(y => ({
+      .filter((x) => x.category === category)
+      .map((y) => ({
         name: y.name,
         _id: y._id.toString(),
         protien: y.protien,

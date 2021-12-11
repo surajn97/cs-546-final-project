@@ -1,3 +1,8 @@
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f8fafb;
+}
+
 .ingredient-title {
   font-size: large;
   font-weight: 600;
@@ -229,13 +234,13 @@ span.stars > * {
   text-align: center;
   transition: all 1s ease-in-out;
 }
-.add-fav input[type=checkbox] {
+.add-fav input[type="checkbox"] {
   position: absolute;
   opacity: 0;
 }
-.add-fav input[type=checkbox]:checked + .icon-heart {
+.add-fav input[type="checkbox"]:checked + .icon-heart {
   color: #f52755;
 }
-.add-fav input[type=checkbox]:checked + .icon-heart .icon-plus-sign {
+.add-fav input[type="checkbox"]:checked + .icon-heart .icon-plus-sign {
   color: green;
 }

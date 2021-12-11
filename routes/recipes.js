@@ -80,6 +80,7 @@ router.get("/all", async (req, res) => {
   } catch (e) {
     res.status(400).render("allRecipes", {
       recipeList: [],
+      recipes_page: true,
       currentSort: currentSort,
       title: "What's Cooking?",
       error: true,
@@ -230,7 +231,7 @@ router.post("/", async (req, res) => {
     helper.checkProperString(recipeInfo.name, "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach(element => {
+    ingarray.forEach((element) => {
       const quant = parseInt(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
@@ -301,7 +302,7 @@ router.post("/submit/:id", async (req, res) => {
     helper.checkProperString(updatedData.name, "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach(element => {
+    ingarray.forEach((element) => {
       const quant = parseInt(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
@@ -373,7 +374,7 @@ router.put("/:id", async (req, res) => {
     helper.checkProperString(updatedData.name, "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach(element => {
+    ingarray.forEach((element) => {
       const quant = parseInt(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
@@ -465,7 +466,7 @@ router.patch("/:id", async (req, res) => {
       updatedData.ingredients !== oldRecipe.ingredients
     ) {
       helper.checkProperArray(ingarray, "Ingredients");
-      ingarray.forEach(element => {
+      ingarray.forEach((element) => {
         const quant = parseInt(element.quantity);
         element.quantity = quant;
         helper.checkProperObject(element, "Individual ingredient");
