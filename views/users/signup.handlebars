@@ -1,95 +1,117 @@
-{{!-- <head>
-  <meta charset="utf-8">
-  <title>Sign Up</title>
-  <link rel="stylesheet" href="/public/css/main.css">
-</head> --}}
-
-<main class="form-signin">
-  <h1 class="h3 mb-3 fw-normal">Welcome to What's Cooking</h1>
-  {{#if error}}
-  <p class="error">{{error}}</p>
-  {{/if}}
-  <form action="/users/signup" method="POST" id="signup-form">
-    {{!-- <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> --}}
-    
-    <div class="form-floating">
-      <input type="text" class="form-control" id="username" name="username" value="{{username}}" placeholder="Username">
-      <label for="username">Username</label>
-    </div>
-
-    <div class="form-floating">
-      <input type="password" class="form-control" id="password" name="password" value="{{password}}" placeholder="Password">
-      <label for="password">Password</label>
-    </div>
-
-    <div class="form-floating">
-      <input type="text" class="form-control" id="firstname" name="firstname" value="{{firstname}}" placeholder="Firstname">
-      <label for="firstname">Firstname</label>
-    </div>
-
-    <div class="form-floating">
-      <input type="text" class="form-control" id="lastname" name="lastname" value="{{lastname}}" placeholder="Lastname">
-      <label for="lastname">Lastname</label>
-    </div>
-    <div class="form-floating">
-      <input type="text" class="form-control" id="email" name="email" value="{{email}}" placeholder="Email">
-      <label for="email">Email</label>
-    </div>
-    <div class="form-floating">
-      <input type="number" class="form-control" id="age" name="age" value="{{age}}" placeholder="Age">
-      <label for="age">Age</label>
-    </div>
-
-    <div class="invalid-feedback mb-3">
-      You must fill in all of the fields, and passsword has at least 6 characters without spaces.
-    </div>
-    
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
-    {{!-- <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p> --}}
-  </form>
-  <br>
-  <p>Already have an account? Click here to <a href="/users/login">log-in</a>.</p>
-</main>
-
-{{!-- <div class="mt-4 text-center">
-  <h1>Sign Up</h1>
-    <p>enter the username and password to sign up:</p>
-    {{#if error}}
-    <p class="error">{{error}}</p>
-    {{/if}}
-    <form action="/users/signup" method="POST" id="signup-form" >
-      <label for="username" >username: </label>
-      <input type="text" id="username" name="username" value="{{username}}">
-   
-      <br>
-      <label for="password" >password: </label>
-      <input type="password" id="password" name="password" value="{{password}}">
-    
-      <br>
-      <label for="firstname" >firstname: </label>
-      <input type="text" id="firstname" name="firstname" value="{{firstname}}">
-    
-      <br>
-      <label for="lastname" >lastname: </label>
-      <input type="text" id="lastname" name="lastname" value="{{lastname}}">
-        
-      <br>
-      <label for="email" >email: </label>
-      <input type="email" id="email" name="email" value="{{email}}">
-        
-      <br>
-      <label for="age" >age: </label>
-      <input type="number" id="age" name="age" value="{{age}}">
-        
-      <br> 
-      <div class="invalid-feedback mb-3">
-            You must fill in all of the fields, and passsword has at least 6 characters without spaces.
+<div class="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <img src="/public/images/login.png" alt="Image" class="img-fluid" />
       </div>
-      <button type="submit" id="signup">Sign Up</button>
-    </form>
-  <br>
-  <p>Already have an account? Click here to log-in</p>
-   <a href="/users/login">Log In</a>
-</div>     --}}
+      <div class="col-md-6" id="signup-contents">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="mb-4">
+              <h3>Sign Up</h3>
+              <p class="mb-4 lightText">Welcome to What's Cooking?</p>
+            </div>
+            {{#if error}}
+              <p class="error">{{error}}</p>
+            {{/if}}
+            <form action="/users/signup" method="POST" id="signup-form">
+              <div class="mb-2">
+                <label for="username">Username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  name="username"
+                  value="{{username}}"
+                  placeholder="Username"
+                  required
+                />
+                <div class="invalid-feedback"> Invalid username</div>
+              </div>
+              <div class="mb-2">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  value="{{password}}"
+                  placeholder="Password"
+                  required
+                />
+                <div class="invalid-feedback">Password must have 6 characters
+                  without spaces</div>
+              </div>
+              <div class="mb-2">
+                <label for="firstname">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstname"
+                  name="firstname"
+                  value="{{firstname}}"
+                  placeholder="First Name"
+                  required
+                />
+                <div class="invalid-feedback"> Invalid name</div>
 
+              </div>
+              <div class="mb-2">
+                <label for="lastname">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastname"
+                  name="lastname"
+                  value="{{lastname}}"
+                  placeholder="Last Name"
+                  required
+                />
+                <div class="invalid-feedback"> Invalid name</div>
+
+              </div>
+              <div class="mb-2">
+                <label for="email">Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  value="{{email}}"
+                  placeholder="Email"
+                  required
+                />
+                <div class="invalid-feedback"> Invalid email</div>
+              </div>
+              <div class="mb-4">
+                <label for="age">Age</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="age"
+                  name="age"
+                  value="{{age}}"
+                  placeholder="Age"
+                  required
+                />
+                <div class="invalid-feedback"> Invalid age</div>
+              </div>
+              <div class="invalid-feedback mb-3">
+                You must fill in all of the fields, and passsword has at least 6
+                characters without spaces.
+              </div>
+              <div class="d-grid gap-2">
+                <button id="loginBtn" class="btn" type="submit">Sign Up</button>
+              </div>
+            </form>
+            <br />
+            <p>Already have an account? Click here to
+              <a href="/users/login">log-in</a>.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 <script src="/public/js/signup.js"></script>

@@ -23,24 +23,30 @@ const main = async () => {
       const reviewsCollection = await reviews();
       const commentsCollection = await comments();
       const userInfo = await usersCollection.insertOne(testData.userobj);
-      const userObj = await usersCollection.findOne({_id: userInfo.insertedId});
+      const userObj = await usersCollection.findOne({
+        _id: userInfo.insertedId,
+      });
       testData.commentObj["userId"] = userObj._id;
-      const commentInfo = await commentsCollection.insertOne(testData.commentObj);
-      const commentObj = await commentsCollection.findOne({_id: commentInfo.insertedId});
+      const commentInfo = await commentsCollection.insertOne(
+        testData.commentObj
+      );
+      const commentObj = await commentsCollection.findOne({
+        _id: commentInfo.insertedId,
+      });
       testData.reviewObj["comments"] = [commentObj];
       testData.reviewObj["likes"] = [userObj._id.toString()];
       testData.reviewObj["dislikes"] = [userObj._id.toString()];
       userObj._id = userObj._id.toString();
       testData.reviewObj["user"] = userObj;
       const reviewInfo = await reviewsCollection.insertOne(testData.reviewObj);
-      const reviewObj = await reviewsCollection.findOne({_id: reviewInfo.insertedId});
+      const reviewObj = await reviewsCollection.findOne({
+        _id: reviewInfo.insertedId,
+      });
 
       let igList = [];
       console.log("Creating Ingredients:");
       for (const ig in testData.ingredientObjs) {
-        let keys = Object.keys(testData.ingredientObjs[ig]),
-          i,
-          len = keys.length;
+        let keys = Object.keys(testData.ingredientObjs[ig]);
         keys.sort();
         for (const ingredient of keys) {
           igList.push(
@@ -67,7 +73,8 @@ const main = async () => {
           cuisine: "French",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
+                ._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
@@ -107,27 +114,28 @@ const main = async () => {
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "butter")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "butter")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
+                ._id,
               quantity: 3,
               quantityMeasure: "cups",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "milk")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "milk")._id,
               quantity: 3,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "mustard")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "mustard")._id,
               quantity: 0.5,
               quantityMeasure: "teaspoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "parmesan")._id,
               quantity: 0.25,
               quantityMeasure: "cup",
             },
@@ -146,32 +154,32 @@ const main = async () => {
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "artichoke")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "artichoke")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "lemon")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "lemon")._id,
               quantity: 0.5,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "parsley")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "parsley")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "parmesan")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "parmesan")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
@@ -190,37 +198,37 @@ const main = async () => {
           cuisine: "Mexican",
           ingredients: [
             {
-              id: igList.find(x => x.name.toLowerCase() == "avocado")._id,
+              id: igList.find((x) => x.name.toLowerCase() == "avocado")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "lime")._id,
+              id: igList.find((x) => x.name.toLowerCase() == "lime")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "onion")._id,
+              id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "cilantro")._id,
+              id: igList.find((x) => x.name.toLowerCase() == "cilantro")._id,
               quantity: 3,
               quantityMeasure: "tablespoon",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "tomato")._id,
+              id: igList.find((x) => x.name.toLowerCase() == "tomato")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "parmesan").id,
+              id: igList.find((x) => x.name.toLowerCase() == "parmesan").id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              id: igList.find(x => x.name.toLowerCase() == "garlic").id,
+              id: igList.find((x) => x.name.toLowerCase() == "garlic").id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },
@@ -231,69 +239,74 @@ const main = async () => {
           overallRating: 4.7,
           servings: 4,
         },
-        { name: "Sweet potato chilli",
+        {
+          name: "Sweet potato chilli",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "50",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "chilli powder")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "chilli powder")
+                ._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "cumin")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "cumin")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "sweet potato")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "sweet potato")
+                ._id,
               quantity: 750,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "quinoa")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "quinoa")._id,
               quantity: 100,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "tomato")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "tomato")._id,
               quantity: 400,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "vegetable stock")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "vegetable stock")
+                ._id,
               quantity: 600,
               quantityMeasure: "ml",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "black beans")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "black beans")
+                ._id,
               quantity: 400,
               quantityMeasure: "g",
             },
-		      	{
-              _id: igList.find(x => x.name.toLowerCase() == "coriander")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "coriander")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "yogurt")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "yogurt")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
@@ -304,74 +317,79 @@ const main = async () => {
           overallRating: 4.4,
           servings: 4,
         },
-        { name: "Vegetable dumplings (jiaozi)",
+        {
+          name: "Vegetable dumplings (jiaozi)",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "150",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "vegetable oil")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "vegetable oil")
+                ._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "carrot")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "carrot")._id,
               quantity: 140,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "mooli")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "mooli")._id,
               quantity: 75,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "celery")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "celery")._id,
               quantity: 30,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "sweet corn")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "sweet corn")._id,
               quantity: 30,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "chinese black fungus")._id,
+            {
+              _id: igList.find(
+                (x) => x.name.toLowerCase() == "chinese black fungus"
+              )._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "noodles")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "noodles")._id,
               quantity: 25,
               quantityMeasure: "g",
             },
-		      	{
-              _id: igList.find(x => x.name.toLowerCase() == "chestnuts")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "chestnuts")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "bell pepper")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "bell pepper")
+                ._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "sesame oil")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "sesame oil")._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "cornflour")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "cornflour")._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
@@ -382,39 +400,40 @@ const main = async () => {
           overallRating: 4.2,
           servings: 4,
         },
-        { name: "Courgetti with pesto and balsamic tomatoes",
+        {
+          name: "Courgetti with pesto and balsamic tomatoes",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "15",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "pesto")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "pesto")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "pine nuts")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "pine nuts")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "vinegar")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "vinegar")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "courgette")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "courgette")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
@@ -425,64 +444,67 @@ const main = async () => {
           overallRating: 4.0,
           servings: 1,
         },
-        { name: "Veggie fajitas",
+        {
+          name: "Veggie fajitas",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "30",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "oil")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "oil")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
-              quantity: 1,
-              quantityMeasure: "qty",
-            },
-            {
-              _id: igList.find(x => x.name.toLowerCase() == "red pepper")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "paprika")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "red pepper")._id,
+              quantity: 1,
+              quantityMeasure: "qty",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "paprika")._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "chilli powder")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "chilli powder")
+                ._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "black beans")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "black beans")
+                ._id,
               quantity: 400,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "tortillas")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "tortillas")._id,
               quantity: 4,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "cheddar")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "cheddar")._id,
               quantity: 50,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "sour cream")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "sour cream")._id,
               quantity: 4,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "avocado")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "avocado")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "tomato")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "tomato")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
@@ -493,59 +515,65 @@ const main = async () => {
           overallRating: 4.2,
           servings: 2,
         },
-        { name: "Spicy tomato soup",
+        {
+          name: "Spicy tomato soup",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "25",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "ginger")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "ginger")._id,
               quantity: 0.5,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "vegetable stock")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "vegetable stock")
+                ._id,
               quantity: 600,
               quantityMeasure: "ml",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "bell pepper")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "bell pepper")
+                ._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "yogurt")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "yogurt")._id,
               quantity: 4,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "rice")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "rice")._id,
               quantity: 5,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "chipotle paste")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "chipotle paste")
+                ._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "green chilli")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "green chilli")
+                ._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "tomato pure")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "tomato pure")
+                ._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "tomato")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "tomato")._id,
               quantity: 400,
               quantityMeasure: "g",
             },
@@ -556,59 +584,65 @@ const main = async () => {
           overallRating: 4.5,
           servings: 4,
         },
-        { name: "Spiced grains with peas, spinach and jammy eggs",
+        {
+          name: "Spiced grains with peas, spinach and jammy eggs",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "30",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "eggs")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "eggs")._id,
               quantity: 3,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "butter")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "butter")._id,
               quantity: 25,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "red chilli powder")._id,
+              _id: igList.find(
+                (x) => x.name.toLowerCase() == "red chilli powder"
+              )._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "cumin")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "cumin")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "ground coriander")._id,
+              _id: igList.find(
+                (x) => x.name.toLowerCase() == "ground coriander"
+              )._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "turmeric")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "turmeric")._id,
               quantity: 0.5,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "grain")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "grain")._id,
               quantity: 250,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "peas")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "peas")._id,
               quantity: 200,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "baby spinach")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "baby spinach")
+                ._id,
               quantity: 100,
               quantityMeasure: "g",
             },
@@ -619,39 +653,43 @@ const main = async () => {
           overallRating: 4.0,
           servings: 3,
         },
-        { name: "Cauliflower Pizza Bites",
+        {
+          name: "Cauliflower Pizza Bites",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "50",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "cauliflower")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "cauliflower")
+                ._id,
               quantity: 0.5,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "garlic powder")._id,
-              quantity: 1,
-              quantityMeasure: "tablespoon",
-            },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "coconut oil")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "garlic powder")
+                ._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "hot sauce")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "coconut oil")
+                ._id,
+              quantity: 1,
+              quantityMeasure: "tablespoon",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "hot sauce")._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "flaxseed")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "flaxseed")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "tofu")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "tofu")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
@@ -662,39 +700,40 @@ const main = async () => {
           overallRating: 4.3,
           servings: 2,
         },
-        { name: "Vegetable Fried Rice",
+        {
+          name: "Vegetable Fried Rice",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "35",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "brown rice")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "brown rice")._id,
               quantity: 1,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "carrot")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "carrot")._id,
               quantity: 1,
               quantityMeasure: "cup",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "olive oil")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "peas")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "peas")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "egg")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "egg")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
@@ -705,69 +744,77 @@ const main = async () => {
           overallRating: 4.0,
           servings: 1,
         },
-        { name: "Falafel",
+        {
+          name: "Falafel",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "25",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "chickpeas")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "chickpeas")._id,
               quantity: 1,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "baking soda")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "baking soda")
+                ._id,
               quantity: 0.5,
               quantityMeasure: "teaspoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "cilantro")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "cilantro")._id,
               quantity: 1,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "mint leaves")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "mint leaves")
+                ._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "garlic")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "garlic")._id,
               quantity: 5,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "ground coriander")._id,
+              _id: igList.find(
+                (x) => x.name.toLowerCase() == "ground coriander"
+              )._id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "chilli powder")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "chilli powder")
+                ._id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "salt")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "salt")._id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "pepper")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "pepper")._id,
               quantity: 0.5,
               quantityMeasure: "teaspoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "sesame seeds")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "sesame seeds")
+                ._id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "baking powder")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "baking powder")
+                ._id,
               quantity: 1,
               quantityMeasure: "teaspoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "oil")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "oil")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
@@ -778,39 +825,43 @@ const main = async () => {
           overallRating: 5.0,
           servings: 1,
         },
-        { name: "Rose Water Rice Pudding",
+        {
+          name: "Rose Water Rice Pudding",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "55",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "water")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "water")._id,
               quantity: 4,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "grain rice")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "grain rice")._id,
               quantity: 2,
               quantityMeasure: "cup",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "half and half cream")._id,
+            {
+              _id: igList.find(
+                (x) => x.name.toLowerCase() == "half and half cream"
+              )._id,
               quantity: 4,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "sugar")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "sugar")._id,
               quantity: 1.5,
               quantityMeasure: "cup",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "rose water")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "rose water")._id,
               quantity: 2,
               quantityMeasure: "teaspoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "pomegranate")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "pomegranate")
+                ._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
@@ -821,64 +872,69 @@ const main = async () => {
           overallRating: 5.0,
           servings: 14,
         },
-        { name: "Buddha bowls with shredded sprouts and beets",
+        {
+          name: "Buddha bowls with shredded sprouts and beets",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "20",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "lemon")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "lemon")._id,
               quantity: 1,
               quantityMeasure: "qty",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "mustard")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "mustard")._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "quinoa")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "quinoa")._id,
               quantity: 400,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "mint leaves")._id,
-              quantity: 0.5,
-              quantityMeasure: "cup",
-            },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "coriander")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "mint leaves")
+                ._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "carrot")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "coriander")._id,
+              quantity: 0.5,
+              quantityMeasure: "cup",
+            },
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "carrot")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "chickpeas")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "chickpeas")._id,
               quantity: 400,
               quantityMeasure: "g",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "brussels sprouts")._id,
+            {
+              _id: igList.find(
+                (x) => x.name.toLowerCase() == "brussels sprouts"
+              )._id,
               quantity: 12,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "beetroot")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "beetroot")._id,
               quantity: 12,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "red pepper")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "red pepper")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "pumpkin seeds")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "pumpkin seeds")
+                ._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
@@ -889,54 +945,60 @@ const main = async () => {
           overallRating: 5.0,
           servings: 4,
         },
-        { name: "Spiced carrot and lentil soup",
+        {
+          name: "Spiced carrot and lentil soup",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: "50",
           mealType: "Snack",
           cuisine: "American",
           ingredients: [
             {
-              _id: igList.find(x => x.name.toLowerCase() == "groundnut oil")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "groundnut oil")
+                ._id,
               quantity: 2,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "onion")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
               quantity: 2,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "carrot")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "carrot")._id,
               quantity: 500,
               quantityMeasure: "g",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "curry powder")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "curry powder")
+                ._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "red lentils")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "red lentils")
+                ._id,
               quantity: 4,
               quantityMeasure: "tablespoon",
             },
             {
-              _id: igList.find(x => x.name.toLowerCase() == "vegetable stock")._id,
+              _id: igList.find((x) => x.name.toLowerCase() == "vegetable stock")
+                ._id,
               quantity: 1.5,
               quantityMeasure: "qty",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "cumin seeds")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "cumin seeds")
+                ._id,
               quantity: 1,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "yogurt")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "yogurt")._id,
               quantity: 4,
               quantityMeasure: "tablespoon",
             },
-			      {
-              _id: igList.find(x => x.name.toLowerCase() == "coriander")._id,
+            {
+              _id: igList.find((x) => x.name.toLowerCase() == "coriander")._id,
               quantity: 0.5,
               quantityMeasure: "cup",
             },
@@ -958,17 +1020,24 @@ const main = async () => {
       console.log("Completed Adding Recipes!");
 
       // await recipesCollection.insertMany(recipeobj);
-      const recipe = await recipesCollection.findOne({name: "Cauliflower Rice"});
-      await reviewsCollection.findOneAndUpdate({_id: reviewObj._id}, {$set : {"recipeId": recipe._id}});
-      const reviewObj2 = await reviewsCollection.findOne({_id: reviewObj._id});
+      const recipe = await recipesCollection.findOne({
+        name: "Cauliflower Rice",
+      });
+      await reviewsCollection.findOneAndUpdate(
+        { _id: reviewObj._id },
+        { $set: { recipeId: recipe._id } }
+      );
+      const reviewObj2 = await reviewsCollection.findOne({
+        _id: reviewObj._id,
+      });
       await recipesCollection.findOneAndUpdate(
         {
-          "reviews._id": reviewObj._id
+          "reviews._id": reviewObj._id,
         },
         {
           $set: {
-            "reviews.$": reviewObj2 // Update with new object
-          }
+            "reviews.$": reviewObj2, // Update with new object
+          },
         }
       );
       // await reviewsCollection.insertOne(testData.reviewObj);
@@ -986,6 +1055,6 @@ const main = async () => {
   // console.log("Done seeding database");
 };
 
-main().catch(error => {
+main().catch((error) => {
   console.log(error);
 });

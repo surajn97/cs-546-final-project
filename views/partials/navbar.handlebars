@@ -1,4 +1,21 @@
-{{#unless login_signup_page}}
+{{#if login_signup_page}}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top d-print-none">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">What's Cooking?</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+{{else}}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top d-print-none">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">What's Cooking?</a>
@@ -44,4 +61,4 @@
     </div>
   </div>
 </nav>
-{{/unless}}
+{{/if}}
