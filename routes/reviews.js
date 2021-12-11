@@ -6,6 +6,7 @@ const router = express.Router();
 const data = require("../data");
 const reviewData = data.reviews;
 const helper = require("../data/helper");
+const xss = require("xss");
 
 router.get("/review/:id", async (req, res) => {
   try {
@@ -23,7 +24,8 @@ router.get("/review/:id", async (req, res) => {
     return;
   }
   try {
-    const review = await reviewData.get(req.params.id);
+    const id = xss(req.params.id);
+    const review = await reviewData.get(id);
     res.json(review);
   } catch (e) {
     res.status(404).json({
@@ -49,7 +51,8 @@ router.get("/user/:id", async (req, res) => {
     return;
   }
   try {
-    const review = await reviewData.getAllByUser(req.params.id);
+    const id = xss(req.params.id);
+    const review = await reviewData.getAllByUser(id);
     res.json(review);
   } catch (e) {
     res.status(404).json({
@@ -75,7 +78,8 @@ router.get("/:id", async (req, res) => {
     return;
   }
   try {
-    const reviewList = await reviewData.getAll(req.params.id);
+    const id = xss(req.params.id);
+    const reviewList = await reviewData.getAll(id);
     res.json(reviewList);
     // res.status(200);
   } catch (e) {
@@ -149,10 +153,13 @@ router.post("/:id", async (req, res) => {
       dislikes,
       comments
     } = ReviewData;
+    const id = xss(req.params.id);
+    const ratingXss = xss(ReviewData.rating);
+    const reviewTextXss = xss(ReviewData.reviewText);
     const newReview = await reviewData.create(
-      req.params.id,
-      ReviewData.rating,
-      ReviewData.reviewText,
+      id,
+      ratingXss,
+      reviewTextXss,
       // should be logged in user id
       req.session.user._id.toString()
     );
@@ -194,7 +201,8 @@ router.post("/like/:id", async (req, res) => {
   }
 
   try {
-    const review = await reviewData.addLikeToReview(req.params.id, req.session.user._id.toString());
+    const id = xss(req.params.id);
+    const review = await reviewData.addLikeToReview(id, req.session.user._id.toString());
     res.json({
       status: "success",
       likes: (review.likes.length - review.dislikes.length),
@@ -237,7 +245,8 @@ router.post("/dislike/:id", async (req, res) => {
   }
 
   try {
-    const review = await reviewData.addDislikeToReview(req.params.id, req.session.user._id.toString());
+    const id = xss(req.params.id);
+    const review = await reviewData.addDislikeToReview(id, req.session.user._id.toString());
     res.json({
       status: "success",
       likes: (review.likes.length - review.dislikes.length),
@@ -277,7 +286,8 @@ router.delete("/:id", async (req, res) => {
     return;
   }
   try {
-    let dreviews = await reviewData.remove(req.params.id);
+    const id = xss(req.params.id);
+    let dreviews = await reviewData.remove(id);
     res.json(dreviews);
     // res.status(200);
     return;
