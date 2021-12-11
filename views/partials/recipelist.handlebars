@@ -7,9 +7,9 @@
       {{else}}
         <p class="fs-1 fw-bold">You can make {{recipeList.length}} recipe</p>
       {{/if}}
-  <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" aria-label="Sort" type="button" id="filterSortDropDown" data-bs-toggle="dropdown" aria-expanded="false">
- <i class="fas fa-bars"></i>  </button>
+  <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="left" title="Sort">
+  <button class="btn btn-secondary dropdown-toggle"  aria-label="Sort" type="button" id="filterSortDropDown" data-bs-toggle="dropdown" aria-expanded="false">
+ <i class="fas fa-bars" ></i>  </button>
   <ul class="dropdown-menu" aria-labelledby="filterSortDropDown">
     <li><p class="dropdown-header">Sort</p></li>
     <li><hr class="dropdown-divider"></li>
@@ -102,8 +102,8 @@
                 <span class="ratings">{{overallRating}}</span></p>
               <p class="card-text">{{trimString instructions 0 50}}...</p>
               <p class="card-text"><small class="text-muted">Posted By:
-                  {{postedBy.firstName}}
-                  {{postedBy.lastName}}</small></p>
+                  {{postedBy.firstname}}
+                  {{postedBy.lastname}}</small></p>
             </div>
           </div>
         </div>

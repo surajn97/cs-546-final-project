@@ -184,14 +184,13 @@
     });
 
     $("#all-recipe").on("click", function (e) {
-      $(this).html(loadingSpinner);
       let data = getAllSelectedIngredients();
       if (data.ingredients.length == 0) {
         showToast(true, "Please select atleast One ingredient");
         return;
       }
+      $(this).html(loadingSpinner);
       data.random = false;
-
       $(`<form method="POST" action="${url}"></form>`)
         .append(
           $("<input>", {
@@ -206,12 +205,12 @@
 
     //Suggested Search Button
     $("#suggested-ingredients").on("click", function (e) {
-      $(this).html(loadingSpinner);
       let data = getAllSelectedIngredients();
       if (data.ingredients.length == 0) {
         showToast(true, "Please select atleast One ingredient");
         return;
       }
+      $(this).html(loadingSpinner);
       data.random = false;
 
       $(`<form method="POST" action="${url}"></form>`)
