@@ -163,6 +163,7 @@ router.get("/my-reviews", ensureAuthenticated, async (req, res) => {
       recipeid: recipeobj._id,
       rating: mRev.rating,
       reviewText: mRev.reviewText,
+      dateOfReview: mRev.dateOfReview,
     });
   }
   let hasReview = false;

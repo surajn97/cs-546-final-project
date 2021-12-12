@@ -5,7 +5,7 @@
     </div>
     <div class="col-9 p-2 ms-4">
         <h1>My Reviews:</h1>
-        <div class="container">
+        {{!-- <div class="container">
             {{#if hasReview}}
             <ul class="list-group list-group-flush">
                 {{#each myReviews}}
@@ -19,7 +19,23 @@
             {{else}}
             <p class="font-italic">No Reviews posted yet.</p>
             {{/if}}
-        </div>
+        </div> --}}
+        {{#if hasReview}}
+            {{#each myReviews}}
+            <dl class="row mt-3 border-start border-4">
+                <dt class="col-sm-3">Recipe</dt>
+                <dd class="col-sm-9"><a href="/recipes/{{recipeid}}" target="_blank">{{recipename}}</a> <small><i class="fas fa-external-link-alt ms-1"></i></small></dd>
+                <dt class="col-sm-3">Review</dt>
+                <dd class="col-sm-9">{{reviewText}}</dd>                
+                <dt class="col-sm-3">Rating</dt>
+                <dd class="col-sm-9"><div class="ratings">{{rating}}</div></dd>
+                <dt class="col-sm-3">Reviewed on</dt>
+                <dd class="col-sm-9">{{dateOfReview}}</dd>
+            </dl>
+            {{/each}}
+        {{else}}
+        <p class="font-italic">No Reviews posted yet.</p>
+        {{/if}}
     </div>
   </div>
 </div>
