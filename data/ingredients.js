@@ -5,12 +5,12 @@ const helper = require("./helper");
 
 function convertIngredientsToCategories(ingredientList) {
   helper.checkProperArrayAllowEmpty(ingredientList);
-  const categories = [...new Set(ingredientList.map((item) => item.category))];
+  const categories = [...new Set(ingredientList.map(item => item.category))];
   let categorizedIngredients = {};
   for (const category of categories) {
     categorizedIngredients[category] = ingredientList
-      .filter((x) => x.category === category)
-      .map((y) => ({
+      .filter(x => x.category === category)
+      .map(y => ({
         name: y.name,
         _id: y._id.toString(),
         protien: y.protien,
@@ -62,6 +62,9 @@ module.exports = {
     helper.checkProperString(name, "Ingredient Name");
     helper.checkProperString(category, "Ingredient Category");
     const ingredientCollection = await ingredients();
+    name = name.toLowerCase();
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+
     let newIngredient = {
       name: name,
       category: category,
@@ -107,9 +110,11 @@ module.exports = {
 
   async getByName(name) {
     helper.checkProperString(name);
+    name = name.toLowerCase();
+    name = name.charAt(0).toUpperCase() + name.slice(1);
     const ingredientCollection = await ingredients();
     const ingredient = await ingredientCollection.findOne({
-      name: { $regex: name, $options: "i" },
+      name: name,
     });
     if (ingredient === null) {
       return "Not found";
