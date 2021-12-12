@@ -150,15 +150,41 @@ router.post("/all/filter", async (req, res) => {
       });
     }
   } catch (e) {
-    res.status(400).json({ error: e.toString() });
+    res.status(400).json({
+      error: e.toString()
+    });
   }
+});
+
+router.get("/form", (req, res) => {
+  if (req.session.user) {
+    res.render("recipeform", {
+      title: "Add Recipe",
+      firstname: req.session.user.firstname,
+      user_page: true,
+      my_recipe_page: true,
+      authenticated: true,
+    });
+  } else {
+    res.render("users/login", {
+      error: "Please Login to add a recipe"
+    });
+  }
+});
+
+router.get("/page", (req, res) => {
+  res.render("recipe", {
+    title: "Recipe"
+  });
 });
 
 router.get("/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   try {
@@ -177,21 +203,37 @@ router.get("/:id", async (req, res) => {
 
     return;
   } catch (e) {
-    res.status(404).json({ error: e });
+    res.status(404).json({
+      error: e
+    });
     return;
   }
 });
 
 router.get("/editform/:id", async (req, res) => {
+  if (!req.session.user) {
+    res.render("users/login", {
+      error: "Please Login to edit the recipe"
+    });
+    return;
+  }  
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   try {
     let ids = req.params.id;
     let recipe = await recipeData.get(req.params.id);
+    if (req.session.user._id != recipe.postedBy) {
+      res.status(404).json({
+        error: "Not your recipe"
+      });
+      return;
+    }
     let ingArr = [];
     for (element of recipe.ingredients) {
       let ingObj = {};
@@ -208,11 +250,16 @@ router.get("/editform/:id", async (req, res) => {
       title: "Edit Recipe",
       data: recipe,
       ingArr: JSON.stringify(ingArr),
+      firstname: req.session.user.firstname,
+      user_page: true,
+      my_recipe_page: true,      
       authenticated: req.session.user ? true : false,
     });
     return;
   } catch (e) {
-    res.status(404).json({ error: e });
+    res.status(404).json({
+      error: e
+    });
     return;
   }
 });
@@ -222,7 +269,9 @@ router.post("/", async (req, res) => {
 
   if (!recipeInfo) {
     e = "You must provide data to update a recipe";
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   const ing = recipeInfo.ingredients;
@@ -252,7 +301,9 @@ router.post("/", async (req, res) => {
     helper.checkProperString(recipeInfo.instructions, "Instructions");
     helper.checkProperNumber(serv, "Servings");
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   let postedBy = curentuser._id;
@@ -280,7 +331,9 @@ router.post("/", async (req, res) => {
     });
     return;
   } catch (e) {
-    res.status(500).json({ error: e });
+    res.status(500).json({
+      error: e
+    });
     return;
   }
 });
@@ -289,14 +342,18 @@ router.post("/submit/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   const updatedData = req.body;
 
   if (!updatedData) {
     e = "You must provide data to update a recipe";
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   const ing = updatedData.ingredients;
@@ -326,7 +383,9 @@ router.post("/submit/:id", async (req, res) => {
     helper.checkProperNumber(serv, "Servings");
   } catch (e) {
     res.status(400);
-    res.redirect(`recipes/${req.params.id}`, { error: e });
+    res.redirect(`recipes/${req.params.id}`, {
+      error: e
+    });
     return;
   }
 
@@ -352,7 +411,9 @@ router.post("/submit/:id", async (req, res) => {
     });
   } catch (e) {
     res.status(400);
-    res.redirect(`recipes/${req.params.id}`, { error: e });
+    res.redirect(`recipes/${req.params.id}`, {
+      error: e
+    });
     return;
   }
 });
@@ -361,14 +422,18 @@ router.put("/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   const updatedData = req.body;
 
   if (!updatedData) {
     e = "You must provide data to update a recipe";
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   const ing = updatedData.ingredients;
@@ -398,7 +463,9 @@ router.put("/:id", async (req, res) => {
     helper.checkProperNumber(serv, "Servings");
   } catch (e) {
     res.status(400);
-    res.redirect(`recipes/${req.params.id}`, { error: e });
+    res.redirect(`recipes/${req.params.id}`, {
+      error: e
+    });
     return;
   }
 
@@ -424,7 +491,9 @@ router.put("/:id", async (req, res) => {
     return;
   } catch (e) {
     res.status(500);
-    res.redirect(`recipes/${req.params.id}`, { error: e });
+    res.redirect(`recipes/${req.params.id}`, {
+      error: e
+    });
     return;
   }
 });
@@ -434,14 +503,18 @@ router.patch("/:id", async (req, res) => {
 
   if (!updatedData) {
     e = "You must provide data to update a recipe";
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
 
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
 
@@ -510,7 +583,9 @@ router.patch("/:id", async (req, res) => {
       newUpdatedDataObj.servings = updatedData.servings;
     }
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
 
@@ -527,12 +602,13 @@ router.patch("/:id", async (req, res) => {
         authenticated: req.session.user ? true : false,
       });
     } catch (e) {
-      res.status(500).json({ error: e });
+      res.status(500).json({
+        error: e
+      });
     }
   } else {
     res.status(500).json({
-      error:
-        "No fields have been changed from their inital values, so no update has occurred",
+      error: "No fields have been changed from their inital values, so no update has occurred",
     });
   }
 });
@@ -541,7 +617,9 @@ router.delete("/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400).json({
+      error: e
+    });
     return;
   }
   try {
@@ -550,7 +628,9 @@ router.delete("/:id", async (req, res) => {
 
     return;
   } catch (e) {
-    res.json({ error: e });
+    res.json({
+      error: e
+    });
     res.status(500);
     return;
   }
