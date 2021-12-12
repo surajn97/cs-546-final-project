@@ -88,13 +88,16 @@ module.exports = {
       review["total_likes"] =
         parseInt(review.likes.length) - parseInt(review.dislikes.length);
       let sentiScore = sentiment.analyze(review["reviewText"]).score;
-      if (sentiScore < -7) {
+      console.log(
+        "sentiment score for" + review["reviewText"] + ": " + sentiScore
+      );
+      if (sentiScore < -6) {
         review["reviewSentiment"] = "Strong Negetive";
-      } else if (sentiScore < -3) {
+      } else if (sentiScore < -2) {
         review["reviewSentiment"] = "Negetive";
-      } else if (sentiScore > 3) {
+      } else if (sentiScore > 2) {
         review["reviewSentiment"] = "Positive";
-      } else if (sentiScore > 7) {
+      } else if (sentiScore > 6) {
         review["reviewSentiment"] = "Strong Positive";
       } else {
         review["reviewSentiment"] = "Neutral";

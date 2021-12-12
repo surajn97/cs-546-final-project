@@ -8,6 +8,10 @@ const url = "http://localhost:3000/ingredients/name/";
 let showdiv = $("#showDiv");
 let errorP = $("#error");
 
+let rname = $("#name");
+let cuisine = $("#cuisine");
+let instruction = $("#instructions");
+
 $(".raty").raty({
   path: "/public/images",
   scoreName: "rating",
@@ -40,7 +44,7 @@ $(document).ready(function () {
     let qm = qMeasure.val().trim();
     let iName = ingName.val().trim();
     let ingArray = JSON.parse(ingreInput.val());
-    if (!q || !qm || !iName) {
+    if (!q || !iName || qm == "") {
       alert(" Please enter proper values for the ingredient to add");
       return;
     }
@@ -184,6 +188,21 @@ $(document).ready(function () {
     }
     // return;
   };
+});
+
+$("#recipe-form").submit(function (event) {
+  let finIngValue = ingreInput.val();
+  let name = rname.val().trim();
+  let rcuisine = cuisine.val().trim();
+  let rinstruction = instruction.val().trim();
+  if (finIngValue == "[]") {
+    alert("Add Ingredients to the recipe");
+    return false;
+  }
+  if (!name || !rcuisine || !rinstruction) {
+    alert("Please pass all the inputs");
+    return false;
+  }
 });
 
 function showCommentToast(reviewId, text) {

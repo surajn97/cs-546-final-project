@@ -9,6 +9,10 @@ let showdiv = $("#showDiv");
 let mealType = $("#mealType");
 let mealtypestore = $("#mealtypestore");
 
+let rname = $("#name");
+let cuisine = $("#cuisine");
+let instruction = $("#instructions");
+
 $(".raty").raty({
   path: "/public/images",
   scoreName: "rating",
@@ -60,6 +64,10 @@ $(document).ready(function () {
     let q = quantity.val().trim();
     let qm = qMeasure.val().trim();
     let iName = ingName.val().trim();
+    if (!q || !iName || qm == "") {
+      alert(" Please enter proper values for the ingredient to add");
+      return;
+    }
 
     ingObj = {};
     ingObj["name"] = iName;
@@ -101,4 +109,19 @@ $(document).ready(function () {
       $("#ingredients").val(JSON.stringify(ingArray));
     });
   });
+});
+
+$("#recipe-form").submit(function (event) {
+  let finIngValue = ingreInput.val();
+  let name = rname.val().trim();
+  let rcuisine = cuisine.val().trim();
+  let rinstruction = instruction.val().trim();
+  if (finIngValue == "[]") {
+    alert("Add Ingredients to the recipe");
+    return false;
+  }
+  if (!name || !rcuisine || !rinstruction) {
+    alert("Please pass all the inputs");
+    return false;
+  }
 });

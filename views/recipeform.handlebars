@@ -3,36 +3,59 @@
     <div class="col">
       {{>usersidebar}}
     </div>
-    <div class="col-9 p-2 ms-4">
-      <h1>{{title}}</h1>
-      <p id="error" class="error" hidden>{{error}}</p>
-      <form method="POST" id="recipe-form" action="/recipes">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="name">Recipe Name</label>
-          </div>
-          <input type="text" name="name" id="name" class="form-control" placeholder="Recipe Name" required />
+<div class="col-9 p-2 ms-4">
+  <h1>{{title}}</h1>
+  {{#if error}}
+    <p id="error" class="error">{{error}}</p>
+  {{/if}}
+  <form method="POST" id="recipe-form" action="/recipes">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="name">Recipe Name</label>
+      </div>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        class="form-control"
+        placeholder="Recipe Name"
+        required
+      />
+    
         </div>
         <br />
 
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="cookingTime">Cooking Time</label>
-          </div>
-          <input type="number" name="cookingTime" id="cookingTime" class="form-control" placeholder="Cooking Time"
-            required />
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="servings">Servings</label>
-          </div>
-          <input class="form-control" type="text" name="servings" id="servings" placeholder="servings" required />
-        </div>
+      <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="cookingTime">Cooking Time</label>
+      </div>
+      <input
+        type="number"
+        name="cookingTime"
+        id="cookingTime"
+        class="form-control"
+        placeholder="Cooking Time"
+        required
+      />
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="servings">Servings</label>
+      </div>
+      <input
+        class="form-control"
+        type="number"
+        name="servings"
+        id="servings"
+        placeholder="servings"
+        required
+      />
 
-        <br />
+      </div>
+      <br />
 
-        <div class="input-group">
-          <div class="input-group-prepend">
+      <div class="input-group">
+        <div class="input-group-prepend">
             <label class="input-group-text" for="ingName">Add Ingredients:</label>
-          </div>
+        </div>
           <input type="text" class="form-control" id="ingName" name="ingName" placeholder="Ingredient Name" />
           <div class="input-group-prepend">
             <label class="input-group-text" for="quantity">Quantity</label>
@@ -81,20 +104,33 @@
             <option value="dinner">Dinner</option>
           </select>
 
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="cuisine">Cuisine</label>
-          </div>
-          <input class="form-control" type="text" name="cuisine" id="cuisine" placeholder="cuisine" />
-        </div>
-        <br />
+        <div class="input-group-prepend">
+        <label class="input-group-text" for="cuisine">Cuisine</label>
+       </div>
+        <input
+        class="form-control"
+        type="text"
+        name="cuisine"
+        id="cuisine"
+        placeholder="cuisine"
+        required
+      />
+    </div>
+    <br />
 
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="instructions">Instructions</label>
-          </div>
-          <textarea class="form-control" name="instructions" id="instructions" placeholder="Instructions"></textarea>
-        </div>
-        <br />
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="instructions">Instructions</label>
+      </div>
+      <textarea
+        class="form-control"
+        name="instructions"
+        id="instructions"
+        placeholder="Instructions"
+        required
+      ></textarea>
+    </div>
+    <br />
 
         <div class="input-group">
           <button class="btn btn-outline-secondary" id="button" type="submit">Submit
