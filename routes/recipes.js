@@ -223,8 +223,8 @@ router.get("/editform/:id", async (req, res) => {
     return;
   }
   try {
-    let ids = req.params.id;
-    let recipe = await recipeData.get(req.params.id);
+    let ids = xss(req.params.id);
+    let recipe = await recipeData.get(xss(req.params.id));
     if (req.session.user._id != recipe.postedBy) {
       res.status(404).json({
         error: "Not your recipe",
@@ -269,8 +269,8 @@ router.post("/", async (req, res) => {
     return;
   }
   const ing = recipeInfo.ingredients;
-  const ctime = parseFloat(recipeInfo.cookingTime);
-  const serv = parseFloat(recipeInfo.servings);
+  const ctime = parseFloat(xss(recipeInfo.cookingTime));
+  const serv = parseFloat(xss(recipeInfo.servings));
 
   let ingarray = JSON.parse(ing);
 
@@ -279,7 +279,7 @@ router.post("/", async (req, res) => {
   try {
     helper.checkAndGetID(curentuser._id);
     // helper.checkProperString(ing, "Individual ingredient String");
-    helper.checkProperString(recipeInfo.name, "Name");
+    helper.checkProperString(xss(recipeInfo.name), "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
     ingarray.forEach(element => {
@@ -291,8 +291,8 @@ router.post("/", async (req, res) => {
       helper.checkProperString(element.quantityMeasure, "Quantity Measure");
     });
     helper.checkProperString(recipeInfo.mealType, "Meal Type");
-    helper.checkProperString(recipeInfo.cuisine, "Cuisine");
-    helper.checkProperString(recipeInfo.instructions, "Instructions");
+    helper.checkProperString(xss(recipeInfo.cuisine), "Cuisine");
+    helper.checkProperString(xss(recipeInfo.instructions), "Instructions");
     helper.checkProperNumber(serv, "Servings");
   } catch (e) {
     res.status(400);
@@ -304,13 +304,13 @@ router.post("/", async (req, res) => {
 
   try {
     const newRecipe = await recipeData.create(
-      recipeInfo.name,
+      xss(recipeInfo.name),
       postedBy,
       ctime,
       ingarray,
       recipeInfo.mealType,
-      recipeInfo.cuisine,
-      recipeInfo.instructions,
+      xss(recipeInfo.cuisine),
+      xss(recipeInfo.instructions),
       serv,
       // should be logged in user id
       req.session.user._id.toString()
@@ -344,8 +344,8 @@ router.post("/submit/:id", async (req, res) => {
     return;
   }
   const ing = updatedData.ingredients;
-  const ctime = parseFloat(updatedData.cookingTime);
-  const serv = parseFloat(updatedData.servings);
+  const ctime = parseFloat(xss(updatedData.cookingTime));
+  const serv = parseFloat(xss(updatedData.servings));
   let ingarray = JSON.parse(ing);
   let curentuser = req.session.user;
 
@@ -353,7 +353,7 @@ router.post("/submit/:id", async (req, res) => {
     const oldRecipe = await recipeData.get(req.params.id);
     if (curentuser._id != oldRecipe.postedBy)
       throw "Cannot edit the recipe which you didnt create";
-    helper.checkProperString(updatedData.name, "Name");
+    helper.checkProperString(xss(updatedData.name), "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
     ingarray.forEach(element => {
@@ -365,8 +365,8 @@ router.post("/submit/:id", async (req, res) => {
       helper.checkProperString(element.quantityMeasure, "Quantity Measure");
     });
     helper.checkProperString(updatedData.mealType, "Meal Type");
-    helper.checkProperString(updatedData.cuisine, "Cuisine");
-    helper.checkProperString(updatedData.instructions, "Instructions");
+    helper.checkProperString(xss(updatedData.cuisine), "Cuisine");
+    helper.checkProperString(xss(updatedData.instructions), "Instructions");
     helper.checkProperNumber(serv, "Servings");
   } catch (e) {
     res.status(400);
@@ -379,12 +379,12 @@ router.post("/submit/:id", async (req, res) => {
   try {
     const updatedRecipe = await recipeData.update(
       req.params.id,
-      updatedData.name,
+      xss(updatedData.name),
       ctime,
       ingarray,
       updatedData.mealType,
-      updatedData.cuisine,
-      updatedData.instructions,
+      xss(updatedData.cuisine),
+      xss(updatedData.instructions),
       serv
     );
 
