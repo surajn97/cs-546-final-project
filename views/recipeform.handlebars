@@ -1,160 +1,109 @@
-<div class="container m-4 p-4">
-  <h1>{{title}}</h1>
-  <p id="error" class="error" hidden>{{error}}</p>
-  <form method="POST" id="recipe-form" action="/recipes">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="name">Recipe Name</label>
-      </div>
-      <input
-        type="text"
-        name="name"
-        id="name"
-        class="form-control"
-        placeholder="Recipe Name"
-        required
-      />
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      {{>usersidebar}}
     </div>
-    <br />
+    <div class="col-9 p-2 ms-4">
+      <h1>{{title}}</h1>
+      <p id="error" class="error" hidden>{{error}}</p>
+      <form method="POST" id="recipe-form" action="/recipes">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="name">Recipe Name</label>
+          </div>
+          <input type="text" name="name" id="name" class="form-control" placeholder="Recipe Name" required />
+        </div>
+        <br />
 
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="cookingTime">Cooking Time</label>
-      </div>
-      <input
-        type="number"
-        name="cookingTime"
-        id="cookingTime"
-        class="form-control"
-        placeholder="Cooking Time"
-        required
-      />
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="servings">Servings</label>
-      </div>
-      <input
-        class="form-control"
-        type="text"
-        name="servings"
-        id="servings"
-        placeholder="servings"
-        required
-      />
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="cookingTime">Cooking Time</label>
+          </div>
+          <input type="number" name="cookingTime" id="cookingTime" class="form-control" placeholder="Cooking Time"
+            required />
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="servings">Servings</label>
+          </div>
+          <input class="form-control" type="text" name="servings" id="servings" placeholder="servings" required />
+        </div>
+
+        <br />
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="ingName">Add Ingredients:</label>
+          </div>
+          <input type="text" class="form-control" id="ingName" name="ingName" placeholder="Ingredient Name" />
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="quantity">Quantity</label>
+          </div>
+          <input type="Number" class="form-control" id="quantity" name="quantity" placeholder="Quantity" />
+
+          <div class="input-group-append">
+
+            <select class="form-control form-select" name="qMeasure" id="qMeasure">
+              <option selected>Select Amount</option>
+              <option value="grams">Grams</option>
+              <option value="teaspoon">Teaspoons</option>
+              <option value="tablespoon">Tablespoons</option>
+              <option value="cup">Cup</option>
+              <option value="bowl">Bowl</option>
+              <option value="qty">Quantity</option>
+              <option value="ml">Milliliters</option>
+
+            </select>
+          </div>
+
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" id="addIng" name="addIng" type="button">Add</button>
+          </div>
+        </div>
+        <br />
+
+        <div id="showDiv">
+          <input type="text" name="ingredients" id="ingredients" value="[]" hidden />
+          <p>Ingredients:</p>
+
+        </div>
+        <br />
+
+        <div class="input-group">
+
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="mealType">Meal type</label>
+          </div>
+          <select class="form-control form-select" name="mealType" id="mealType" required>
+            <option value="" selected>Select..</option>
+            <option value="breakfast">Breakfast</option>
+            <option value="brunch">Brunch</option>
+            <option value="lunch">Lunch</option>
+            <option value="snacks">Snacks</option>
+            <option value="dinner">Dinner</option>
+          </select>
+
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="cuisine">Cuisine</label>
+          </div>
+          <input class="form-control" type="text" name="cuisine" id="cuisine" placeholder="cuisine" />
+        </div>
+        <br />
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="instructions">Instructions</label>
+          </div>
+          <textarea class="form-control" name="instructions" id="instructions" placeholder="Instructions"></textarea>
+        </div>
+        <br />
+
+        <div class="input-group">
+          <button class="btn btn-outline-secondary" id="button" type="submit">Submit
+          </button>
+        </div>
+
+      </form>
     </div>
-
-    <br />
-
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="ingName">Add Ingredients:</label>
-      </div>
-      <input
-        type="text"
-        class="form-control"
-        id="ingName"
-        name="ingName"
-        placeholder="Ingredient Name"
-      />
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="quantity">Quantity</label>
-      </div>
-      <input
-        type="Number"
-        class="form-control"
-        id="quantity"
-        name="quantity"
-        placeholder="Quantity"
-      />
-
-      <div class="input-group-append">
-
-        <select class="form-control form-select" name="qMeasure" id="qMeasure">
-          <option selected>Select Amount</option>
-          <option value="grams">Grams</option>
-          <option value="teaspoon">Teaspoons</option>
-          <option value="tablespoon">Tablespoons</option>
-          <option value="cup">Cup</option>
-          <option value="bowl">Bowl</option>
-          <option value="qty">Quantity</option>
-          <option value="ml">Milliliters</option>
-
-        </select>
-      </div>
-
-      <div class="input-group-append">
-        <button
-          class="btn btn-outline-secondary"
-          id="addIng"
-          name="addIng"
-          type="button"
-        >Add</button>
-      </div>
-    </div>
-    <br />
-
-    <div id="showDiv">
-      <input
-        type="text"
-        name="ingredients"
-        id="ingredients"
-        value="[]"
-        hidden
-      />
-      <p>Ingredients:</p>
-
-    </div>
-    <br />
-
-    <div class="input-group">
-
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="mealType">Meal type</label>
-      </div>
-      <select
-        class="form-control form-select"
-        name="mealType"
-        id="mealType"
-        required
-      >
-        <option value="" selected>Select..</option>
-        <option value="breakfast">Breakfast</option>
-        <option value="brunch">Brunch</option>
-        <option value="lunch">Lunch</option>
-        <option value="snacks">Snacks</option>
-        <option value="dinner">Dinner</option>
-      </select>
-
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="cuisine">Cuisine</label>
-      </div>
-      <input
-        class="form-control"
-        type="text"
-        name="cuisine"
-        id="cuisine"
-        placeholder="cuisine"
-      />
-    </div>
-    <br />
-
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="instructions">Instructions</label>
-      </div>
-      <textarea
-        class="form-control"
-        name="instructions"
-        id="instructions"
-        placeholder="Instructions"
-      ></textarea>
-    </div>
-    <br />
-
-    <div class="input-group">
-      <button class="btn btn-outline-secondary" id="button" type="submit">Submit
-      </button>
-    </div>
-
-  </form>
+    <div class="col"></div>
+  </div>
 </div>
 <script src="/public/js/recipe.js"></script>
