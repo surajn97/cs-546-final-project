@@ -1,7 +1,5 @@
 const express = require("express");
-const {
-  recipes
-} = require("../data");
+const { recipes } = require("../data");
 const router = express.Router();
 const data = require("../data");
 const reviewData = data.reviews;
@@ -13,7 +11,7 @@ router.get("/review/:id", async (req, res) => {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
     res.status(400).json({
-      error: e
+      error: e,
     });
     return;
   }
@@ -29,7 +27,7 @@ router.get("/review/:id", async (req, res) => {
     res.json(review);
   } catch (e) {
     res.status(404).json({
-      error: e
+      error: e,
     });
     return;
   }
@@ -40,7 +38,7 @@ router.get("/user/:id", async (req, res) => {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
     res.status(400).json({
-      error: e
+      error: e,
     });
     return;
   }
@@ -56,7 +54,7 @@ router.get("/user/:id", async (req, res) => {
     res.json(review);
   } catch (e) {
     res.status(404).json({
-      error: e
+      error: e,
     });
     return;
   }
@@ -67,7 +65,7 @@ router.get("/:id", async (req, res) => {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
     res.status(400).json({
-      error: e
+      error: e,
     });
     return;
   }
@@ -84,7 +82,7 @@ router.get("/:id", async (req, res) => {
     // res.status(200);
   } catch (e) {
     res.status(500).json({
-      error: e
+      error: e,
     });
     return;
     // res.status(500);
@@ -94,21 +92,21 @@ router.get("/:id", async (req, res) => {
 router.post("/:id", async (req, res) => {
   if (!req.session.user) {
     res.status(401).json({
-      error: "Unauthorized!"
+      error: "Unauthorized!",
     });
   }
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
     res.status(400).json({
-      error: e
+      error: e,
     });
     return;
   }
   const ReviewData = req.body;
   if (!ReviewData) {
     res.status(400).json({
-      error: "You must Supply data to post"
+      error: "You must Supply data to post",
     });
     return;
     // res.status(400);
@@ -116,28 +114,28 @@ router.post("/:id", async (req, res) => {
 
   if (!req.params.id) {
     res.status(400).json({
-      error: "You must provide recipe id"
+      error: "You must provide recipe id",
     });
     // res.status(400);
     return;
   }
   if (!ReviewData.reviewText) {
     res.status(400).json({
-      error: "You must provide review text"
+      error: "You must provide review text",
     });
     // res.status(400);
     return;
   }
   if (!ReviewData.userId) {
     res.status(400).json({
-      error: "You must provide reviewer user id"
+      error: "You must provide reviewer user id",
     });
     // res.status(400);
     return;
   }
   if (!ReviewData.rating) {
     res.status(400).json({
-      error: "You must provide rating"
+      error: "You must provide rating",
     });
     return;
   }
@@ -151,7 +149,7 @@ router.post("/:id", async (req, res) => {
       dateOfReview,
       likes,
       dislikes,
-      comments
+      comments,
     } = ReviewData;
     const id = xss(req.params.id);
     const ratingXss = xss(ReviewData.rating);
@@ -168,7 +166,7 @@ router.post("/:id", async (req, res) => {
     return;
   } catch (e) {
     res.status(500).json({
-      error: e
+      error: e,
     });
     // res.status(500);
     return;
@@ -179,7 +177,7 @@ router.post("/like/:id", async (req, res) => {
   if (!req.session.user) {
     res.status(401).json({
       status: "fail",
-      error: "Please login first to like the review"
+      error: "Please login first to like the review",
     });
   }
   try {
@@ -187,14 +185,14 @@ router.post("/like/:id", async (req, res) => {
   } catch (e) {
     res.status(400).json({
       status: "fail",
-      error: e
+      error: e,
     });
     return;
   }
   if (!req.params.id) {
     res.status(400).json({
       status: "fail",
-      error: "You must provide a review id"
+      error: "You must provide a review id",
     });
     // res.status(400);
     return;
@@ -202,28 +200,30 @@ router.post("/like/:id", async (req, res) => {
 
   try {
     const id = xss(req.params.id);
-    const review = await reviewData.addLikeToReview(id, req.session.user._id.toString());
+    const review = await reviewData.addLikeToReview(
+      id,
+      req.session.user._id.toString()
+    );
     res.json({
       status: "success",
-      likes: (review.likes.length - review.dislikes.length),
-      message: "successfully liked the review"
+      likes: review.likes.length - review.dislikes.length,
+      message: "successfully liked the review",
     });
   } catch (e) {
     res.status(404).json({
       status: "fail",
-      error: e
+      error: e,
     });
     // res.status(404);
     return;
   }
-
 });
 
 router.post("/dislike/:id", async (req, res) => {
   if (!req.session.user) {
     res.status(401).json({
       status: "fail",
-      error: "Please login first to dislike the review"
+      error: "Please login first to dislike the review",
     });
   }
   try {
@@ -231,14 +231,14 @@ router.post("/dislike/:id", async (req, res) => {
   } catch (e) {
     res.status(400).json({
       status: "fail",
-      error: e
+      error: e,
     });
     return;
   }
   if (!req.params.id) {
     res.status(400).json({
       status: "fail",
-      error: "You must provide a review id"
+      error: "You must provide a review id",
     });
     // res.status(400);
     return;
@@ -246,16 +246,19 @@ router.post("/dislike/:id", async (req, res) => {
 
   try {
     const id = xss(req.params.id);
-    const review = await reviewData.addDislikeToReview(id, req.session.user._id.toString());
+    const review = await reviewData.addDislikeToReview(
+      id,
+      req.session.user._id.toString()
+    );
     res.json({
       status: "success",
-      likes: (review.likes.length - review.dislikes.length),
-      message: "successfully disliked the review"
+      likes: review.likes.length - review.dislikes.length,
+      message: "successfully disliked the review",
     });
   } catch (e) {
     res.status(404).json({
       status: "fail",
-      error: e
+      error: e,
     });
     // res.status(404);
     return;
@@ -267,7 +270,7 @@ router.delete("/:id", async (req, res) => {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
     res.status(400).json({
-      error: e
+      error: e,
     });
     return;
   }
@@ -280,7 +283,7 @@ router.delete("/:id", async (req, res) => {
     await reviewData.get(req.params.id);
   } catch (e) {
     res.status(404).json({
-      error: e
+      error: e,
     });
     // res.status(404);
     return;
@@ -293,7 +296,7 @@ router.delete("/:id", async (req, res) => {
     return;
   } catch (e) {
     res.status(500).json({
-      error: e
+      error: e,
     });
     return;
     // res.status(500);
