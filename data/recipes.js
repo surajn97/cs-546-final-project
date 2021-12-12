@@ -109,76 +109,78 @@ module.exports = {
     return recipe;
   },
 
-  async getWithOnlineData(id) {
-    helper.checkProperString(id, "Recipe ID");
-    if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
-    let ID = ObjectId(id);
-    const recipeCollection = await recipes();
-    const recipe = await recipeCollection.findOne({ _id: ID });
-    if (recipe === null) {
-      throw "Error: No recipe with that id";
-    }
-    recipe._id = recipe._id.toString();
-    recipe.postedBy = await userData.get(recipe.postedBy);
-    let youtubeUrl;
+  async getWithOnlineData(id, getYoutube) {
     try {
-      youtubeUrl = await getYoutubeLinkScraped(recipe.name); //Comment this and use bottom one for faster loading
-      // youtubeUrl = "https://www.youtube.com/embed/lpU2zRzhJkQ";
-    } catch (e) {
-      youtubeUrl = "";
-    }
-    let calories = 0,
-      protien = 0,
-      carb = 0,
-      fat = 0;
-
-    const qMeasureintoGrams = {
-      grams: 1.0,
-      g: 1.0,
-      teaspoon: 4.2,
-      cup: 128.0,
-      tablespoon: 15.0,
-      bowl: 340.0,
-      qty: 100.0,
-      ml: 1.03,
-    };
-
-    for (let ingredient of recipe.ingredients) {
-      const ig = await ingredientsData.get(ingredient._id);
-      ingredient.name = ig.name;
-      ingredient.text = `${ingredient.quantity} ${ingredient.quantityMeasure} ${ig.name}`;
-      let totalGrams = qMeasureintoGrams[ingredient.quantityMeasure];
-      if (totalGrams == null || typeof totalGrams == undefined) {
-        totalGrams = 100;
+      if (id == "61b586140af824cac6c355be") {
+        console.log("as");
       }
-      calories += (ig.calories * totalGrams) / 100;
-      protien += (ig.protien * totalGrams) / 100;
-      carb += (ig.carb * totalGrams) / 100;
-      fat += (ig.fat * totalGrams) / 100;
-    }
+      if (getYoutube == null || getYoutube == undefined) getYoutube = true;
+      helper.checkProperString(id, "Recipe ID");
+      if (!ObjectId.isValid(id)) throw "Error: Not a valid ObjectId";
+      let ID = ObjectId(id);
+      const recipeCollection = await recipes();
+      const recipe = await recipeCollection.findOne({ _id: ID });
+      if (recipe === null) {
+        throw "Error: No recipe with that id";
+      }
+      recipe._id = recipe._id.toString();
+      recipe.postedBy = await userData.get(recipe.postedBy);
+      if (getYoutube) {
+        let youtubeUrl;
+        try {
+          youtubeUrl = await getYoutubeLinkScraped(recipe.name); //Comment this and use bottom one for faster loading
+          // youtubeUrl = "https://www.youtube.com/embed/lpU2zRzhJkQ";
+        } catch (e) {
+          youtubeUrl = "";
+        }
+        recipe.youtubeURL = youtubeUrl;
+      } else {
+        recipe.youtubeURL = "";
+      }
+      let calories = 0,
+        protien = 0,
+        carb = 0,
+        fat = 0;
 
-    recipe.calories = Math.round(calories * 100) / 100;
-    recipe.protien = Math.round(protien * 100) / 100;
-    recipe.carb = Math.round(carb * 100) / 100;
-    recipe.fat = Math.round(fat * 100) / 100;
-    recipe.youtubeURL = youtubeUrl;
-    return recipe;
+      const qMeasureintoGrams = {
+        grams: 1.0,
+        g: 1.0,
+        teaspoon: 4.2,
+        cup: 128.0,
+        tablespoon: 15.0,
+        bowl: 340.0,
+        qty: 100.0,
+        ml: 1.03,
+      };
+
+      for (let ingredient of recipe.ingredients) {
+        const ig = await ingredientsData.get(ingredient._id);
+        ingredient.name = ig.name;
+        ingredient.text = `${ingredient.quantity} ${ingredient.quantityMeasure} ${ig.name}`;
+        let totalGrams = qMeasureintoGrams[ingredient.quantityMeasure];
+        if (totalGrams == null || typeof totalGrams == undefined) {
+          totalGrams = 100;
+        }
+        calories += (ig.calories * totalGrams) / 100;
+        protien += (ig.protien * totalGrams) / 100;
+        carb += (ig.carb * totalGrams) / 100;
+        fat += (ig.fat * totalGrams) / 100;
+      }
+
+      recipe.calories = Math.round(calories * 100) / 100;
+      recipe.protien = Math.round(protien * 100) / 100;
+      recipe.carb = Math.round(carb * 100) / 100;
+      recipe.fat = Math.round(fat * 100) / 100;
+      return recipe;
+    } catch (e) {
+      console.log(e);
+    }
   },
 
   getFilterFields(recipeList) {
     try {
-      let meals = [...new Set(recipeList.map((item) => item.mealType))];
-      meals = [
-        ...meals.map(function (item) {
-          return { [item]: false };
-        }),
-      ];
-      let cuisines = [...new Set(recipeList.map((item) => item.cuisine))];
-      cuisines = [
-        ...cuisines.map(function (item) {
-          return { [item]: false };
-        }),
-      ];
+      const meals = [...new Set(recipeList.map((item) => item.mealType))];
+      const cuisines = [...new Set(recipeList.map((item) => item.cuisine))];
       return {
         mealType: meals,
         cuisine: cuisines,

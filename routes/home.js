@@ -26,6 +26,11 @@ let currentSort = {
   },
 };
 
+let currentFilter = {
+  mealType: "",
+  cuisine: "",
+};
+
 function sort(list, prevCurr) {
   if (currentSort.name.current) {
     if (prevCurr && prevCurr.name.current == true)
@@ -58,6 +63,27 @@ function sort(list, prevCurr) {
   }
 }
 
+function filter(list) {
+  if (currentFilter.mealType == "" && currentFilter.cuisine == "") return;
+  let filteredData = [];
+  for (const recipe of list) {
+    if (
+      recipe.mealType.toLowerCase() == currentFilter.mealType.toLowerCase() &&
+      recipe.cuisine.toLowerCase() == currentFilter.cuisine.toLowerCase()
+    )
+      filteredData.push(recipe);
+    else if (
+      recipe.mealType.toLowerCase() == currentFilter.mealType.toLowerCase()
+    )
+      filteredData.push(recipe);
+    else if (
+      recipe.cuisine.toLowerCase() == currentFilter.cuisine.toLowerCase()
+    )
+      filteredData.push(recipe);
+  }
+  list = filteredData;
+}
+
 router.get("/", async (req, res) => {
   try {
     const categorizedIngredients = await ingredientsData.getAll();
@@ -68,6 +94,8 @@ router.get("/", async (req, res) => {
       ingredientSuggestions: [],
       ingredientsSelected: false,
       currentSort: currentSort,
+      currentFilter: currentFilter,
+      filterFields: recipeData.getFilterFields(),
       title: "What's Cooking?",
       authenticated: req.session.user ? true : false,
     });
@@ -89,15 +117,20 @@ router.post("/filter", async (req, res) => {
     if (prevSentData === null) {
       res.status(200).redirect("/");
     } else {
-      filterData = xss(req.body.sort);
-      if (!filterData) {
+      const sortData = xss(req.body.sort);
+      const filterData = xss(req.body.filter);
+
+      if (!sortData || !filterData) {
         res.status(200).redirect("/");
         return;
       }
+      const sortObj = JSON.parse(sortData);
       const filterObj = JSON.parse(filterData);
       const prevCurr = currentSort;
-      currentSort = filterObj;
+      currentSort = sortObj;
+      currentFilter = filterObj;
       sort(prevSentData.recipeList, prevCurr);
+      filter(prevSentData.recipeList);
       let user;
       if (req.session.user)
         user = await userData.get(req.session.user._id.toString());
@@ -108,6 +141,8 @@ router.post("/filter", async (req, res) => {
         user: user,
         ingredientsSelected: true,
         currentSort: currentSort,
+        currentFilter: currentFilter,
+        filterFields: recipeData.getFilterFields(prevSentData.recipeList),
         title: "What's Cooking?",
         authenticated: req.session.user ? true : false,
       });
@@ -142,7 +177,10 @@ router.post("/", async (req, res) => {
     }
 
     const recipeObj = await recipeData.getAll(dataObj.ingredients);
-    if (recipeObj.recipeList.length > 0) sort(recipeObj.recipeList);
+    if (recipeObj.recipeList.length > 0) {
+      sort(recipeObj.recipeList);
+      filter(recipeObj.recipeList);
+    }
     const categorizedIngredients = await ingredientsData.getAllWithChecked(
       dataObj.ingredients
     );
@@ -167,6 +205,8 @@ router.post("/", async (req, res) => {
         ingredientSuggestions: recipeObj.ingredientSuggestions,
         ingredientsSelected: true,
         currentSort: currentSort,
+        currentFilter: currentFilter,
+        filterFields: recipeData.getFilterFields(recipeObj.recipeList),
         user: user,
         title: "What's Cooking?",
         authenticated: req.session.user ? true : false,

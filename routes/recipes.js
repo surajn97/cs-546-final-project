@@ -162,7 +162,7 @@ router.get("/:id", async (req, res) => {
     return;
   }
   try {
-    let recipe = await recipeData.getWithOnlineData(req.params.id);
+    let recipe = await recipeData.getWithOnlineData(req.params.id, true);
     let reviews = await reviewData.getAll(req.params.id);
     let user;
     if (req.session.user)
@@ -270,7 +270,7 @@ router.post("/", async (req, res) => {
       // should be logged in user id
       req.session.user._id.toString()
     );
-    let recipe = await recipeData.getWithOnlineData(newRecipe._id);
+    let recipe = await recipeData.getWithOnlineData(newRecipe._id, true);
     let reviews = await reviewData.getAll(newRecipe._id);
     res.render("recipe", {
       data: recipe,
@@ -342,7 +342,7 @@ router.post("/submit/:id", async (req, res) => {
       serv
     );
 
-    let recipe = await recipeData.getWithOnlineData(updatedRecipe._id);
+    let recipe = await recipeData.getWithOnlineData(updatedRecipe._id, true);
     let reviews = await reviewData.getAll(updatedRecipe._id);
     res.render("recipe", {
       data: recipe,
@@ -414,7 +414,7 @@ router.put("/:id", async (req, res) => {
       serv
     );
 
-    let recipe = await recipeData.getWithOnlineData(updatedRecipe._id);
+    let recipe = await recipeData.getWithOnlineData(updatedRecipe._id, true);
     let reviews = await reviewData.getAll(newRecipe._id);
     res.render("recipe", {
       data: recipe,
