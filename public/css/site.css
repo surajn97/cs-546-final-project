@@ -195,6 +195,13 @@ span.stars > * {
   padding: 5px;
 }
 
+.recipe-card-edit {
+  position: absolute;
+  right: 15px;
+  top: 70px;
+  padding: 5px;
+}
+
 .add-fav {
   display: inline-block;
   padding: 5px 8px;
