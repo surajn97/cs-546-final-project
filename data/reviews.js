@@ -5,7 +5,7 @@ const recipes = mongoCollections.recipes;
 const reviews = mongoCollections.reviews;
 // for add to user
 const users = mongoCollections.users;
-
+const Sentiment = require("sentiment");
 
 let { ObjectId } = require("mongodb");
 const helper = require("./helper");
@@ -56,9 +56,12 @@ module.exports = {
     //Add the review id to the user
     const objIdForUser = ObjectId.createFromHexString(userId);
     const usersCollection = await users();
-    const updatedInfo2 = await usersCollection.updateOne({ _id: objIdForUser }, { $push: { myReviews: String(newReview._id) } });
+    const updatedInfo2 = await usersCollection.updateOne(
+      { _id: objIdForUser },
+      { $push: { myReviews: String(newReview._id) } }
+    );
     if (updatedInfo2.modifiedCount === 0) {
-      throw 'Could not update Users Collection with Review Data!';
+      throw "Could not update Users Collection with Review Data!";
     }
     /////////
 
@@ -70,6 +73,7 @@ module.exports = {
 
   async getAll(recipeId) {
     helper.checkProperString(recipeId, "Recipe ID");
+    var sentiment = new Sentiment();
     if (!ObjectId.isValid(recipeId)) throw "Error: Not a valid ObjectId";
     // let ID = ObjectId(recipeId);
 
@@ -81,7 +85,20 @@ module.exports = {
     if (!reviewsList) throw "Error: No reviews found for recipe";
     let reviews_likes_added = [];
     for (let review of reviewsList) {
-      review["total_likes"] = parseInt(review.likes.length) - parseInt(review.dislikes.length);
+      review["total_likes"] =
+        parseInt(review.likes.length) - parseInt(review.dislikes.length);
+      let sentiScore = sentiment.analyze(review["reviewText"]).score;
+      if (sentiScore < -7) {
+        review["reviewSentiment"] = "Strong Negetive";
+      } else if (sentiScore < -3) {
+        review["reviewSentiment"] = "Negetive";
+      } else if (sentiScore > 3) {
+        review["reviewSentiment"] = "Positive";
+      } else if (sentiScore > 7) {
+        review["reviewSentiment"] = "Strong Positive";
+      } else {
+        review["reviewSentiment"] = "Neutral";
+      }
       reviews_likes_added.push(review);
     }
     return reviews_likes_added;
@@ -109,9 +126,11 @@ module.exports = {
     let ID = ObjectId(id);
     const reviewCollection = await reviews();
 
-    const reviewsList = await reviewCollection.find({
-      "user._id": id,
-    }).toArray();
+    const reviewsList = await reviewCollection
+      .find({
+        "user._id": id,
+      })
+      .toArray();
     if (!reviewsList) {
       throw "Error: No review with that user id";
     }
@@ -223,7 +242,10 @@ module.exports = {
       throw "Update failed at adding like to review";
 
     const updatedReview = await this.get(reviewId);
-    await recipeFunctions.replaceReviewInRecipe(updatedReview.recipeId.toString(), updatedReview);
+    await recipeFunctions.replaceReviewInRecipe(
+      updatedReview.recipeId.toString(),
+      updatedReview
+    );
 
     return updatedReview;
   },
@@ -260,7 +282,10 @@ module.exports = {
       throw "Update failed at adding dislike to review";
 
     const updatedReview = await this.get(reviewId);
-    await recipeFunctions.replaceReviewInRecipe(updatedReview.recipeId.toString(), updatedReview);
+    await recipeFunctions.replaceReviewInRecipe(
+      updatedReview.recipeId.toString(),
+      updatedReview
+    );
 
     return updatedReview;
   },
