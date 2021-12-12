@@ -11,7 +11,7 @@
   margin-top: 5%;
 }
 .error {
-  color: #ff606e;
+  color: #b60024;
   font-weight: 700;
   font-size: large;
 }
@@ -20,5 +20,5 @@
   color: #2acc80;
 }
 .invalid-feedback {
-  color: #ff606e;
+  color: #b60024;
 }
