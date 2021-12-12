@@ -6,6 +6,7 @@ let ingreInput = $("#ingredients");
 let ingName = $("#ingName");
 const url = "http://localhost:3000/ingredients/name/";
 let showdiv = $("#showDiv");
+let errorP = $("#error");
 
 $(".raty").raty({
   path: "/public/images",
@@ -39,6 +40,10 @@ $(document).ready(function () {
     let qm = qMeasure.val().trim();
     let iName = ingName.val().trim();
     let ingArray = JSON.parse(ingreInput.val());
+    if (!q || !qm || !iName) {
+      alert(" Please enter proper values for the ingredient to add");
+      return;
+    }
 
     ingObj = {};
     ingObj["name"] = iName;
@@ -135,7 +140,7 @@ $(document).ready(function () {
       showToast(true, "Please login first before submitting the review");
       return false;
     }
-    if(!($("#reviewText").val().replace(/\s/g, '').length)){
+    if (!$("#reviewText").val().replace(/\s/g, "").length) {
       e.preventDefault();
       showToast(true, "Review contains only white spaces!");
       return false;
@@ -216,11 +221,12 @@ function hideCommentForm(reviewId) {
 }
 
 function checkCommentInput(reviewId) {
-  if(!($("#comment-" + reviewId).val().replace(/\s/g, '').length)){
-    showCommentToast(
-      reviewId,
-      "Comment contains only white spaces!"
-    );
+  if (
+    !$("#comment-" + reviewId)
+      .val()
+      .replace(/\s/g, "").length
+  ) {
+    showCommentToast(reviewId, "Comment contains only white spaces!");
     return false;
   }
 }
@@ -230,23 +236,24 @@ function likeReview(reviewId) {
     type: "POST",
     url: "/reviews/like/" + reviewId,
     // data: frm.serialize(),
-    beforeSend: function () {
-        
-    },
+    beforeSend: function () {},
     success: function (response) {
-        var resp = '';
-        // alert(JSON.stringify(response));
-        var total_likes = parseInt(response['likes']);
-        if(total_likes >= 0)
-          $('#likes-' + reviewId).html('<span class="badge bg-success">' + total_likes + '</span>');
-        else
-          $('#likes-' + reviewId).html('<span class="badge bg-danger">' + total_likes + '</span>');
-        
+      var resp = "";
+      // alert(JSON.stringify(response));
+      var total_likes = parseInt(response["likes"]);
+      if (total_likes >= 0)
+        $("#likes-" + reviewId).html(
+          '<span class="badge bg-success">' + total_likes + "</span>"
+        );
+      else
+        $("#likes-" + reviewId).html(
+          '<span class="badge bg-danger">' + total_likes + "</span>"
+        );
     },
     error: function (error) {
-      showCommentToast(reviewId, error['responseJSON']['error']);
-        // alert("Error:" + JSON.stringify(error));
-    }
+      showCommentToast(reviewId, error["responseJSON"]["error"]);
+      // alert("Error:" + JSON.stringify(error));
+    },
   });
 }
 
@@ -255,24 +262,25 @@ function dislikeReview(reviewId) {
     type: "POST",
     url: "/reviews/dislike/" + reviewId,
     // data: frm.serialize(),
-    beforeSend: function () {
-        
-    },
+    beforeSend: function () {},
     success: function (response) {
-        var resp = '';
-        // $('likes-' + reviewId).html(response.likes);
-        // alert(JSON.stringify(response));
-        var total_likes = parseInt(response['likes']);
-        if(total_likes >= 0)
-          $('#likes-' + reviewId).html('<span class="badge bg-success">' + total_likes + '</span>');
-        else
-          $('#likes-' + reviewId).html('<span class="badge bg-danger">' + total_likes + '</span>');
-        // alert(response);
-        
+      var resp = "";
+      // $('likes-' + reviewId).html(response.likes);
+      // alert(JSON.stringify(response));
+      var total_likes = parseInt(response["likes"]);
+      if (total_likes >= 0)
+        $("#likes-" + reviewId).html(
+          '<span class="badge bg-success">' + total_likes + "</span>"
+        );
+      else
+        $("#likes-" + reviewId).html(
+          '<span class="badge bg-danger">' + total_likes + "</span>"
+        );
+      // alert(response);
     },
     error: function (error) {
-      showCommentToast(reviewId, error['responseJSON']['error']);
+      showCommentToast(reviewId, error["responseJSON"]["error"]);
       // alert("Error:" + JSON.stringify(error));
-    }
+    },
   });
 }
