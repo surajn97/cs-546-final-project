@@ -40,7 +40,7 @@ $(document).ready(function () {
     let qm = qMeasure.val().trim();
     let iName = ingName.val().trim();
     let ingArray = JSON.parse(ingreInput.val());
-    if (!q || !qm || !iName) {
+    if (!q || !iName || qm == "") {
       alert(" Please enter proper values for the ingredient to add");
       return;
     }
@@ -184,6 +184,13 @@ $(document).ready(function () {
     }
     // return;
   };
+});
+
+$("#recipe-form").submit(function (event) {
+  let finIngValue = ingreInput.val();
+  if (finIngValue == "[]") {
+    alert("Add Ingredients to the recipe");
+  }
 });
 
 function showCommentToast(reviewId, text) {
