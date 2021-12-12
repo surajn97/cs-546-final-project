@@ -38,7 +38,7 @@
       </div>
       <input
         class="form-control"
-        type="text"
+        type="number"
         name="servings"
         id="servings"
         placeholder="servings"
@@ -60,19 +60,20 @@
         name="ingName"
         placeholder="Ingredient Name"
       />
-      <div class="input-group-append">
-        <input
-          type="Number"
-          class="form-control"
-          id="quantity"
-          name="quantity"
-          placeholder="Quantity"
-        />
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="quantity">Quantity</label>
       </div>
+      <input
+        type="Number"
+        class="form-control"
+        id="quantity"
+        name="quantity"
+        placeholder="Quantity"
+      />
 
       <div class="input-group-append">
         <select class="form-control form-select" name="qMeasure" id="qMeasure">
-          <option selected>Select Amount</option>
+          <option value="" selected>Select Amount</option>
           <option value="teaspoon">Teaspoons</option>
           <option value="grams">Grams</option>
           <option value="cup">Cup</option>
@@ -142,6 +143,7 @@
         id="cuisine"
         value="{{data.cuisine}}"
         placeholder="cuisine"
+        required
       />
     </div>
     <br />
@@ -155,6 +157,7 @@
         name="instructions"
         id="instructions"
         placeholder="Instructions"
+        required
       >{{data.instructions}}</textarea>
     </div>
     <br />
@@ -168,6 +171,5 @@
     </div>
 
   </form>
-
 </div>
 <script src="/public/js/editrecipe.js"></script>

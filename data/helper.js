@@ -21,7 +21,7 @@ const checkProperString = (string, parameter) => {
   }
 };
 
-const isValidURL = (string) => {
+const isValidURL = string => {
   if (string.startsWith("http://www.") || string.startsWith("https://www.")) {
     if (/.([./])com$/.test(string)) {
       if (string.length < 20)
@@ -32,17 +32,17 @@ const isValidURL = (string) => {
   }
 };
 
-const checkProperArray = (array) => {
-  if (!array) throw "Error: No parameter supplied. Please pass an array";
+const checkProperArray = (array, parameter) => {
+  if (!array) throw `Error: List of ${parameter} not supplied`;
   if (!Array.isArray(array))
-    throw `Error: Parameter passed, "${array}" is not an array.It is "${typeof array}". Please pass an array instead`;
-  if (array.length == 0) throw "Cannot pass an empty array";
+    throw `Error: ${parameter} is not an array.It is "${typeof array}". Please pass an array instead`;
+  if (array.length == 0) throw `${parameter} cant be empty List`;
 };
 
-const checkProperArrayAllowEmpty = (array) => {
-  if (!array) throw "Error: No parameter supplied. Please pass an array";
+const checkProperArrayAllowEmpty = (array, parameter) => {
+  if (!array) throw `Error: List of ${parameter} not supplied`;
   if (!Array.isArray(array))
-    throw `Error: Parameter passed, "${array}" is not an array.It is "${typeof array}". Please pass an array instead`;
+    throw `Error: ${parameter} is not an array.It is "${typeof array}". Please pass an array instead`;
 };
 
 const checkProperObject = (object, checklength) => {
@@ -62,7 +62,7 @@ const checkProperNumber = (num, parameter) => {
   if (isNaN(num)) throw `Error: ${parameter} is not a number`;
 };
 
-const checkProperDate = (dor) => {
+const checkProperDate = dor => {
   let checkdate = new Date(dor);
   let dorArray = dor.split("/");
   let month = parseInt(dorArray[0], 10);

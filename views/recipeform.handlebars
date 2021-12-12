@@ -1,6 +1,8 @@
 <div class="container m-4 p-4">
   <h1>{{title}}</h1>
-  <p id="error" class="error" hidden>{{error}}</p>
+  {{#if error}}
+    <p id="error" class="error">{{error}}</p>
+  {{/if}}
   <form method="POST" id="recipe-form" action="/recipes">
     <div class="input-group">
       <div class="input-group-prepend">
@@ -34,7 +36,7 @@
       </div>
       <input
         class="form-control"
-        type="text"
+        type="number"
         name="servings"
         id="servings"
         placeholder="servings"
@@ -133,6 +135,7 @@
         name="cuisine"
         id="cuisine"
         placeholder="cuisine"
+        required
       />
     </div>
     <br />
@@ -146,6 +149,7 @@
         name="instructions"
         id="instructions"
         placeholder="Instructions"
+        required
       ></textarea>
     </div>
     <br />

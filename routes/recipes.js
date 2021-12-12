@@ -158,7 +158,8 @@ router.get("/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400);
+    res.render("error", { error: e, status: 400 });
     return;
   }
   try {
@@ -177,7 +178,8 @@ router.get("/:id", async (req, res) => {
 
     return;
   } catch (e) {
-    res.status(404).json({ error: e });
+    res.status(404);
+    res.render("error", { error: e, status: 400 });
     return;
   }
 });
@@ -186,7 +188,8 @@ router.get("/editform/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400);
+    res.render("error", { error: e });
     return;
   }
   try {
@@ -201,7 +204,6 @@ router.get("/editform/:id", async (req, res) => {
       ingObj.quantityMeasure = element.quantityMeasure;
       ingArr.push(ingObj);
     }
-    console.log(`id: ${ids}`);
     res.render("editrecipeform", {
       ids: ids,
       name: recipe.name,
@@ -212,7 +214,8 @@ router.get("/editform/:id", async (req, res) => {
     });
     return;
   } catch (e) {
-    res.status(404).json({ error: e });
+    res.status(404);
+    res.render("editrecipeform", { error: e });
     return;
   }
 });
@@ -222,7 +225,8 @@ router.post("/", async (req, res) => {
 
   if (!recipeInfo) {
     e = "You must provide data to update a recipe";
-    res.status(400).json({ error: e });
+    res.status(400);
+    res.render(`recipeform`, { error: e });
     return;
   }
   const ing = recipeInfo.ingredients;
@@ -252,7 +256,9 @@ router.post("/", async (req, res) => {
     helper.checkProperString(recipeInfo.instructions, "Instructions");
     helper.checkProperNumber(serv, "Servings");
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400);
+    // res.redirect(`recipes/form/`, { error: e });
+    res.render(`recipeform`, { error: e });
     return;
   }
   let postedBy = curentuser._id;
@@ -272,15 +278,11 @@ router.post("/", async (req, res) => {
     );
     let recipe = await recipeData.getWithOnlineData(newRecipe._id);
     let reviews = await reviewData.getAll(newRecipe._id);
-    res.render("recipe", {
-      data: recipe,
-      reviews: reviews,
-      title: recipe.name,
-      authenticated: req.session.user ? true : false,
-    });
+    res.redirect(`/recipes/${newRecipe._id}`);
     return;
   } catch (e) {
-    res.status(500).json({ error: e });
+    res.status(500);
+    res.render(`recipeform`, { error: e });
     return;
   }
 });
@@ -289,14 +291,16 @@ router.post("/submit/:id", async (req, res) => {
   try {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(400);
+    res.render(`error`, { error: e, status: 400 });
     return;
   }
   const updatedData = req.body;
 
   if (!updatedData) {
     e = "You must provide data to update a recipe";
-    res.status(400).json({ error: e });
+    res.status(400);
+    res.render(`error`, { error: e, status: 400 });
     return;
   }
   const ing = updatedData.ingredients;
@@ -326,7 +330,7 @@ router.post("/submit/:id", async (req, res) => {
     helper.checkProperNumber(serv, "Servings");
   } catch (e) {
     res.status(400);
-    res.redirect(`recipes/${req.params.id}`, { error: e });
+    res.render(`error`, { error: e, status: 400 });
     return;
   }
 
@@ -344,15 +348,11 @@ router.post("/submit/:id", async (req, res) => {
 
     let recipe = await recipeData.getWithOnlineData(updatedRecipe._id);
     let reviews = await reviewData.getAll(updatedRecipe._id);
-    res.render("recipe", {
-      data: recipe,
-      reviews: reviews,
-      title: recipe.name,
-      authenticated: req.session.user ? true : false,
-    });
+    res.redirect(`/recipes/${updatedRecipe._id}`);
   } catch (e) {
-    res.status(400);
-    res.redirect(`recipes/${req.params.id}`, { error: e });
+    res.status(500);
+
+    res.render(`error`, { error: e, status: 400 });
     return;
   }
 });
@@ -398,7 +398,7 @@ router.put("/:id", async (req, res) => {
     helper.checkProperNumber(serv, "Servings");
   } catch (e) {
     res.status(400);
-    res.redirect(`recipes/${req.params.id}`, { error: e });
+    res.redirect(`/recipes/${req.params.id}`, { error: e });
     return;
   }
 
@@ -416,15 +416,11 @@ router.put("/:id", async (req, res) => {
 
     let recipe = await recipeData.getWithOnlineData(updatedRecipe._id);
     let reviews = await reviewData.getAll(newRecipe._id);
-    res.render("recipe", {
-      data: recipe,
-      reviews: reviews,
-      title: recipe.name,
-    });
+    res.redirect(`/recipes/${newRecipe._id}`);
     return;
   } catch (e) {
     res.status(500);
-    res.redirect(`recipes/${req.params.id}`, { error: e });
+    res.redirect(`/recipes/${req.params.id}`, { error: e });
     return;
   }
 });

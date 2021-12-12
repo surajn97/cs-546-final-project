@@ -60,6 +60,10 @@ $(document).ready(function () {
     let q = quantity.val().trim();
     let qm = qMeasure.val().trim();
     let iName = ingName.val().trim();
+    if (!q || !iName || qm == "") {
+      alert(" Please enter proper values for the ingredient to add");
+      return;
+    }
 
     ingObj = {};
     ingObj["name"] = iName;
@@ -101,4 +105,11 @@ $(document).ready(function () {
       $("#ingredients").val(JSON.stringify(ingArray));
     });
   });
+});
+
+$("#recipe-form").submit(function (event) {
+  let finIngValue = ingreInput.val();
+  if (finIngValue == "[]") {
+    alert("Add Ingredients to the recipe");
+  }
 });
