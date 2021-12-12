@@ -269,8 +269,8 @@ router.post("/", async (req, res) => {
     return;
   }
   const ing = recipeInfo.ingredients;
-  const ctime = parseInt(recipeInfo.cookingTime);
-  const serv = parseInt(recipeInfo.servings);
+  const ctime = parseFloat(recipeInfo.cookingTime);
+  const serv = parseFloat(recipeInfo.servings);
 
   let ingarray = JSON.parse(ing);
 
@@ -283,7 +283,7 @@ router.post("/", async (req, res) => {
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
     ingarray.forEach(element => {
-      const quant = parseInt(element.quantity);
+      const quant = parseFloat(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.name, "Name of ingredient");
@@ -331,7 +331,7 @@ router.post("/submit/:id", async (req, res) => {
     helper.checkAndGetID(req.params.id);
   } catch (e) {
     res.status(400);
-    res.render(`error`, { error: e, status: 400 });
+    res.render(`editrecipeform`, { error: e });
     return;
   }
   const updatedData = req.body;
@@ -339,12 +339,13 @@ router.post("/submit/:id", async (req, res) => {
   if (!updatedData) {
     e = "You must provide data to update a recipe";
     res.status(400);
-    res.render(`error`, { error: e, status: 400 });
+    // res.render(`error`, { error: e, status: 400 });
+    res.render(`editrecipeform`, { error: e });
     return;
   }
   const ing = updatedData.ingredients;
-  const ctime = parseInt(updatedData.cookingTime);
-  const serv = parseInt(updatedData.servings);
+  const ctime = parseFloat(updatedData.cookingTime);
+  const serv = parseFloat(updatedData.servings);
   let ingarray = JSON.parse(ing);
   let curentuser = req.session.user;
 
@@ -356,7 +357,7 @@ router.post("/submit/:id", async (req, res) => {
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
     ingarray.forEach(element => {
-      const quant = parseInt(element.quantity);
+      const quant = parseFloat(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.name, "Name of ingredient");
@@ -369,7 +370,9 @@ router.post("/submit/:id", async (req, res) => {
     helper.checkProperNumber(serv, "Servings");
   } catch (e) {
     res.status(400);
-    res.render(`error`, { error: e, status: 400 });
+    // res.render(`error`, { error: e, status: 400 });
+    // res.redirect(`/editform/${req.params.id}`, { error: e, status: 400 });
+    res.render(`editrecipeform`, { error: e });
     return;
   }
 
@@ -391,7 +394,7 @@ router.post("/submit/:id", async (req, res) => {
   } catch (e) {
     res.status(500);
 
-    res.render(`error`, { error: e, status: 400 });
+    res.render(`editrecipeform`, { error: e });
     return;
   }
 });
@@ -415,8 +418,8 @@ router.put("/:id", async (req, res) => {
     return;
   }
   const ing = updatedData.ingredients;
-  const ctime = parseInt(updatedData.cookingTime);
-  const serv = parseInt(updatedData.servings);
+  const ctime = parseFloat(updatedData.cookingTime);
+  const serv = parseFloat(updatedData.servings);
   let ingarray = JSON.parse(ing);
   let curentuser = req.session.user;
 
@@ -428,7 +431,7 @@ router.put("/:id", async (req, res) => {
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
     ingarray.forEach(element => {
-      const quant = parseInt(element.quantity);
+      const quant = parseFloat(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
       helper.checkProperString(element.name, "Name of ingredient");
@@ -490,8 +493,8 @@ router.patch("/:id", async (req, res) => {
 
   let newUpdatedDataObj = {};
   const ing = updatedData.ingredients;
-  const ctime = parseInt(updatedData.cookingTime);
-  const serv = parseInt(updatedData.servings);
+  const ctime = parseFloat(updatedData.cookingTime);
+  const serv = parseFloat(updatedData.servings);
   let ingarray = JSON.parse(ing);
 
   try {
@@ -520,7 +523,7 @@ router.patch("/:id", async (req, res) => {
     ) {
       helper.checkProperArray(ingarray, "Ingredients");
       ingarray.forEach(element => {
-        const quant = parseInt(element.quantity);
+        const quant = parseFloat(element.quantity);
         element.quantity = quant;
         helper.checkProperObject(element, "Individual ingredient");
         helper.checkProperString(element.name, "Name of ingredient");

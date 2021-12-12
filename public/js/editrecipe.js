@@ -9,6 +9,10 @@ let showdiv = $("#showDiv");
 let mealType = $("#mealType");
 let mealtypestore = $("#mealtypestore");
 
+let rname = $("#name");
+let cuisine = $("#cuisine");
+let instruction = $("#instructions");
+
 $(".raty").raty({
   path: "/public/images",
   scoreName: "rating",
@@ -109,7 +113,15 @@ $(document).ready(function () {
 
 $("#recipe-form").submit(function (event) {
   let finIngValue = ingreInput.val();
+  let name = rname.val().trim();
+  let rcuisine = cuisine.val().trim();
+  let rinstruction = instruction.val().trim();
   if (finIngValue == "[]") {
     alert("Add Ingredients to the recipe");
+    return false;
+  }
+  if (!name || !rcuisine || !rinstruction) {
+    alert("Please pass all the inputs");
+    return false;
   }
 });

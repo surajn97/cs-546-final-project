@@ -82,19 +82,6 @@
       </div>
 
           <div class="input-group-append">
-            <select class="form-control form-select" name="qMeasure" id="qMeasure">
-              <option selected>Select Amount</option>
-              <option value="teaspoon">Teaspoons</option>
-              <option value="grams">Grams</option>
-              <option value="cup">Cup</option>
-              <option value="tablespoon">Tablespoons</option>
-              <option value="bowl">Bowl</option>
-              <option value="qty">Quantity</option>
-              <option value="ml">Milliliters</option>
-            </select>
-          </div>
-
-          <div class="input-group-append">
             <button class="btn btn-outline-secondary" id="addIng" name="addIng" type="button">Add</button>
           </div>
         </div>
@@ -155,16 +142,13 @@
     <br />
 
         <div class="input-group">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="instructions">Instructions</label>
-          </div>
-          <textarea class="form-control" name="instructions" id="instructions"
-            placeholder="Instructions">{{data.instructions}}</textarea>
+          <button class="btn btn-outline-secondary" id="button" type="submit">Submit
+          </button>
         </div>
-        <br />
 
       </form>
-    </div>
-    </div>
+      </div>
+    <div class="col"></div>
+  </div>
 </div>
-<script src="/public/js/recipe.js"></script>
+<script src="/public/js/editrecipe.js"></script>
