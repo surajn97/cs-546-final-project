@@ -20,6 +20,7 @@
     "handlebars": "^4.7.7",
     "mongodb": "^4.2.0",
     "scrape-youtube": "^2.1.13",
+    "sentiment": "^5.0.2",
     "xss": "^1.0.10"
   }
 }

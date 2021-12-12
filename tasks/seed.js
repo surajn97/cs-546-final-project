@@ -70,7 +70,7 @@ const main = async () => {
           name: "Cauliflower Rice",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 25,
-          mealType: "Lunch",
+          mealType: "lunch",
           cuisine: "French",
           ingredients: [
             {
@@ -110,7 +110,7 @@ const main = async () => {
           name: "Cauliflower Mac and Cheese",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 50,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -149,7 +149,7 @@ const main = async () => {
           name: "Baked Artichoke",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 90,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -193,7 +193,7 @@ const main = async () => {
           name: "Guacamole",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 10,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "Mexican",
           ingredients: [
             {
@@ -312,7 +312,7 @@ const main = async () => {
               _id: "61b4456ba9c0ca7c90d12238",
             },
           ],
-          mealType: "Dinner",
+          mealType: "dinner",
           cuisine: "Indian",
           overallRating: 0,
           instructions:
@@ -374,7 +374,7 @@ const main = async () => {
           name: "Sweet potato chilli",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 50,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -450,7 +450,7 @@ const main = async () => {
           name: "Vegetable dumplings (jiaozi)",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 150,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -532,7 +532,7 @@ const main = async () => {
           name: "Courgetti with pesto and balsamic tomatoes",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 15,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -576,7 +576,7 @@ const main = async () => {
           name: "Veggie fajitas",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 30,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -646,7 +646,7 @@ const main = async () => {
           name: "Spicy tomato soup",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 25,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -712,7 +712,7 @@ const main = async () => {
           name: "Spiced grains with peas, spinach and jammy eggs",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 30,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -778,7 +778,7 @@ const main = async () => {
           name: "Cauliflower Pizza Bites",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 50,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -823,7 +823,7 @@ const main = async () => {
           name: "Vegetable Fried Rice",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 35,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -867,7 +867,7 @@ const main = async () => {
           name: "Falafel",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 25,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -944,7 +944,7 @@ const main = async () => {
           name: "Rose Water Rice Pudding",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 55,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -990,7 +990,7 @@ const main = async () => {
           name: "Buddha bowls with shredded sprouts and beets",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 20,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -1061,7 +1061,7 @@ const main = async () => {
           name: "Spiced carrot and lentil soup",
           postedBy: userInfo.insertedId.toString(),
           cookingTime: 50,
-          mealType: "Snack",
+          mealType: "snack",
           cuisine: "American",
           ingredients: [
             {
@@ -1162,10 +1162,9 @@ const main = async () => {
 
       const dummyRecipeNames = [
         "Pasta",
-        "Alaskan Amber Salmon Marinade",
-        "Alaskan Crab Roll",
-        "Alaskan Sea Scallops with Marsala Cream Sauce",
-        "Alcoholic Hot Chocolate",
+        "Salmon Marinade",
+        "Crab Roll",
+        "Marsala Cream Sauce",
         "Hot Chocolate",
         "Halwa",
         "Calamari on Pasta",
@@ -1176,30 +1175,28 @@ const main = async () => {
         "Pad Thai",
         "Sabich",
         "Olive Loaf",
-        "Olive Oil Braised Potatoes",
-        "Olive Oil Cake: Ladi Tourta",
-        "Olive Oil Coffee Cake",
-        "Olive Oil Muffins",
-        "Egg White, Caramelized Onion and Fig Jam Sandwich",
+        "Braised Potatoes",
+        "Coffee Cake",
+        "Muffins",
+        "Egg White Sandwich",
         "Egg and Avocado Toast",
         "Egg and Bacon Salad",
-        "Egg and Goat Cheese Phyllo Tarts",
+        "Egg Tarts",
         "Kale Chips",
         "Kale Doughnuts",
         "Kale Salad",
         "Key Lime Pie",
-        "Key Lime Pie Ice Cream Sandwiches",
+        "Ice Cream Sandwiches",
         "Key Lime Sorbet",
-        "Key West Shrimp Ceviche",
-        "Fennel Spiced Prawns with Citrus Salad",
-        "Fennel Stuffed Chicken Breasts",
-        "Fennel and Apple Salad",
+        "Shrimp Ceviche",
+        "Prawns with Citrus Salad",
+        "Stuffed Chicken Breasts",
       ];
       const artic = {
         name: "Baked Artichoke",
         postedBy: userInfo.insertedId.toString(),
         cookingTime: 90,
-        mealType: "Snack",
+        mealType: "lunch",
         cuisine: "American",
         ingredients: [
           {

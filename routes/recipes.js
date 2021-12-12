@@ -7,6 +7,7 @@ const userData = data.users;
 const reviewData = data.reviews;
 const helper = data.helper;
 const xss = require("xss");
+
 let prevSentData;
 let currentSort = {
   name: {
