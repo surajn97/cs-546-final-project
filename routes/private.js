@@ -107,7 +107,7 @@ router.get("/favorite-recipes", ensureAuthenticated, async (req, res) => {
   let userData = await users.get(userSess._id);
   let myFavRecipe = [];
   for (let RecipeId of userData.myFavoriteRecipe) {
-    let FRec = await recipes.getWithOnlineData(RecipeId); //add getrecipes id function
+    let FRec = await recipes.getWithOnlineData(RecipeId, false); //add getrecipes id function
     myFavRecipe.push(FRec);
   }
   let hasFRecipe = false;
@@ -131,7 +131,7 @@ router.get("/my-recipes", ensureAuthenticated, async (req, res) => {
   // Get list of myRecipes
   let myReclist = [];
   for (let RecipeId of userData.myRecipes) {
-    const mRec = await recipes.getWithOnlineData(RecipeId);
+    const mRec = await recipes.getWithOnlineData(RecipeId, false);
     myReclist.push(mRec);
   }
   let hasMRecipe = false;
