@@ -9,7 +9,7 @@
         <div class="rating d-print-none">{{data.overallRating}}</div>
       </div>
     </div>
-    <img class="center-block" id="recipe-detail-image" src="{{data.recipeImageURL}}" alt="{{data.name}} Recipe" />
+    <img class="center-block" id="recipe-detail-image" src="{{data.recipeImageURL}}" alt="{{data.name}} Recipe" onerror="this.src='/public/images/default-recipe.png';"/>
     <div class="recipe-card-favorite">            
       <label class="add-fav">
         <input id="favorite_{{data._id}}" type="checkbox" onclick="favoriteRecipe('{{data._id}}')" {{#if user}}{{#if (arrayContains user.myFavoriteRecipe data._id)}}checked{{/if}}{{/if}}>

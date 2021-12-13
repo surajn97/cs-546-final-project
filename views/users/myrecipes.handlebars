@@ -16,7 +16,7 @@
             <img
               src="{{recipeImageURL}}"
               class="card-img-top recipe-card-img"
-              alt="{{name}} Recipe"
+              alt="{{name}} Recipe" onerror="this.src='/public/images/default-recipe.png';"
             />
             <div class="recipe-card-favorite">            
               <a class="btn btn-primary" href="/recipes/editform/{{_id}}" role="button"><i class="far fa-edit"></i> Edit</a>         

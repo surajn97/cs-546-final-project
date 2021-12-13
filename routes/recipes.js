@@ -28,7 +28,16 @@ let currentSort = {
   },
 };
 
-let currentFilter = {};
+let currentFilter = {
+  mealType: {
+    current: false,
+    name: "",
+  },
+  cuisine: {
+    current: false,
+    name: "",
+  },
+};
 
 function sort(list, prevCurr) {
   if (currentSort.name.current) {
@@ -62,6 +71,29 @@ function sort(list, prevCurr) {
   }
 }
 
+function filter(list) {
+  if (!currentFilter.mealType.current && !currentFilter.cuisine.current)
+    return list;
+  let filteredData = [];
+  for (const recipe of list) {
+    if (
+      recipe.mealType.toLowerCase() ==
+        currentFilter.mealType.name.toLowerCase() &&
+      recipe.cuisine.toLowerCase() == currentFilter.cuisine.name.toLowerCase()
+    )
+      filteredData.push(recipe);
+    else if (
+      recipe.mealType.toLowerCase() == currentFilter.mealType.name.toLowerCase()
+    )
+      filteredData.push(recipe);
+    else if (
+      recipe.cuisine.toLowerCase() == currentFilter.cuisine.name.toLowerCase()
+    )
+      filteredData.push(recipe);
+  }
+  return filteredData;
+}
+
 router.get("/all", async (req, res) => {
   try {
     const recipeList = await recipeData.getAllWithSearch("");
@@ -74,6 +106,8 @@ router.get("/all", async (req, res) => {
     res.status(200).render("allRecipes", {
       recipeList: recipeList,
       currentSort: currentSort,
+      currentFilter: currentFilter,
+      filterFields: recipeData.getFilterFields(),
       title: "What's Cooking?",
       error: false,
       user: user,
@@ -84,6 +118,8 @@ router.get("/all", async (req, res) => {
       recipeList: [],
       recipes_page: true,
       currentSort: currentSort,
+      currentFilter: currentFilter,
+      filterFields: recipeData.getFilterFields(),
       title: "What's Cooking?",
       error: true,
       authenticated: req.session.user ? true : false,
@@ -94,11 +130,10 @@ router.get("/all", async (req, res) => {
 
 router.post("/all", async (req, res) => {
   try {
-    let search = req.body.search;
+    let search = xss(req.body.search);
     if (!search) search = "";
     if (typeof search !== "string") search = "";
     const recipeList = await recipeData.getAllWithSearch(search.trim());
-    sort(recipeList);
     prevSentData = recipeList;
     let user;
     if (req.session.user)
@@ -106,6 +141,8 @@ router.post("/all", async (req, res) => {
     res.status(200).render("allRecipes", {
       recipeList: recipeList,
       currentSort: currentSort,
+      currentFilter: currentFilter,
+      filterFields: recipeData.getFilterFields(),
       title: "What's Cooking?",
       user: user,
       error: false,
@@ -115,6 +152,8 @@ router.post("/all", async (req, res) => {
     res.status(400).render("allRecipes", {
       recipeList: [],
       currentSort: currentSort,
+      currentFilter: currentFilter,
+      filterFields: recipeData.getFilterFields(),
       title: "What's Cooking?",
       error: true,
       authenticated: req.session.user ? true : false,
@@ -123,26 +162,46 @@ router.post("/all", async (req, res) => {
   }
 });
 
+router.get("/all/filter", async (req, res) => {
+  try {
+    res.redirect("/recipes/all");
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+});
+
 router.post("/all/filter", async (req, res) => {
   try {
     if (prevSentData === null) {
       res.status(200).redirect("/");
     } else {
-      filterData = req.body.sort;
-      if (!filterData) {
-        res.status(200).redirect("/");
+      const sortData = xss(req.body.sort);
+      const filterData = xss(req.body.filter);
+      if (
+        sortData == null ||
+        sortData == undefined ||
+        filterData == null ||
+        filterData == undefined
+      ) {
+        res.status(200).redirect("/recipes/all");
         return;
       }
-      const filterObj = JSON.parse(filterData);
+      const sortObj = JSON.parse(sortData);
       const prevCurr = currentSort;
-      currentSort = filterObj;
+      currentSort = sortObj;
       sort(prevSentData, prevCurr);
+      const filterObj = JSON.parse(filterData);
+      currentFilter = filterObj;
+      const filteredList = filter(prevSentData);
+      const filterFields = recipeData.getFilterFields(prevSentData);
       let user;
       if (req.session.user)
         user = await userData.get(req.session.user._id.toString());
       res.status(200).render("allRecipes", {
-        recipeList: prevSentData,
+        recipeList: filteredList,
         currentSort: currentSort,
+        currentFilter: currentFilter,
+        filterFields: filterFields,
         user: user,
         title: "What's Cooking?",
         error: false,
@@ -282,7 +341,7 @@ router.post("/", async (req, res) => {
     helper.checkProperString(xss(recipeInfo.name), "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach(element => {
+    ingarray.forEach((element) => {
       const quant = parseFloat(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
@@ -356,7 +415,7 @@ router.post("/submit/:id", async (req, res) => {
     helper.checkProperString(xss(updatedData.name), "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach(element => {
+    ingarray.forEach((element) => {
       const quant = parseFloat(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
@@ -430,7 +489,7 @@ router.put("/:id", async (req, res) => {
     helper.checkProperString(updatedData.name, "Name");
     helper.checkProperNumber(ctime, "Cooking Time");
     helper.checkProperArray(ingarray, "Ingredients");
-    ingarray.forEach(element => {
+    ingarray.forEach((element) => {
       const quant = parseFloat(element.quantity);
       element.quantity = quant;
       helper.checkProperObject(element, "Individual ingredient");
@@ -522,7 +581,7 @@ router.patch("/:id", async (req, res) => {
       updatedData.ingredients !== oldRecipe.ingredients
     ) {
       helper.checkProperArray(ingarray, "Ingredients");
-      ingarray.forEach(element => {
+      ingarray.forEach((element) => {
         const quant = parseFloat(element.quantity);
         element.quantity = quant;
         helper.checkProperObject(element, "Individual ingredient");

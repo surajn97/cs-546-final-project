@@ -1,4 +1,33 @@
 (function ($) {
+  let sortData = {
+      name: {
+        current: true,
+        up: true,
+      },
+      rating: {
+        current: false,
+        up: true,
+      },
+      time: {
+        current: false,
+        up: true,
+      },
+      ingredient: {
+        current: false,
+        up: true,
+      },
+    },
+    filterData = {
+      mealType: {
+        current: false,
+        name: "",
+      },
+      cuisine: {
+        current: false,
+        name: "",
+      },
+    };
+
   //Sort By Name
   $("#sortByNameDiv").on("click", function (e) {
     let isUp = $(this).attr("data-name") == "up";
@@ -20,11 +49,19 @@
         up: true,
       },
     };
+    sortData = data;
     $(`<form method="POST" action="/recipes/all/filter"></form>`)
       .append(
         $("<input>", {
           name: "sort",
           value: JSON.stringify(data),
+          type: "hidden",
+        })
+      )
+      .append(
+        $("<input>", {
+          name: "filter",
+          value: JSON.stringify(filterData),
           type: "hidden",
         })
       )
@@ -53,11 +90,19 @@
         up: true,
       },
     };
+    sortData = data;
     $(`<form method="POST" action="/recipes/all/filter"></form>`)
       .append(
         $("<input>", {
           name: "sort",
           value: JSON.stringify(data),
+          type: "hidden",
+        })
+      )
+      .append(
+        $("<input>", {
+          name: "filter",
+          value: JSON.stringify(filterData),
           type: "hidden",
         })
       )
@@ -86,11 +131,19 @@
         up: true,
       },
     };
-    $(`<form method="POST" action="/recipes/all/filter"></form>`)
+    sortData = data;
+    $(`<form method="POST" action="//recipes/all/filter"></form>`)
       .append(
         $("<input>", {
           name: "sort",
           value: JSON.stringify(data),
+          type: "hidden",
+        })
+      )
+      .append(
+        $("<input>", {
+          name: "filter",
+          value: JSON.stringify(filterData),
           type: "hidden",
         })
       )
@@ -119,6 +172,7 @@
         up: isUp,
       },
     };
+    sortData = data;
     $(`<form method="POST" action="/recipes/all/filter"></form>`)
       .append(
         $("<input>", {
@@ -127,8 +181,118 @@
           type: "hidden",
         })
       )
+      .append(
+        $("<input>", {
+          name: "filter",
+          value: JSON.stringify(filterData),
+          type: "hidden",
+        })
+      )
       .appendTo("body")
       .submit();
+  });
+
+  //Filter By MealType
+  $(".filter-mealType").on("click", function (e) {
+    filterData.mealType.current = !filterData.mealType.current;
+    filterData.mealType.name = $(this).attr("data-name");
+    $(`<form method="POST" action="/recipes/all/filter"></form>`)
+      .append(
+        $("<input>", {
+          name: "filter",
+          value: JSON.stringify(filterData),
+          type: "hidden",
+        })
+      )
+      .append(
+        $("<input>", {
+          name: "sort",
+          value: JSON.stringify(sortData),
+          type: "hidden",
+        })
+      )
+      .appendTo("body")
+      .submit();
+  });
+
+  //Filter By Cuisine
+  $(".filter-cuisine").on("click", function (e) {
+    filterData.cuisine.current = !filterData.cuisine.current;
+    filterData.cuisine.name = $(this).attr("data-name");
+    $(`<form method="POST" action="/recipes/all/filter"></form>`)
+      .append(
+        $("<input>", {
+          name: "filter",
+          value: JSON.stringify(filterData),
+          type: "hidden",
+        })
+      )
+      .append(
+        $("<input>", {
+          name: "sort",
+          value: JSON.stringify(sortData),
+          type: "hidden",
+        })
+      )
+      .appendTo("body")
+      .submit();
+  });
+
+  //Clear Filter
+  $("#clear-filter").on("click", function (e) {
+    filterData.cuisine.current = false;
+    filterData.cuisine.name = "";
+    filterData.mealType.current = false;
+    filterData.mealType.name = "";
+    (sortData = {
+      name: {
+        current: true,
+        up: true,
+      },
+      rating: {
+        current: false,
+        up: true,
+      },
+      time: {
+        current: false,
+        up: true,
+      },
+      ingredient: {
+        current: false,
+        up: true,
+      },
+    }),
+      (filterData = {
+        mealType: {
+          current: false,
+          name: "",
+        },
+        cuisine: {
+          current: false,
+          name: "",
+        },
+      });
+    $(`<form method="POST" action="/recipes/all/filter"></form>`)
+      .append(
+        $("<input>", {
+          name: "filter",
+          value: JSON.stringify(filterData),
+          type: "hidden",
+        })
+      )
+      .append(
+        $("<input>", {
+          name: "sort",
+          value: JSON.stringify(sortData),
+          type: "hidden",
+        })
+      )
+      .appendTo("body")
+      .submit();
+  });
+
+  $(".recipe-card-img").on("error", function (e) {
+    $(this).attr("src", "/public/images/default-recipe.png");
   });
 })(window.jQuery);
 
