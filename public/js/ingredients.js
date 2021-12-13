@@ -388,6 +388,43 @@
         .submit();
     });
 
+    //Filter By MealType
+    $(".filter-mealType").on("click", function (e) {
+      const data = {
+        name: $(this).attr("data-name"),
+        mode: "meal",
+      };
+
+      $(`<form method="POST" action="/filter"></form>`)
+        .append(
+          $("<input>", {
+            name: "filter",
+            value: JSON.stringify(data),
+            type: "hidden",
+          })
+        )
+        .appendTo("body")
+        .submit();
+    });
+
+    //Filter By Cuisine
+    $(".filter-cuisine").on("click", function (e) {
+      const data = {
+        name: $(this).attr("data-name"),
+        mode: "meal",
+      };
+      $(`<form method="POST" action="/filter"></form>`)
+        .append(
+          $("<input>", {
+            name: "filter",
+            value: JSON.stringify(data),
+            type: "hidden",
+          })
+        )
+        .appendTo("body")
+        .submit();
+    });
+
     //search modal on open
     $("#searchIngredientsModal").on("shown.bs.modal", function () {
       ingredientSearch.focus();

@@ -9,7 +9,7 @@
       {{/if}}
   <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="left" title="Sort">
   <button class="btn btn-secondary dropdown-toggle"  aria-label="Sort" type="button" id="filterSortDropDown" data-bs-toggle="dropdown" aria-expanded="false">
- Sort</button>
+ Sort &amp; Filter</button>
   <ul class="dropdown-menu" aria-labelledby="filterSortDropDown">
     <li><p class="dropdown-header">Sort</p></li>
     <li><hr class="dropdown-divider"></li>
@@ -71,15 +71,38 @@
     </li> 
     <li><hr class="dropdown-divider"></li>
     <li><p class="dropdown-header">Filter</p></li>
+    <li><p class="dropdown-header ms-1">Meal Type</p></li>
+    {{#each filterFields.mealType}}
+      <li>
+          <div class="dropdown-item ms-2 filter-mealType" data-name="{{this}}">
+          {{this}}</div>
+      </li>
+    {{/each}}
     <li><hr class="dropdown-divider"></li>
-    <li><p class="dropdown-header">Meal Type</p></li>
+      <li><p class="dropdown-header ms-1">Cuisine</p></li>
+    {{#each filterFields.cuisine}}
+      <li>
+          <div class="dropdown-item ms-2 filter-cuisine" data-name="{{this}}">
+          {{this}}</div>
+      </li>
+    {{/each}}
 
   </ul>
 </div>
     </div>
       {{#if ingredientSuggestions.length}}
-   {{>ingredientSuggestions}}
-   {{/if}}
+        {{>ingredientSuggestions}}
+      {{/if}}
+      {{#if currentFilter.mealType.isActive}}
+        <div class="rounded-pill">
+         {{currentFilter.mealType.name}} <i class="fas fa-times"></i>
+        </div>
+      {{/if}}
+       {{#if currentFilter.mealType.isActive}}
+        <div class="rounded-pill">
+         {{currentFilter.mealType.name}} <i class="fas fa-times"></i>
+        </div>
+      {{/if}}
     <div class="row row-cols-1 row-cols-md-3 g-4 g-md-3 g-lg-3 mt-3">
       {{#each recipeList}}
         <div class="col">
