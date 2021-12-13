@@ -102,7 +102,7 @@ router.get("/", async (req, res) => {
       ingredientsSelected: false,
       currentSort: currentSort,
       currentFilter: currentFilter,
-      filterFields: recipeData.getFilterFields(),
+      filterFields: { mealType: [], cuisine: [] },
       title: "What's Cooking?",
       authenticated: req.session.user ? true : false,
     });
