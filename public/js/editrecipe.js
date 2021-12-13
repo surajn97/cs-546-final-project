@@ -19,6 +19,7 @@ $(".raty").raty({
 });
 
 $(document).ready(function () {
+  let ingCount = 0;
   let allDataStorev = mealtypestore.val();
   console.log(`mealType: ${allDataStorev}`);
   $("#mealType").val(allDataStorev);
@@ -30,13 +31,13 @@ $(document).ready(function () {
 
   for (index in ingArray) {
     let element = ingArray[index];
-    let tr = $(`<tr id="tr${index}">`);
+    let tr = $(`<tr id="tr${ingCount}">`);
     tr.append(
-      `<td>${element.name}</td>
+      `<td id="idname${ingCount}">${element.name}</td>
         <td> ${element.quantity} ${element.quantityMeasure}</td>
         <td>`
     );
-    let removeicon = $(`<i class="fas fa-lg fa-trash" id="remove${index}">`);
+    let removeicon = $(`<i class="fas fa-lg fa-trash" id="remove${ingCount}">`);
     tr.append(removeicon);
     tr.append(
       `</i></td>
@@ -45,21 +46,28 @@ $(document).ready(function () {
     tablenbody.append(tr);
     showdiv.append(tablenbody);
     showdiv.append(tablenbodyend);
+    ingCount = ingCount + 1;
     removeicon.on("click", function (event) {
-      var id = $(this).attr("id");
+      let id = $(this).attr("id");
       let arrid = id.split("remove")[1];
+      let rIngNametd = "idname" + arrid;
+      let rIngName = $(`#${rIngNametd}`);
+      let ingName = rIngName.html();
+
       let trid = "tr" + arrid;
       let trele = $(`#${trid}`);
       trele.remove();
 
       let ingArray = JSON.parse(ingreInput.val());
-      ingArray.splice(id, 1);
+      index = ingArray.findIndex(x => x.name === ingName);
+      ingArray.splice(index, 1);
 
       $("#ingredients").val(JSON.stringify(ingArray));
     });
   }
 
   ingAddButton.on("click", function (event) {
+    ingCount = ingCount + 1;
     ingArray = JSON.parse(ingreInput.val());
     let q = quantity.val().trim();
     let qm = qMeasure.val().trim();
@@ -74,16 +82,14 @@ $(document).ready(function () {
     ingObj["quantity"] = q;
     ingObj["quantityMeasure"] = qm;
 
-    tr = $(`<tr id="tr${ingArray.length}">`);
+    tr = $(`<tr id="tr${ingCount}">`);
     tr.append(
-      `<td>${iName}</td>
+      `<td id="idname${ingCount}">${iName}</td>
         <td> ${q} ${qm}</td>
         <td>`
     );
 
-    removeicon = $(
-      `<i class="fas fa-lg fa-trash" id="remove${ingArray.length}">`
-    );
+    removeicon = $(`<i class="fas fa-lg fa-trash" id="remove${ingCount}">`);
     tr.append(removeicon);
     tr.append(
       `</i></td>
@@ -97,14 +103,19 @@ $(document).ready(function () {
     let inputIngFInalValue = JSON.stringify(ingArray);
     $("#ingredients").val(inputIngFInalValue);
     removeicon.on("click", function (event) {
-      var id = $(this).attr("id");
+      let id = $(this).attr("id");
       let arrid = id.split("remove")[1];
+      let rIngNametd = "idname" + arrid;
+      let rIngName = $(`#${rIngNametd}`);
+      let ingName = rIngName.html();
+
       let trid = "tr" + arrid;
       let trele = $(`#${trid}`);
       trele.remove();
 
       let ingArray = JSON.parse(ingreInput.val());
-      ingArray.splice(id, 1);
+      index = ingArray.findIndex(x => x.name === ingName);
+      ingArray.splice(index, 1);
 
       $("#ingredients").val(JSON.stringify(ingArray));
     });
