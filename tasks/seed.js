@@ -229,55 +229,7 @@ const main = async () => {
           reviews: [],
           overallRating: 4.7,
           servings: 4,
-        },
-        {
-          name: "Masala Rice",
-          postedBy: userInfo.insertedId.toString(),
-          cookingTime: 25,
-          ingredients: [
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "brown rice")._id,
-              quantity: 1,
-              quantityMeasure: "cup",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "carrot")._id,
-              quantity: 1,
-              quantityMeasure: "cup",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "olive oil")._id,
-              quantity: 1,
-              quantityMeasure: "tablespoon",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "onion")._id,
-              quantity: 1,
-              quantityMeasure: "qty",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "peas")._id,
-              quantity: 0.5,
-              quantityMeasure: "cup",
-            },
-            {
-              _id: igList.find((x) => x.name.toLowerCase() == "egg")._id,
-              quantity: 2,
-              quantityMeasure: "qty",
-            },
-          ],
-          mealType: "lunch",
-          cuisine: "Indian",
-          overallRating: 0,
-          instructions:
-            "Firstly take ginger, garlic, and whole spices like cinnamon, cloves, cardamom in a mortar pestle and crush till you get a fine paste. Keep aside.\r\n" +
-            "\r\n" +
-            "Heat 1 tablespoon of oil/ghee in a kadai. Add mustard and cumin seeds.\r\n" +
-            "\r\n" +
-            "Once the mustard seeds start spluttering, add green chilies, curry leaves, hing (asafoetida), and ginger-garlic-spice mixture. Saute for a few seconds till the raw smell of the ginger garlic goes away.",
-          reviews: [],
-          servings: 2,
-        },
+        },        
         {
           name: "Sweet potato chilli",
           postedBy: userInfo.insertedId.toString(),
