@@ -18,4 +18,10 @@ module.exports = {
   isEquals: function (arg1, arg2) {
     return arg1 == arg2 ? true : false;
   },
+
+  isEqualsString: function (arg1, arg2) {
+    return arg1.toString().toLowerCase() == arg2.toString().toLowerCase()
+      ? true
+      : false;
+  },
 };

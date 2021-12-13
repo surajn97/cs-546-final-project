@@ -73,35 +73,58 @@
     <li><p class="dropdown-header">Filter</p></li>
     <li><p class="dropdown-header ms-1">Meal Type</p></li>
     {{#each filterFields.mealType}}
-      <li>
-          <div class="dropdown-item ms-2 filter-mealType" data-name="{{this}}">
-          {{this}}</div>
+   {{#if ../currentFilter.mealType.current}}
+    {{#if (isEqualsString this ../currentFilter.mealType.name)}}
+        <li>
+          <div class="dropdown-item filter-mealType text-primary text-capitalize ms-2" data-name="{{this}}">
+           {{this}}</div>
+        </li>
+        {{else}}
+         <li>
+          <div class="dropdown-item filter-mealType text-capitalize ms-2" data-name="{{this}}">
+           <{{this}}</div>
       </li>
+        {{/if}}  
+    {{else}}
+      <li>
+          <div class="dropdown-item filter-mealType text-capitalize ms-2" data-name="{{this}}">
+           {{this}}</div>
+      </li>
+    {{/if}}
     {{/each}}
     <li><hr class="dropdown-divider"></li>
       <li><p class="dropdown-header ms-1">Cuisine</p></li>
     {{#each filterFields.cuisine}}
-      <li>
-          <div class="dropdown-item ms-2 filter-cuisine" data-name="{{this}}">
-          {{this}}</div>
+    {{#if ../currentFilter.cuisine.current}}
+    {{#if (isEqualsString this ../currentFilter.cuisine.name)}}
+        <li>
+          <div class="dropdown-item filter-cuisine text-primary text-capitalize ms-2" data-name="{{this}}">
+           {{this}}</div>
+        </li>
+        {{else}}
+         <li>
+          <div class="dropdown-item filter-cuisine text-capitalize ms-2" data-name="{{this}}">
+           {{this}}</div>
       </li>
-    {{/each}}
+        {{/if}}  
+    {{else}}
+      <li>
+          <div class="dropdown-item filter-cuisine text-capitalize ms-2" data-name="{{this}}">
+           {{this}}</div>
+      </li>
+    {{/if}}
 
+    {{/each}}
+<li>
+  <div class="dropdown-item" id="clear-filter">
+    <button type="button" class="btn btn-danger" >Clear All</button>
+  </div>
+</li>
   </ul>
 </div>
     </div>
       {{#if ingredientSuggestions.length}}
         {{>ingredientSuggestions}}
-      {{/if}}
-      {{#if currentFilter.mealType.isActive}}
-        <div class="rounded-pill">
-         {{currentFilter.mealType.name}} <i class="fas fa-times"></i>
-        </div>
-      {{/if}}
-       {{#if currentFilter.mealType.isActive}}
-        <div class="rounded-pill">
-         {{currentFilter.mealType.name}} <i class="fas fa-times"></i>
-        </div>
       {{/if}}
     <div class="row row-cols-1 row-cols-md-3 g-4 g-md-3 g-lg-3 mt-3">
       {{#each recipeList}}
