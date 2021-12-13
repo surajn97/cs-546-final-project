@@ -36,10 +36,12 @@ const toastDiv = $("#toast-div");
 const toastDivText = $("#toast-div-text");
 
 $(document).ready(function () {
+  let ingCount = 0;
   let tablenbody = $(`<table class="table" id="table"><tbody id='tbody'>`);
   let tablenbodyend = $(`</tbody></table>`);
 
   ingAddButton.on("click", function (event) {
+    ingCount = ingCount + 1;
     let q = quantity.val().trim();
     let qm = qMeasure.val().trim();
     let iName = ingName.val().trim();
@@ -54,16 +56,14 @@ $(document).ready(function () {
     ingObj["quantity"] = q;
     ingObj["quantityMeasure"] = qm;
 
-    let tr = $(`<tr id="tr${ingArray.length}">`);
+    let tr = $(`<tr id="tr${ingCount}">`);
     tr.append(
-      `<td>${iName}</td>
+      `<td id="idname${ingCount}">${iName}</td>
         <td> ${q} ${qm}</td>
         <td>`
     );
 
-    let removeicon = $(
-      `<i class="fas fa-lg fa-trash" id="remove${ingArray.length}">`
-    );
+    let removeicon = $(`<i class="fas fa-lg fa-trash" id="remove${ingCount}">`);
     tr.append(removeicon);
     tr.append(
       `</i></td>
@@ -78,14 +78,19 @@ $(document).ready(function () {
     $("#ingredients").val(inputIngFInalValue);
 
     removeicon.on("click", function (event) {
-      var id = $(this).attr("id");
+      let id = $(this).attr("id");
       let arrid = id.split("remove")[1];
+      let rIngNametd = "idname" + arrid;
+      let rIngName = $(`#${rIngNametd}`);
+      let ingName = rIngName.html();
+
       let trid = "tr" + arrid;
       let trele = $(`#${trid}`);
       trele.remove();
 
       let ingArray = JSON.parse(ingreInput.val());
-      ingArray.splice(id, 1);
+      index = ingArray.findIndex(x => x.name === ingName);
+      ingArray.splice(index, 1);
 
       $("#ingredients").val(JSON.stringify(ingArray));
     });
