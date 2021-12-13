@@ -98,7 +98,7 @@ router.get("/all", async (req, res) => {
   try {
     const recipeList = await recipeData.getAllWithSearch("");
     sort(recipeList);
-    const filter = recipeData.getFilterFields(recipeList);
+    const filterFields = recipeData.getFilterFields(recipeList);
     let user;
     if (req.session.user)
       user = await userData.get(req.session.user._id.toString());
@@ -107,7 +107,7 @@ router.get("/all", async (req, res) => {
       recipeList: recipeList,
       currentSort: currentSort,
       currentFilter: currentFilter,
-      filterFields: recipeData.getFilterFields(),
+      filterFields: filterFields,
       title: "What's Cooking?",
       error: false,
       user: user,
@@ -119,7 +119,7 @@ router.get("/all", async (req, res) => {
       recipes_page: true,
       currentSort: currentSort,
       currentFilter: currentFilter,
-      filterFields: recipeData.getFilterFields(),
+      filterFields: filterFields,
       title: "What's Cooking?",
       error: true,
       authenticated: req.session.user ? true : false,
@@ -135,6 +135,8 @@ router.post("/all", async (req, res) => {
     if (typeof search !== "string") search = "";
     const recipeList = await recipeData.getAllWithSearch(search.trim());
     prevSentData = recipeList;
+    const filterFields = recipeData.getFilterFields(recipeList);
+
     let user;
     if (req.session.user)
       user = await userData.get(req.session.user._id.toString());
@@ -142,7 +144,7 @@ router.post("/all", async (req, res) => {
       recipeList: recipeList,
       currentSort: currentSort,
       currentFilter: currentFilter,
-      filterFields: recipeData.getFilterFields(),
+      filterFields: filterFields,
       title: "What's Cooking?",
       user: user,
       error: false,
@@ -153,7 +155,7 @@ router.post("/all", async (req, res) => {
       recipeList: [],
       currentSort: currentSort,
       currentFilter: currentFilter,
-      filterFields: recipeData.getFilterFields(),
+      filterFields: filterFields,
       title: "What's Cooking?",
       error: true,
       authenticated: req.session.user ? true : false,
