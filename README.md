@@ -34,8 +34,8 @@ You can create a free account and save your favorite recipe and make what’s co
 
 ## Extra Features
 - Add categories to recipes based on the time it takes to prepare, number of ingredients
-required, meal type, cuisine and filter them out.
-- Add nutrition information for each recipe and filter/sort recipes based on it.
+required, meal type, cuisine and sort and filter them out.
+- Add nutrition information for each recipe.
 - Hyperlink recipes with videos and other means of instruction.
 - Show ingredient suggestions when searching for recipes to show more relevant recipes.
 - Sentimental analysis for the reviews.
